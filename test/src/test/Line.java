@@ -1,4 +1,4 @@
-package lab3projekt;
+package test;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;

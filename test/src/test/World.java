@@ -1,4 +1,4 @@
-package lab3projekt;
+package test;
 
 import javafx.scene.paint.Color;
 
@@ -25,14 +25,14 @@ public class World {
         this.width = width;
         this.height = height;
 
-        shapes = new Shape[10]; // an array of references (change to non-zero size)
+        shapes = new Shape[1]; // an array of references (change to non-zero size)
         createShapes();
         // Create the actual Shape objects (sub types)
         // ....
     }
     
     private void createShapes(){
-        shapes[0] = new Line(40,10,10,40,Color.BLACK);
+        shapes[0] = new Line(70,10,50,40,Color.BLACK);
     }
 
     /**
