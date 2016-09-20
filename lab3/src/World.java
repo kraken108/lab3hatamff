@@ -18,7 +18,7 @@ public class World {
      * y-axis points downward.
      *
      * @param width the width of this world
-     * @param height the height of this worl
+     * @param height the height of this world
      */
     public World(double width, double height) {
         this.width = width;
