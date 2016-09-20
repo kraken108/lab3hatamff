@@ -52,6 +52,7 @@ public class GUI extends Application {
             GraphicsContext gc = canvas.getGraphicsContext2D();
 
             // paint the background
+            gc.setStroke(Color.BLUE);
             gc.setFill(Color.WHITESMOKE);
             gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
