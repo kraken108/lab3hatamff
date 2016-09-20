@@ -33,6 +33,7 @@ public class World {
     
     private void createShapes(){
         shapes[0] = new Line(70,10,50,40,Color.BLACK);
+        shapes[0].setVelocity(-100,50);
     }
 
     /**
