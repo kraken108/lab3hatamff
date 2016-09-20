@@ -7,7 +7,7 @@ public class Line extends Shape {
 	private double X2;
 	private double Y2;
 	
-	public Line(){
+	public Line(double x, double y){
 		
 		
 	}
@@ -34,10 +34,12 @@ public class Line extends Shape {
 		
 	}
 	
+        @Override
 	public void constrain(double one, double two, double three, double four){
 		
 	}
 	
+        @Override
 	public String toString(){
 		String info="";
 		return info;
