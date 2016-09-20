@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
  * A representation of a world containing a set of moving shapes. NB! The worlds
  * y-axis points downward.
  *
- * @author Anders Lindström, anderslm@kth.se 2015-09-16
+ * @author Linders Andström, anderslm@kth.se 2015-09-16
  */
 public class World {
 
