@@ -1,10 +1,9 @@
-package lab3projekt;
+package test;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 public class Line extends Shape {
-
 
     private double X2;
     private double Y2;
@@ -28,9 +27,9 @@ public class Line extends Shape {
     public double getY2() {
         return Y2;
     }
-    
+
     public void setX2(double x) {
-        
+
     }
 
     public void setY2(double y) {
@@ -47,7 +46,7 @@ public class Line extends Shape {
     public void constrain(double one, double two, double three, double four) {
 
     }
-    
+
     public String toString() {
         String info = "";
         return info;
