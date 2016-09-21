@@ -25,7 +25,7 @@ public class World {
         this.width = width;
         this.height = height;
 
-        shapes = new Shape[1]; // an array of references (change to non-zero size)
+        shapes = new Shape[10]; // an array of references (change to non-zero size)
         createShapes();
         // Create the actual Shape objects (sub types)
         // ....
@@ -33,6 +33,38 @@ public class World {
     
     private void createShapes(){
         shapes[0] = new Line(70,10,50,40,Color.BLACK);
+        shapes[0].setVelocity(-100,50);
+        shapes[1] = new Circle(100,50,50,false,Color.GREEN);
+        shapes[1].setVelocity(90,50);
+        shapes[2] = new Circle(100,50,50,false,Color.GREEN);
+        shapes[2].setVelocity(180,50);
+        shapes[3] = new Rectangle(100,100,50,10,Color.BLUE,false);
+        shapes[3].setVelocity(80,190);
+        shapes[4] = new Circle(100,50,50,false,Color.GREEN);
+        shapes[4].setVelocity(500,50);
+        shapes[5] = new Circle(100,50,50,false,Color.GREEN);
+        shapes[5].setVelocity(110,110);
+        shapes[6] = new Circle(100,50,50,false,Color.GREEN);
+        shapes[6].setVelocity(20,500);
+        shapes[7] = new Circle(100,50,50,false,Color.GREEN);
+        shapes[7].setVelocity(200,50);
+        shapes[8] = new Circle(100,50,50,false,Color.GREEN);
+        shapes[8].setVelocity(180,180);
+        shapes[9] = new Circle(100,50,50,false,Color.GREEN);
+        shapes[9].setVelocity(320,150);
+        
+        
+        for(Shape s : shapes){
+            if(s instanceof FillableShape){
+                FillableShape fs = (FillableShape) s;
+                if(((FillableShape) s).isFilled()){
+                    System.out.println("test"); 
+                    ((FillableShape) s).setFilled(false);
+                }
+                else
+                    ((FillableShape) s).setFilled(true);
+            }
+        }
     }
 
     /**

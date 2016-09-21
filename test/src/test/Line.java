@@ -35,16 +35,49 @@ public class Line extends Shape {
     public void setY2(double y) {
 
     }
-
+    @Override
+    public void move(long elapsedTimeNs) {
+        double dx = super.getDx(), dy = super.getDy();
+        double x = dx * elapsedTimeNs / BILLION;
+        double y = dy * elapsedTimeNs / BILLION;
+        setX(getX()+x);
+        setY(getY()+y);
+        X2 += dx * elapsedTimeNs / BILLION;
+        Y2 += dy * elapsedTimeNs / BILLION;
+    }
+    
     @Override
     public void paint(GraphicsContext g) {
+        g.setStroke(getColor());
         g.strokeLine(super.getX(), super.getY(), X2, Y2);
-
     }
 
     @Override
-    public void constrain(double one, double two, double three, double four) {
-
+    public void constrain(double boxX, double boxY, 
+            double boxWidth, double boxHeight) {
+        if (X2 < boxX) {
+            setVelocity(Math.abs(getDx()),getDy());
+        } else if (X2 > boxWidth) {
+            setVelocity(-Math.abs(getDx()),getDy());
+        }
+        
+        if (getX() < boxX) {
+            setVelocity(Math.abs(getDx()),getDy());
+        } else if (getX() > boxWidth) {
+            setVelocity(-Math.abs(getDx()),getDy());
+        }
+        
+        if (Y2 < boxY) {
+            setVelocity(getDx(),Math.abs(getDy()));
+        } else if (Y2 > boxHeight) {
+            setVelocity(getDx(),-Math.abs(getDy()));
+        }
+        
+        if (getY() < boxY) {
+            setVelocity(getDx(),Math.abs(getDy()));
+        } else if (getY() > boxHeight) {
+            setVelocity(getDx(),-Math.abs(getDy()));
+        }
     }
 
     public String toString() {
