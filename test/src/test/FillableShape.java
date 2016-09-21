@@ -18,7 +18,7 @@ abstract public class FillableShape extends Shape{
     }
     
     public void setFilled(boolean filled){
-        
+        this.filled = filled;
     }
     
 }
