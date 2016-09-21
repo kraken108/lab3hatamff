@@ -25,7 +25,7 @@ public class World {
         this.width = width;
         this.height = height;
 
-        shapes = new Shape[1]; // an array of references (change to non-zero size)
+        shapes = new Shape[3]; // an array of references (change to non-zero size)
         createShapes();
         // Create the actual Shape objects (sub types)
         // ....
@@ -34,6 +34,16 @@ public class World {
     private void createShapes(){
         shapes[0] = new Line(70,10,50,40,Color.BLACK);
         shapes[0].setVelocity(-100,50);
+        shapes[1] = new Circle(100,50,50,true,Color.GREEN);
+        shapes[1].setVelocity(90,50);
+        shapes[2] = new Circle(100,50,50,true,Color.GREEN);
+        shapes[2].setVelocity(90,50);
+        
+        for(Shape s : shapes){
+            if(s instanceof FillableShape){
+                System.out.println("instanceof");
+            }
+        }
     }
 
     /**

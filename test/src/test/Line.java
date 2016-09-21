@@ -48,6 +48,7 @@ public class Line extends Shape {
     
     @Override
     public void paint(GraphicsContext g) {
+        g.setStroke(getColor());
         g.strokeLine(super.getX(), super.getY(), X2, Y2);
     }
 
