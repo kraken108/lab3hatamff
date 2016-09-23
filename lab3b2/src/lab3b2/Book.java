@@ -4,32 +4,47 @@
  * and open the template in the editor.
  */
 package lab3b2;
+<<<<<<< HEAD
 import java.util.*;
 
+=======
+
+import java.lang.Comparable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.*;
+>>>>>>> ae40e4f40edf1c0cc7b6b6c069b4a53eef80061b
 
 /**
  *
  * @author micke1
  */
-public class Book implements Comparable<Book> {
-    
+public class Book {
+
     private ArrayList<Author> theAuthors;
     private String isbn;
     private String title;
     private int edition;
     private double price;
+<<<<<<< HEAD
     
     
     public Book(String isbn, String title, int edition, double price){
+=======
+
+    public Book(String isbn, String title, int edition, double price,String author) {
+>>>>>>> ae40e4f40edf1c0cc7b6b6c069b4a53eef80061b
         theAuthors = new ArrayList<Author>();
-        this.isbn=isbn;
-        this.title=title;
-        this.edition=edition;
-        this.price=price;
+        this.isbn = isbn;
+        this.title = title;
+        this.edition = edition;
+        this.price = price;
+        theAuthors.add(new Author(author));
     }
-    
-    public Book(){
+
+    public Book() {
         theAuthors = new ArrayList<Author>();
+<<<<<<< HEAD
         isbn="0";
         title="Unknown";
         edition=0;
@@ -42,22 +57,33 @@ public class Book implements Comparable<Book> {
     
     public void sortAuthors(){
         Collections.sort(theAuthors, new Comparator<Author>(){
+=======
+        isbn = "0";
+        title = "Unknown";
+        edition = 0;
+        price = 0;
+    }
+
+    public void sortAuthors() {
+        Collections.sort(theAuthors, new Comparator<Author>() {
+>>>>>>> ae40e4f40edf1c0cc7b6b6c069b4a53eef80061b
             @Override
             public int compare(Author a1, Author a2) {
                 return a1.getName().compareTo(a2.getName());
             }
         });
+<<<<<<< HEAD
                 
-    }
-    
-    public void addAuthor(Author name){
-        theAuthors.add(name);
-    }
-    
-    public ArrayList<Author> getAuthors(){
-        return getTheAuthors();
+=======
+
+>>>>>>> ae40e4f40edf1c0cc7b6b6c069b4a53eef80061b
     }
 
+    public void addAuthor(Author name) {
+        theAuthors.add(name);
+    }
+
+    
     /**
      * @return the theAuthors
      */
@@ -128,7 +154,12 @@ public class Book implements Comparable<Book> {
         this.price = price;
     }
 
+    //@Override
+    //public int compareTo(Book other) {
+    //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    // }
     @Override
+<<<<<<< HEAD
     public int compareTo(Book other) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -143,7 +174,19 @@ public class Book implements Comparable<Book> {
             info += ", ";
         }
         return info;        
+=======
+    public String toString() {
+        String info = "";
+        info += "======================\n";
+        info += "Book title: " + title + " ISBN: " + isbn + " Edition: " + edition
+                + " Price: " + price + ".\nAuthors: ";
+        for (Author a : theAuthors) {
+            info += a.getName();
+            info += ", ";
+        }
+        info += "\n======================\n";
+        return info;
+>>>>>>> ae40e4f40edf1c0cc7b6b6c069b4a53eef80061b
     }
-    
-    
+
 }

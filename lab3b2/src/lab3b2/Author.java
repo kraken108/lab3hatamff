@@ -9,7 +9,7 @@ package lab3b2;
  *
  * @author micke1
  */
-public class Author extends Book {
+public class Author{
     
     private String name; //author name
     
@@ -35,6 +35,8 @@ public class Author extends Book {
     public void setName(String name) {
         this.name = name;
     }
+    
+   
     
     
     
