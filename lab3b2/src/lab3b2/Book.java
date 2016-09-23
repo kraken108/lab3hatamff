@@ -4,16 +4,16 @@
  * and open the template in the editor.
  */
 package lab3b2;
-<<<<<<< HEAD
+
 import java.util.*;
 
-=======
+
 
 import java.lang.Comparable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.*;
->>>>>>> ae40e4f40edf1c0cc7b6b6c069b4a53eef80061b
+
 
 /**
  *
@@ -26,14 +26,14 @@ public class Book {
     private String title;
     private int edition;
     private double price;
-<<<<<<< HEAD
+
     
     
-    public Book(String isbn, String title, int edition, double price){
-=======
+   
+
 
     public Book(String isbn, String title, int edition, double price,String author) {
->>>>>>> ae40e4f40edf1c0cc7b6b6c069b4a53eef80061b
+
         theAuthors = new ArrayList<Author>();
         this.isbn = isbn;
         this.title = title;
@@ -44,7 +44,6 @@ public class Book {
 
     public Book() {
         theAuthors = new ArrayList<Author>();
-<<<<<<< HEAD
         isbn="0";
         title="Unknown";
         edition=0;
@@ -57,7 +56,7 @@ public class Book {
     
     public void sortAuthors(){
         Collections.sort(theAuthors, new Comparator<Author>(){
-=======
+
         isbn = "0";
         title = "Unknown";
         edition = 0;
@@ -158,23 +157,14 @@ public class Book {
     //public int compareTo(Book other) {
     //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     // }
-    @Override
-<<<<<<< HEAD
+   
     public int compareTo(Book other) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+  
+
     @Override
-    public String toString(){
-        String info="";
-        info = "Booktitle: " + title + " ISBN: " + isbn + " edition: "
-                + edition + " price: " + price + ".\nAuthors: ";
-        for(Author a : theAuthors){
-            info += a.getName();
-            info += ", ";
-        }
-        return info;        
-=======
     public String toString() {
         String info = "";
         info += "======================\n";
@@ -186,7 +176,7 @@ public class Book {
         }
         info += "\n======================\n";
         return info;
->>>>>>> ae40e4f40edf1c0cc7b6b6c069b4a53eef80061b
+
     }
 
 }
