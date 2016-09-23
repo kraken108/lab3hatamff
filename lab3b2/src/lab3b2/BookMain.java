@@ -1,0 +1,23 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package lab3b2;
+
+/**
+ *
+ * @author micke1
+ */
+public class BookMain {
+    
+    public static void main(String[] args){
+        
+        
+        Book b1 = new Book();
+        Author a1 = new Author(b1.getTitle());
+        b1.addAuthor(a1);
+        System.out.println(b1.toString());
+        
+    }
+}
