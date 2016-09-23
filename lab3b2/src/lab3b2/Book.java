@@ -3,53 +3,57 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lab3b;
+package lab3b2;
+
 import java.lang.Comparable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-
+import java.util.*;
 
 /**
  *
  * @author micke1
  */
-public class Book implements Comparable<Book> {
-    
+public class Book {
+
     private ArrayList<Author> theAuthors;
     private String isbn;
     private String title;
     private int edition;
     private double price;
-    
-    public Book(String isbn, String title, int edition, double price){
+
+    public Book(String isbn, String title, int edition, double price,String author) {
         theAuthors = new ArrayList<Author>();
-        this.isbn=isbn;
-        this.title=title;
-        this.edition=edition;
-        this.price=price;
-    }
-    
-    public Book(){
-        theAuthors = new ArrayList<Author>();
-        isbn="1234567891011";
-        title="Anders Lindström ockh the secret chamber of fire";
-        edition=1;
-        price=10;
-    }
-        
-    public void sortAuthors(ArrayList<Author> theAuthors){
-        Collections.sort(theAuthors);
-    }
-    
-    public void addAuthor(Author name){
-        theAuthors.add(name);
-    }
-    
-    public ArrayList<Author> getAuthors(){
-        return getTheAuthors();
+        this.isbn = isbn;
+        this.title = title;
+        this.edition = edition;
+        this.price = price;
+        theAuthors.add(new Author(author));
     }
 
+    public Book() {
+        theAuthors = new ArrayList<Author>();
+        isbn = "0";
+        title = "Unknown";
+        edition = 0;
+        price = 0;
+    }
+
+    public void sortAuthors() {
+        Collections.sort(theAuthors, new Comparator<Author>() {
+            @Override
+            public int compare(Author a1, Author a2) {
+                return a1.getName().compareTo(a2.getName());
+            }
+        });
+
+    }
+
+    public void addAuthor(Author name) {
+        theAuthors.add(name);
+    }
+
+    
     /**
      * @return the theAuthors
      */
@@ -120,19 +124,22 @@ public class Book implements Comparable<Book> {
         this.price = price;
     }
 
+    //@Override
+    //public int compareTo(Book other) {
+    //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    // }
     @Override
-    public int compareTo(Book other) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    @Override
-    public String toString(){
-        String info="";
-        for(int i=0; i<theAuthors.size(); i++){
-            info+=theAuthors.get(i);
+    public String toString() {
+        String info = "";
+        info += "======================\n";
+        info += "Book title: " + title + " ISBN: " + isbn + " Edition: " + edition
+                + " Price: " + price + ".\nAuthors: ";
+        for (Author a : theAuthors) {
+            info += a.getName();
+            info += ", ";
         }
+        info += "\n======================\n";
         return info;
     }
-    
-    
+
 }
