@@ -29,12 +29,13 @@ public class Line extends Shape {
     }
 
     public void setX2(double x) {
-
+        this.x=X2;
     }
 
     public void setY2(double y) {
-
+        this.y=Y2;
     }
+    
     @Override
     public void move(long elapsedTimeNs) {
         double dx = super.getDx(), dy = super.getDy();
@@ -51,7 +52,7 @@ public class Line extends Shape {
         g.setStroke(getColor());
         g.strokeLine(super.getX(), super.getY(), X2, Y2);
     }
-
+    
     @Override
     public void constrain(double boxX, double boxY, 
             double boxWidth, double boxHeight) {
@@ -79,9 +80,11 @@ public class Line extends Shape {
             setVelocity(getDx(),-Math.abs(getDy()));
         }
     }
-
+    
+    @Override
     public String toString() {
-        String info = "";
+        String info=super.toString();
+        info += "X2: " + X2 + ", Y2: " + Y2;
         return info;
     }
 

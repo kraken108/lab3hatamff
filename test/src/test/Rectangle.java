@@ -78,4 +78,10 @@ public class Rectangle extends FillableShape{
             setVelocity(getDx(),-Math.abs(getDy()));
         }
     }
+    
+    public String toString(){
+        String info = super.toString();
+        info += "width: " + width + "height: " + height;
+        return info;
+    }
 }

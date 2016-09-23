@@ -46,4 +46,12 @@ public class Circle extends FillableShape{
             setVelocity(getDx(),-Math.abs(getDy()));
         }
     }
+    
+    @Override
+    public String toString(){
+        String info = super.toString();
+        info += "Diameter: " + diameter;
+        return info;        
+    }
+    
 }
