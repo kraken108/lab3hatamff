@@ -65,17 +65,13 @@ public class Book {
 
     public void sortAuthors() {
         Collections.sort(theAuthors, new Comparator<Author>() {
->>>>>>> ae40e4f40edf1c0cc7b6b6c069b4a53eef80061b
+
             @Override
             public int compare(Author a1, Author a2) {
                 return a1.getName().compareTo(a2.getName());
             }
         });
-<<<<<<< HEAD
-                
-=======
 
->>>>>>> ae40e4f40edf1c0cc7b6b6c069b4a53eef80061b
     }
 
     public void addAuthor(Author name) {

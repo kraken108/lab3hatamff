@@ -5,27 +5,16 @@
  */
 package lab3b2;
 import java.util.*;
-<<<<<<< HEAD
+
 /**
  *
  * @author micke1
  */
 
 
+ 
         
-public class CollectionOfBooks {
-    
-    private ArrayList<Book> theBooks;
-    
-    
-    public CollectionOfBooks(){
-        
-        theBooks = new ArrayList<Book>();
-        
-        
-    }
-        
-=======
+
 
 /**
  *
@@ -38,27 +27,21 @@ public class CollectionOfBooks {
         theBooks = new ArrayList<Book>();
     }
     
->>>>>>> ae40e4f40edf1c0cc7b6b6c069b4a53eef80061b
+
     public void addBook(Book book){
         theBooks.add(book);
     }
     
-<<<<<<< HEAD
-    public ArrayList<Book> getBooksByTitle(String title){
-        
-        
-    }
+
+
     
     public void removeBook(int index){
        theBooks.remove(index);        
     }
     
     
-=======
-    public void removeBook(int index){
-        index = index-1;
-        theBooks.remove(index);
-    }
+
+
     
     
     //public ArrayList<Book> getBooksByTitle(String title){
@@ -122,6 +105,6 @@ public class CollectionOfBooks {
         }
         return info;
     }
->>>>>>> ae40e4f40edf1c0cc7b6b6c069b4a53eef80061b
+
     
 }

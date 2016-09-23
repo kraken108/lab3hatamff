@@ -16,11 +16,8 @@ public class BookMain {
         UserInterface ui = new UserInterface();
         ui.menu();
         
-<<<<<<< HEAD
         Book b1 = new Book();
-=======
-        Book b1 = new Book("2016","Harry Potter and the final solution",1,500,"Horaim Irach");
->>>>>>> ae40e4f40edf1c0cc7b6b6c069b4a53eef80061b
+
         Author a1 = new Author("Linders Andström");
         b1.addAuthor(a1);
         b1.addAuthor(new Author("Ponny Janrike"));
