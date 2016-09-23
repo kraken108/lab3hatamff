@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lab3b;
+package lab3b2;
 
 /**
  *
@@ -35,6 +35,8 @@ public class Author extends Book {
     public void setName(String name) {
         this.name = name;
     }
+    
+    
     
     
     

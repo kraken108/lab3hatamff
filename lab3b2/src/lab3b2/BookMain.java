@@ -15,7 +15,7 @@ public class BookMain {
         
         
         Book b1 = new Book();
-        Author a1 = new Author(b1.getTitle());
+        Author a1 = new Author("Linders Andström");
         b1.addAuthor(a1);
         System.out.println(b1.toString());
         
