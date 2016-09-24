@@ -34,9 +34,6 @@ public class BookMain {
         theCollection.addBook(new Book("51828413","Jonas Wåhslén om livet som brödbakare",1,1299,"Gilla flibbens bajenfilmer"));
         System.out.println(theCollection.toString());
         System.out.println("Title Search:");
-        printList(theCollection.searchTitle("livet"));
-        System.out.println("Author search:");
-        printList(theCollection.searchAuthor("Li"));
         theCollection.removeBook(4);
         System.out.println("Remove test (flibben):");
         System.out.println(theCollection.toString());
@@ -44,14 +41,5 @@ public class BookMain {
         
     }
     
-    public static void printList(ArrayList<Book> theList){
-        String str = new String();
-        for(Book b : theList){
-            str += b.toString();
-        }
-        
-        System.out.println(str);
-        
-        
-    }
+
 }

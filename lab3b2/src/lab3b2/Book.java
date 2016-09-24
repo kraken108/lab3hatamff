@@ -5,6 +5,7 @@
  */
 package lab3b2;
 
+import java.io.Serializable;
 import java.util.*;
 
 
@@ -19,17 +20,13 @@ import java.util.*;
  *
  * @author micke1
  */
-public class Book {
+public class Book implements Serializable {
 
     private ArrayList<Author> theAuthors;
     private String isbn;
     private String title;
     private int edition;
-    private double price;
-
-    
-    
-   
+    private double price;   
 
 
     public Book(String isbn, String title, int edition, double price,String author) {
@@ -42,26 +39,22 @@ public class Book {
         theAuthors.add(new Author(author));
     }
 
+    public void writeToFile(){
+        
+    }
+    
+    public ArrayList<Book> getBooks(){
+        return (ArrayList<Book>) theBooks.clone();
+    }
+    
     public Book() {
         theAuthors = new ArrayList<Author>();
         isbn="0";
         title="Unknown";
         edition=0;
         price=0;
-    }
-    
-    
-    
- 
-    
-    public void sortAuthors(){
-        Collections.sort(theAuthors, new Comparator<Author>(){
+    } 
 
-        isbn = "0";
-        title = "Unknown";
-        edition = 0;
-        price = 0;
-    }
 
     public void sortAuthors() {
         Collections.sort(theAuthors, new Comparator<Author>() {

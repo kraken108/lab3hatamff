@@ -6,20 +6,7 @@
 package lab3b2;
 import java.util.*;
 
-/**
- *
- * @author micke1
- */
 
-
- 
-        
-
-
-/**
- *
- * @author Jakob
- */
 public class CollectionOfBooks {
     private ArrayList<Book> theBooks;
     
@@ -27,26 +14,19 @@ public class CollectionOfBooks {
         theBooks = new ArrayList<Book>();
     }
     
+    public ArrayList<Book> getBooks(){
+        return (ArrayList<Book>) theBooks.clone();
+    }
 
     public void addBook(Book book){
         theBooks.add(book);
-    }
     
-
-
+    }
     
     public void removeBook(int index){
        theBooks.remove(index);        
     }
     
-    
-
-
-    
-    
-    //public ArrayList<Book> getBooksByTitle(String title){
-        
-   // }
     
     public ArrayList<Book> searchTitle(String string){
         ArrayList<Book> list = new ArrayList<Book>();
