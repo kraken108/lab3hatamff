@@ -20,7 +20,7 @@ public class UserInterface implements Serializable{
 
 		// Serialize to file
 	    try {
-	      fout = new FileOutputStream("cards.ser");
+	      fout = new FileOutputStream("thecollection.ser");
 	      ObjectOutputStream ous = new ObjectOutputStream(fout);
 	      
 	      ous.writeObject((ArrayList<Book>)theCollection.getBooks());
@@ -43,7 +43,7 @@ public class UserInterface implements Serializable{
 	  	
 	    try {
 	    	
-	      fin = new FileInputStream("cards.ser");
+	      fin = new FileInputStream("thecollection.ser");
 	      ObjectInputStream ois = new ObjectInputStream(fin);
 	      
 	      ArrayList<Book> bookList = (ArrayList<Book>) ois.readObject(); // Downcast from Object
