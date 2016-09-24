@@ -5,16 +5,18 @@
  */
 package lab3b2;
 
+
 import java.lang.Comparable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.*;
+import java.io.Serializable;
 
 /**
  *
  * @author micke1
  */
-public class Book {
+public class Book implements Serializable{
 
     private ArrayList<Author> theAuthors;
     private String isbn;
@@ -38,6 +40,7 @@ public class Book {
         edition = 0;
         price = 0;
     }
+   
 
     public void sortAuthors() {
         Collections.sort(theAuthors, new Comparator<Author>() {

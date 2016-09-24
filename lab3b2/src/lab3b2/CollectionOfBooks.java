@@ -5,12 +5,13 @@
  */
 package lab3b2;
 import java.util.*;
+import java.io.*;
 
 /**
  *
  * @author Jakob
  */
-public class CollectionOfBooks {
+public class CollectionOfBooks implements Serializable{
     private ArrayList<Book> theBooks;
     
     public CollectionOfBooks(){
@@ -30,6 +31,9 @@ public class CollectionOfBooks {
     //public ArrayList<Book> getBooksByTitle(String title){
         
    // }
+    public ArrayList<Book> getBooks(){
+        return  (ArrayList<Book>) theBooks.clone();
+    }
     
     public ArrayList<Book> searchTitle(String string){
         ArrayList<Book> list = new ArrayList<Book>();

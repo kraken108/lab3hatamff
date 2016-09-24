@@ -50,7 +50,5 @@ public class BookMain {
         }
         
         System.out.println(str);
-        
-        
     }
 }

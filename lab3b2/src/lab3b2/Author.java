@@ -4,12 +4,12 @@
  * and open the template in the editor.
  */
 package lab3b2;
-
+import java.io.*;
 /**
  *
  * @author micke1
  */
-public class Author{
+public class Author implements Serializable{
     
     private String name; //author name
     
