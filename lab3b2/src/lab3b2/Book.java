@@ -134,14 +134,14 @@ public class Book implements Serializable{
     @Override
     public String toString() {
         String info = "";
-        info += "======================\n";
+        info += "===========\n";
         info += "Book title: " + title + " ISBN: " + isbn + " Edition: " + edition
                 + " Price: " + price + ".\nAuthors: ";
         for (Author a : theAuthors) {
             info += a.getName();
             info += ", ";
         }
-        info += "\n======================\n";
+        info += "\n";
         return info;
     }
 

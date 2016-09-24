@@ -22,9 +22,13 @@ public class CollectionOfBooks implements Serializable{
         theBooks.add(book);
     }
     
-    public void removeBook(int index){
-        index = index-1;
+    public int removeBook(int index){
+        --index;
+        if(index < 0 || index > theBooks.size()){
+            return 1;
+        }
         theBooks.remove(index);
+        return 0;
     }
     
     
@@ -87,7 +91,7 @@ public class CollectionOfBooks implements Serializable{
         String info = new String();
         int i = 1;
         for(Book b : theBooks){
-            info += i + ". " + b.toString();
+            info += "===========" + i + b.toString();
             i++;
         }
         return info;
