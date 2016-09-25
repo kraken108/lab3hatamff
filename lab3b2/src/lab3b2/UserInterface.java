@@ -81,8 +81,8 @@ public class UserInterface implements Serializable{
     
     private String keyWord(){
         System.out.println("Enter keyword: ");
-        String author = theScanner.nextLine();
-        return author;
+        String keyword = theScanner.nextLine();
+        return keyword;
     }
 
     private void printMenu() {
@@ -98,30 +98,44 @@ public class UserInterface implements Serializable{
     public int getIndex(){
         int index;
         System.out.println("Which book do you want to remove? (Type index)");
-        index = theScanner.nextInt();
-        String dump = theScanner.nextLine();
+        String input = theScanner.nextLine();
+        if(input.length()>0){
+            index = Integer.parseInt(input);
+        }
+        else index = 0;
         return index;
         
     }
     
     private Book addBook(){
-        
+        int edition;
+        double price;
         System.out.println("New book.");
+        
         System.out.println("ISBN: ");
         String isbn = theScanner.nextLine();
+        
         System.out.println("Book title: ");
         String title = theScanner.nextLine();
+        
         System.out.println("Edition: ");
-        int edition = theScanner.nextInt();
+        String input = theScanner.nextLine();
+        if(input.length()>0){
+            edition = Integer.parseInt(input);
+        } else edition = 0;
+        
         System.out.println("Price: ");
-        double price = theScanner.nextDouble();
-        String dump = theScanner.nextLine();
+        input = theScanner.nextLine();
+        if(input.length()>0)price = Double.parseDouble(input);
+        else price = 0;
+        
         System.out.println("Author: ");
         String author = theScanner.nextLine();
         System.out.println(author);
         
         Book b = new Book(isbn,title,edition,price,author);
         moreAuthors(b);
+        b.sortAuthors();
         return b;
     }
     
