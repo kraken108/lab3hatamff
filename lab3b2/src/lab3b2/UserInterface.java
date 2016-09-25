@@ -16,13 +16,20 @@ public class UserInterface implements Serializable{
         theCollection = new CollectionOfBooks();
     }
     
-
+    /**
+     * Checks if removeBook function in CollectionOfBooks class returned 1
+     * If so, a message is printed that the book at index could not be removed
+     */
     private void remove(){
         if(theCollection.removeBook(getIndex())==1){
             System.out.println("Could not remove. No book at specified index.");
         }
     }
-        
+    
+    /**
+    * Calls printMenu method and gets input from user about which option to 
+    * execute. 
+    */
     public void menu(){
         char choice;
         boolean running = true;
@@ -42,10 +49,19 @@ public class UserInterface implements Serializable{
         writeToFile();
     }
     
+    /**
+     * Prints all the books in the program with their specified
+     * index by calling the toString function in CollectionOfBooks class. 
+     */   
     private void printTable(){
         System.out.print(theCollection.toString());
     }
-
+    
+    /**
+     * A function that gets the users input. If-statement makes sure to catch
+     * enter dump from user so the program doesn't fail.
+     * @return returns the character that the user indicted.
+     */
     private char getChoice() {
         String answer;
         char choice;
@@ -58,6 +74,9 @@ public class UserInterface implements Serializable{
         return choice;
     }
     
+    /**
+     * Prints the searchmenu if the user chooses to search for a book.
+     */
     public void printSearchMenu(){
         System.out.println("====SEARCH MENU====");
         System.out.println("A: Search Author");
@@ -67,6 +86,10 @@ public class UserInterface implements Serializable{
         System.out.println("===================");
     }
     
+    /**
+     *Depending on user input, the method searches for the books based on 
+     * Author, ISBN or Title.
+     */
     private void searchWhat(){
         char choice;
         printSearchMenu();
@@ -79,12 +102,19 @@ public class UserInterface implements Serializable{
             }
     }
     
+    /**
+     * Takes a keyword from the user and scans it.
+     * @return the keyword is returned.
+     */
     private String keyWord(){
         System.out.println("Enter keyword: ");
         String keyword = theScanner.nextLine();
         return keyword;
     }
-
+    
+    /**
+     * Prints the main menu
+     */
     private void printMenu() {
         System.out.println("====MENU====");
         System.out.println("A: Add book");
@@ -95,6 +125,11 @@ public class UserInterface implements Serializable{
         System.out.println("============");
     }
     
+    /**
+     * Gets the index of the book that the user wants to remove.
+     * if-statement is used to catch enter dump so the program doesn't fail.
+     * @return the index is returned.
+     */
     public int getIndex(){
         int index;
         System.out.println("Which book do you want to remove? (Type index)");
@@ -107,6 +142,12 @@ public class UserInterface implements Serializable{
         
     }
     
+    /**
+     * Takes all the parameters from the user necessary to create a book
+     * Allows the user to add more than one author and sorts them by calling
+     * the methods.
+     * @return the Book created is returned.
+     */
     private Book addBook(){
         int edition;
         double price;
@@ -139,6 +180,11 @@ public class UserInterface implements Serializable{
         return b;
     }
     
+    /**
+     * While the user wants to add authors, the program keeps running and gets
+     * user input to create them. 
+     * @param b Takes a book as parameter to which the authors are added.
+     */
     private void moreAuthors(Book b){
         
         Boolean running = true;
@@ -153,6 +199,10 @@ public class UserInterface implements Serializable{
         
     }
     
+    /**
+     * Prints the list of books
+     * @param theList takes a list of Books as parameter 
+     */
     public static void printList(ArrayList<Book> theList){
         String str = new String();
         for(Book b : theList){
@@ -161,7 +211,10 @@ public class UserInterface implements Serializable{
         
         System.out.println(str);
     }
-
+    
+    /**
+     * Takes users input and writes to file using serialization.
+     */
     public void writeToFile(){
 	    
 	    
@@ -186,6 +239,9 @@ public class UserInterface implements Serializable{
 	    	catch(IOException e) {}
 	    }
     }
+    /**
+     * Creates the file.
+     */
     @SuppressWarnings("unchecked")
     private void createFile(){
         FileInputStream fin = null;
