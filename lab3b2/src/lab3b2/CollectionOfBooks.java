@@ -46,7 +46,22 @@ public class CollectionOfBooks implements Serializable{
                 list.add(b);
             }
         }
+        sortByTitle(list);
         return list;
+    }
+    private void sortByTitle(ArrayList<Book> list){
+        
+        Collections.sort(list,new Comparator<Book>(){
+            @Override
+            public int compare(Book b1, Book b2) {
+                int returnValue;
+                returnValue = b1.getTitle().compareTo(b2.getTitle());
+                if( returnValue == 0){
+                    return compareAuthors(b1.getTheAuthors(),b2.getTheAuthors());
+                }
+                else return returnValue;
+            }
+        });
     }
     
     public ArrayList<Book> searchAuthor(String string){
@@ -61,6 +76,23 @@ public class CollectionOfBooks implements Serializable{
             }
         }
         return list;
+    }
+    
+    private int compareAuthors(ArrayList<Author> a1,ArrayList<Author> a2){
+        int i = 0;
+        int returnValue;
+        for(Author a : a1){
+            if(a2.get(i)==null){
+                return -1;
+            }
+            if((returnValue = a.getName().compareTo(a2.get(i).getName()))!=0){
+                return returnValue;
+            }
+            i++;
+        }
+        if(a2.size()>a1.size())
+            return 
+        return 0;
     }
     
     public ArrayList<Book> searchISBN(String string){
