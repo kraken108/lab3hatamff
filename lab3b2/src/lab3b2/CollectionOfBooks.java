@@ -31,7 +31,7 @@ public class CollectionOfBooks implements Serializable{
      */
     public int removeBook(int index){
         --index;
-        if(index < 0 || index > theBooks.size()){
+        if(index < 0 || index >= theBooks.size()){
             return 1;
         }
         theBooks.remove(index);
@@ -156,6 +156,11 @@ public class CollectionOfBooks implements Serializable{
      */
     public ArrayList<Book> searchISBN(String string){
         ArrayList<Book> list = new ArrayList<Book>();
+        for(Book b : theBooks){
+            if(b.getIsbn().contains(string)){
+                list.add(b);
+            }
+        }
         sortByISBN(list);
         return list;
     }
