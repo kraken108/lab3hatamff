@@ -1,20 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package lab3b2;
 
-
-import java.lang.Comparable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.*;
 import java.io.Serializable;
 
 /**
- *
- * @author micke1
+ * A book is an object that represents a book with a title, author, ISBN, price
+ * and edition.
+ * @author Jakob Danielsson, Michael Hjälmö
  */
 public class Book implements Serializable{
 
@@ -24,6 +16,14 @@ public class Book implements Serializable{
     private int edition;
     private double price;
 
+    /**
+     * The general class constructor.
+     * @param isbn The books ISBN
+     * @param title The title of the book
+     * @param edition The books edition
+     * @param price The price of the book
+     * @param author The books author
+     */
     public Book(String isbn, String title, int edition, double price,String author) {
         theAuthors = new ArrayList<Author>();
         this.isbn = isbn;
@@ -33,6 +33,9 @@ public class Book implements Serializable{
         theAuthors.add(new Author(author));
     }
 
+    /**
+     * Empty parameter constructor creating default names and values.
+     */
     public Book() {
         theAuthors = new ArrayList<Author>();
         isbn = "0";
@@ -41,9 +44,17 @@ public class Book implements Serializable{
         price = 0;
     }
    
-
+    /**
+     * Sorts the authors of the book.
+     */
     public void sortAuthors() {
         Collections.sort(theAuthors, new Comparator<Author>() {
+            /**
+             * Compares the name of two author objects.
+             * @param a1 First author
+             * @param a2 Second author
+             * @return Value to determine how to sort the authors.
+             */
             @Override
             public int compare(Author a1, Author a2) {
                 return a1.getName().compareTo(a2.getName());
@@ -52,6 +63,10 @@ public class Book implements Serializable{
 
     }
 
+    /**
+     * Add an author to the book.
+     * @param name The name of the author to add
+     */
     public void addAuthor(Author name) {
         theAuthors.add(name);
     }
@@ -127,10 +142,12 @@ public class Book implements Serializable{
         this.price = price;
     }
 
-    //@Override
-    //public int compareTo(Book other) {
-    //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    // }
+
+    /**
+     * Get a table of the book displaying the name, author, ISBN
+     * , edition and price.
+     * @return A string of info of the book.
+     */
     @Override
     public String toString() {
         String info = "";
