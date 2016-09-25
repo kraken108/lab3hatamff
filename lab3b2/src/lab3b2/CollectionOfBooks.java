@@ -83,7 +83,7 @@ public class CollectionOfBooks implements Serializable{
         int returnValue;
         for(Author a : a1){
             if(a2.get(i)==null){
-                return -1;
+                return 1;
             }
             if((returnValue = a.getName().compareTo(a2.get(i).getName()))!=0){
                 return returnValue;
@@ -91,7 +91,7 @@ public class CollectionOfBooks implements Serializable{
             i++;
         }
         if(a2.size()>a1.size())
-            return 
+            return -1;
         return 0;
     }
     
