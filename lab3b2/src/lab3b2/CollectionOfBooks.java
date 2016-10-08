@@ -6,7 +6,7 @@ import java.io.*;
  * A CollectionOfBooks is an object that contains a list of books.
  * @author Jakob Danielsson, Michael Hjälmö
  */
-public class CollectionOfBooks implements Serializable{
+public class CollectionOfBooks{
     private ArrayList<Book> theBooks;
     
     /**
@@ -182,28 +182,6 @@ public class CollectionOfBooks implements Serializable{
                return b1.getIsbn().compareTo(b2.getIsbn());
            }
         });
-    }
-    
-    /**
-     * Search for books by edition.
-     * @param string The keyword to search for.
-     * @return a list of matching results.
-     */
-    public ArrayList<Book> searchEdition(String string){
-        ArrayList<Book> list = new ArrayList<Book>();
-        
-        return list;
-    }
-    
-    /**
-     * Search for books by price.
-     * @param string The keyword to search for.
-     * @return a list of matching results.
-     */
-    public ArrayList<Book> searchPrice(String string){
-        ArrayList<Book> list = new ArrayList<Book>();
-        
-        return list;
     }
     
     /**

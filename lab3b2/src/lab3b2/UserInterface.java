@@ -6,7 +6,7 @@ import java.io.*;
  * 
  * @author Jakob & Michael
  */
-public class UserInterface implements Serializable{
+public class UserInterface{
 
     private CollectionOfBooks theCollection;
     private Scanner theScanner;
@@ -95,7 +95,7 @@ public class UserInterface implements Serializable{
         System.out.println("============");
     }
     
-    public int getIndex(){
+    private int getIndex(){
         int index;
         System.out.println("Which book do you want to remove? (Type index)");
         String input = theScanner.nextLine();
@@ -153,7 +153,7 @@ public class UserInterface implements Serializable{
         
     }
     
-    public static void printList(ArrayList<Book> theList){
+    private static void printList(ArrayList<Book> theList){
         String str = new String();
         for(Book b : theList){
             str += b.toString();
@@ -162,7 +162,7 @@ public class UserInterface implements Serializable{
         System.out.println(str);
     }
 
-    public void writeToFile(){
+    private void writeToFile(){
 	    
 	    
 	    FileOutputStream fout = null;

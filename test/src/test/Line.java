@@ -29,11 +29,11 @@ public class Line extends Shape {
     }
 
     public void setX2(double x) {
-        this.x=X2;
+        X2=x;
     }
 
     public void setY2(double y) {
-        this.y=Y2;
+        Y2=y;
     }
     
     @Override

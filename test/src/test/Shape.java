@@ -19,7 +19,7 @@ abstract public class Shape {
 
     public static final double BILLION = 1_000_000_000.0;
 
-    double x, y; // position of the balls center
+    private double x, y; // position of the balls center
     private double dx, dy; // velocity measured in pixels/second
     private Color color;
 

@@ -58,7 +58,6 @@ public class World {
             if(s instanceof FillableShape){
                 FillableShape fs = (FillableShape) s;
                 if(((FillableShape) s).isFilled()){
-                    System.out.println("test"); 
                     ((FillableShape) s).setFilled(false);
                 }
                 else
