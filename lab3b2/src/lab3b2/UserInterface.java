@@ -214,16 +214,19 @@ public class UserInterface implements Serializable{
     
     /**
      * Takes users input and writes to file using serialization.
+     * fout translates what we put in into binary for the file.
+     * ous inputs the object into the file
      */
     public void writeToFile(){
 	    
 	    
-	    FileOutputStream fout = null;
-
+	    FileOutputStream fout = null;  
+                
 		// Serialize to file
 	    try {
 	      fout = new FileOutputStream("thecollection.ser");
-	      ObjectOutputStream ous = new ObjectOutputStream(fout);
+	      ObjectOutputStream ous = new ObjectOutputStream(fout); 
+              //is used for communication with the file              
 	      
 	      ous.writeObject((ArrayList<Book>)theCollection.getBooks());
 	      
@@ -240,7 +243,9 @@ public class UserInterface implements Serializable{
 	    }
     }
     /**
-     * Creates the file.
+     * Takes users input and creates the file
+     * fin communicates with the file by translating into binary
+     * 
      */
     @SuppressWarnings("unchecked")
     private void createFile(){

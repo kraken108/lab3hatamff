@@ -1,27 +1,34 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package lab3b2.src.lab3b2;
+
 import java.io.*;
 /**
- *
- * @author micke1
+ * An author is an object that helps a book object set and add several authors.
+ * @author Jakob Danielsson, Michael Hjälmö
  */
 public class Author implements Serializable{
     
     private String name; //author name
     
-    
+    /**
+     * Empty constructor creating a default name for the author.
+     */
+    public Author(){
+        name="Unknown";
+    }
+    /**
+     * The general class constructor.
+     * @param name The name of the author
+     */
     public Author(String name){
         this.name=name;
     }
     
-    public Author(){
-        name="Unknown";
-    }
-
     /**
      * @return the name
      */
