@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -21,6 +22,23 @@ import model.*;
  */
 public class Labb5GTA extends Application {
     
+    private AnimationTimer timer;
+    private final long FRAME_NS = 25_000_000;
+    
+    private Canvas canvas;
+    private Game game;
+    
+    private class GameTimer extends AnimationTimer{
+        private long previousNs = 0;
+        @Override
+        public void handle(long nowNs) {
+            if (previousNs == 0) {
+                previousNs = nowNs;
+            }
+            
+        }
+        
+    }
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Map example");
@@ -29,14 +47,15 @@ public class Labb5GTA extends Application {
         Scene theScene = new Scene ( root );
         primaryStage.setScene(theScene);
         
-        Canvas canvas = new Canvas(1024,768);
+        canvas = new Canvas(1024,768);
         root.getChildren().add(canvas);
         
         GraphicsContext gc = canvas.getGraphicsContext2D();
         
-        Game game = new Game();
+        game = new Game();
         
         gc.drawImage(game.getBackground(), 0, 0);
+        
         
         primaryStage.show();
     }
