@@ -6,7 +6,7 @@ import java.io.*;
  * 
  * @author Jakob & Michael
  */
-public class UserInterface implements Serializable{
+public class UserInterface{
 
     private CollectionOfBooks theCollection;
     private Scanner theScanner;
@@ -125,12 +125,16 @@ public class UserInterface implements Serializable{
         System.out.println("============");
     }
     
+<<<<<<< HEAD
     /**
      * Gets the index of the book that the user wants to remove.
      * if-statement is used to catch enter dump so the program doesn't fail.
      * @return the index is returned.
      */
     public int getIndex(){
+=======
+    private int getIndex(){
+>>>>>>> 60bea9315bf058f60a449efe2118c3e8f8274896
         int index;
         System.out.println("Which book do you want to remove? (Type index)");
         String input = theScanner.nextLine();
@@ -199,11 +203,15 @@ public class UserInterface implements Serializable{
         
     }
     
+<<<<<<< HEAD
     /**
      * Prints the list of books
      * @param theList takes a list of Books as parameter 
      */
     public static void printList(ArrayList<Book> theList){
+=======
+    private static void printList(ArrayList<Book> theList){
+>>>>>>> 60bea9315bf058f60a449efe2118c3e8f8274896
         String str = new String();
         for(Book b : theList){
             str += b.toString();
@@ -211,6 +219,7 @@ public class UserInterface implements Serializable{
         
         System.out.println(str);
     }
+<<<<<<< HEAD
     
     /**
      * Takes users input and writes to file using serialization.
@@ -218,6 +227,10 @@ public class UserInterface implements Serializable{
      * ous inputs the object into the file
      */
     public void writeToFile(){
+=======
+
+    private void writeToFile(){
+>>>>>>> 60bea9315bf058f60a449efe2118c3e8f8274896
 	    
 	    
 	    FileOutputStream fout = null;  

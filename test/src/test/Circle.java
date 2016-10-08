@@ -16,6 +16,14 @@ public class Circle extends FillableShape{
         this.diameter = diameter;
     }
     
+    public double getDiameter(){
+        return diameter;
+    }
+    
+    public void setDiameter(double diameter){
+        this.diameter = diameter;
+    }
+    
     @Override
     public void paint(GraphicsContext g) {
         if(isFilled()){
