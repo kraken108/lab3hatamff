@@ -15,7 +15,6 @@ import javafx.scene.image.Image;
 public class Player {
     private ArrayList<Bullet> theBullets;
     private String name;
-    private int posX, posY;
     private int frameX,frameY;
 
     private Sprite theSprite;

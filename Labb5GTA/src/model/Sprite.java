@@ -17,6 +17,15 @@ public class Sprite {
     private double imageWidth,imageHeight;
     private LookDirection lookDirection;
     
+    public Sprite(){
+        image = null;
+        posX = 0;
+        posY = 0;
+        imageWidth = 0;
+        imageHeight = 0;
+        lookDirection = null;
+    }
+    
     public Sprite(double posX,double posY,Image image,LookDirection lookDirection){
         this.image = image;
         this.posX = posX;
