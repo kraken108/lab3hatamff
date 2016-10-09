@@ -15,6 +15,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.StackPane;
@@ -50,9 +51,10 @@ public class Labb5GTA extends Application {
                 previousNs = nowNs;
             }
             
-            
-                  
-        
+            if(game.getState() == GameState.GAMEOVER){
+                showAlert("Game over!");
+                stop();
+            }       
         }
     }
     
@@ -84,5 +86,16 @@ public class Labb5GTA extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+    
+    public void showAlert(String message){
+        if(!alert.isShowing()){
+        alert.setHeaderText("");
+        alert.setTitle("Alert!");
+        alert.setContentText(message);
+        alert.show();           
+        }        
+    }
+    
+    private final Alert alert = new Alert(Alert.AlertType.INFORMATION);
     
 }
