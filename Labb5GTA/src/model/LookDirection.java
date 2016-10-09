@@ -11,6 +11,9 @@ package model;
  */
 public enum LookDirection {
     
-    UP,DOWN,LEFT,RIGHT
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT;   
     
 }

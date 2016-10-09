@@ -15,8 +15,10 @@ import javafx.scene.image.Image;
  */
 public class Game {
     private ArrayList<Player> thePlayers;
+    private ArrayList<Bullet> theBullets;
     private Map theMap;
     private GameState gameState = GameState.MENU;
+    private Bullet bullet;
     
     
     
@@ -59,6 +61,11 @@ public class Game {
     public ArrayList<Player> getPlayers(){
         return (ArrayList<Player>) thePlayers.clone();
     }
+    
+    public ArrayList<Bullet> getBullets(){
+        return (ArrayList<Bullet>) theBullets.clone();
+    }
+    
     
 
     public Player getPlayer(int index){

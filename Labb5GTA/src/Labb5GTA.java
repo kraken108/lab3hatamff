@@ -49,18 +49,14 @@ public class Labb5GTA extends Application {
             } else {  
                 previousNs = nowNs;
             }
-<<<<<<< HEAD
             
             if(game.getState() == GameState.GAMEOVER){
                 showAlert("Game over!");
                 stop();
             }       
-=======
+
             drawBackground();
             drawPlayers();
-                  
-        
->>>>>>> 6300099f07609b6479099612cb003c272e09cdef
         }
     }
     
@@ -76,6 +72,15 @@ public class Labb5GTA extends Application {
         }
     }
     
+    private void drawBullet(){
+        ArrayList<Player> thePlayers = game.getPlayers();
+        for(Player p: thePlayers){
+            ArrayList<Bullet> theBullets = p.getBullets();
+            for(Bullet b: theBullets){
+                gc.drawImage(b.getSprite(), b.getPosX(), b.getPosY());
+            }
+        }
+    }
     
     @Override
     public void start(Stage primaryStage) {
@@ -104,6 +109,7 @@ public class Labb5GTA extends Application {
                             case "S": game.getPlayer(0).move(LookDirection.DOWN);break;
                             case "D": game.getPlayer(0).move(LookDirection.RIGHT);break;
                             case "W": game.getPlayer(0).move(LookDirection.UP);break;
+                            
                             
                             case "LEFT": game.getPlayer(1).move(LookDirection.LEFT);break;
                             case "DOWN": game.getPlayer(0).move(LookDirection.DOWN);break;
