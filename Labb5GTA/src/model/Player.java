@@ -17,6 +17,8 @@ public class Player {
     private String name;
     private int posX, posY;
     private Image sprite;
+    private LookDirection lookDirection;
+    
     
     public Player(int sprite){
         if(sprite==0){
@@ -25,10 +27,11 @@ public class Player {
             posY = 300;
         }
         else{
-            this.sprite = new Image("BigBlueGuy.png");
+            this.sprite = new Image("BigRedGuy.png");
             posX = 900;
             posY = 300;
         }
+        lookDirection = LookDirection.UP;
     }
     
     public int getX(){
@@ -43,4 +46,16 @@ public class Player {
         return sprite;
     }
     
+    public LookDirection getDirection() {
+        return lookDirection;
+    }
+    
+    public void move(LookDirection LD){
+        switch(LD){
+            case UP: posY--; break;
+            case DOWN: posY++; break;
+            case LEFT: posX--; break;
+            case RIGHT: posX++; break;
+        }
+    }
 }

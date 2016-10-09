@@ -32,4 +32,8 @@ public class Game {
         return (ArrayList<Player>) thePlayers.clone();
     }
     
+    public Player getPlayer(int index){
+        return thePlayers.get(index);
+    }
+    
 }

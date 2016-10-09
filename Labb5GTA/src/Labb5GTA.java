@@ -17,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.scene.input.KeyEvent;
 import model.*;
 /**
  *
@@ -63,6 +64,15 @@ public class Labb5GTA extends Application {
             gc.drawImage(croppedImage, p.getX(), p.getY());
         }
         
+        theScene.setOnKeyPressed(
+                new EventHandler<KeyEvent>(){
+                    public void handle(KeyEvent a){
+                        game.getPlayer(0).move(LookDirection.LEFT);
+                    }
+                }
+        
+        
+        );
         primaryStage.show();
     }
 
