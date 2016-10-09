@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -7,6 +8,7 @@
 import java.util.ArrayList;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import static javafx.application.Application.launch;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -19,6 +21,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.scene.input.KeyEvent;
 import model.*;
+
 /**
  *
  * @author Jakob
@@ -33,15 +36,28 @@ public class Labb5GTA extends Application {
     
     private class GameTimer extends AnimationTimer{
         private long previousNs = 0;
+        
         @Override
         public void handle(long nowNs) {
             if (previousNs == 0) {
                 previousNs = nowNs;
             }
             
-        }
+            if(nowNs - previousNs < FRAME_NS){
+                
+                return;
+            } else {
+                
+                previousNs = nowNs;
+            }
+            
+            
+                  
         
+        }
     }
+    
+    
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Map example");
@@ -75,10 +91,6 @@ public class Labb5GTA extends Application {
         );
         primaryStage.show();
     }
-
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         launch(args);
     }
