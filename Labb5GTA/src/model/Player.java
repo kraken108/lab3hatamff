@@ -17,41 +17,33 @@ public class Player {
     private String name;
     private int posX, posY;
     private int frameX,frameY;
-    private Image sprite;
-    private LookDirection lookDirection;
 
-    private Bullet bullet;
-    private Game game;
-   
-    
+    private Sprite theSprite;
+
 
     private double velX;
     private double velY;
-
     
-    public Player(int sprite){
-        if(sprite==0){
-            this.sprite = new Image("BigBlueGuy.png");
-            posX = 100;
-            posY = 300;
-            theBullets = new ArrayList<Bullet>();
-        }
-        else{
-            this.sprite = new Image("BigRedGuy.png");
-            posX = 900;
-            posY = 300;
-            theBullets = new ArrayList<Bullet>();
-        }
-        lookDirection = LookDirection.UP;
-        updateDirection();
+    public Player(){
+        theSprite = new Sprite(0,0,null,LookDirection.UP);
+        theBullets = new ArrayList<Bullet>();
         velX = 0;
         velY = 0;
+        updateFrame();
     }
+    public Player(double posX,double posY,Image image){
+        theSprite = new Sprite(posX,posY,image,LookDirection.UP);
+        theBullets = new ArrayList<Bullet>();
+        velX = 0;
+        velY = 0;
+        updateFrame();
+    }
+
     public int getFrameX(){
         return frameX;
     }
-    private void updateDirection(){
-        switch(lookDirection){
+    private void updateFrame(){
+        switch(theSprite.getLookDirection()){
             case UP: frameX = 0;break;
             case LEFT: frameX = 64; break;
             case DOWN: frameX = 128; break;
@@ -60,68 +52,56 @@ public class Player {
     }
 
     
-    public void add(){
-        for(int i=0; i<theBullets.size(); i++){
-            bullet = theBullets.get(i);
-            
-            bullet.tick();
-        }
-    }
-    
-    public void addBullet(Bullet b){
-        theBullets.add(b);
-    }
-    
-    public void removeBullet(Bullet b){
-        theBullets.remove(b);
-    }
-    
     public void setDirection(LookDirection lookDirection){
-        this.lookDirection = lookDirection;
-        updateDirection();
+        theSprite.setLookDirection(lookDirection);
+        updateFrame();
     }
-    public int getX(){
-        return posX;
+    public double getX(){
+        return theSprite.getPosX();
     }
     
-    public int getY(){
-        return posY;
+    public double getY(){
+        return theSprite.getPosY();
     }
     
     public Image getSprite(){
-        return sprite;
+        return theSprite.getImage();
     }
     
     public LookDirection getDirection() {
-        return lookDirection;
+        return theSprite.getLookDirection();
     }
     
 
     public void shoot(){
-        theBullets.add(new Bullet(posX,posY,lookDirection));
-        
+        theBullets.add(new Bullet(theSprite.getPosX(),theSprite.getPosY(),theSprite.getLookDirection()));
     }
     
     public ArrayList<Bullet> getBullets(){
         return (ArrayList<Bullet>) theBullets.clone();
     }
     
-
+    public void bulletsOutOfMap(){
+        for(Bullet b : theBullets){
+            if(b.getPosX()<0 || b.getPosX()>1000 || b.getPosY()<100 || b.getPosY()>570){
+                theBullets.remove(b);
+            }
+        }  
+    }
 
     public void tick(){
-        int prevX = posX,prevY = posY;
-        posX+= velX;
-        posY+= velY;
+        double prevX = theSprite.getPosX(),prevY = theSprite.getPosY();
+        theSprite.moveX(velX);
+        theSprite.moveY(velY);
         outOfMap(prevX,prevY);
     }
     
-    private void outOfMap(int prevX,int prevY){
-        if(posX<0 || posX > 980){
-            posX = prevX;
+    private void outOfMap(double prevX,double prevY){
+        if(theSprite.getPosX()<0 || theSprite.getPosX() > 980){
+            theSprite.setPosX(prevX);
         }
-        if(posY<100 || posY > 575){
-            posY = prevY;
-
+        if(theSprite.getPosY()<100 || theSprite.getPosY() > 575){
+            theSprite.setPosY(prevY);
         }
     }
     

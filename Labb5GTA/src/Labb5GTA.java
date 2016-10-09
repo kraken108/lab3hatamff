@@ -17,6 +17,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -59,13 +60,16 @@ public class Labb5GTA extends Application {
 
             drawBackground();
             drawPlayers();
-            drawBullet();
-
-                  
-        
-
+            drawBot();
+            drawBullets();
+            
 
         }
+    }
+    private void drawBot(){
+        game.followPlayer();
+        WritableImage croppedImage = new WritableImage(game.getBot().getSprite().getPixelReader(),0,0,64,64);
+        gc.drawImage(croppedImage, game.getBot().getPosX(), game.getBot().getPosY());
     }
     
     private void drawBackground(){
@@ -81,11 +85,13 @@ public class Labb5GTA extends Application {
         }
     }
     
-    private void drawBullet(){
+    private void drawBullets(){
         ArrayList<Player> thePlayers = game.getPlayers();
         for(Player p: thePlayers){
             ArrayList<Bullet> theBullets = p.getBullets();
+            p.bulletsOutOfMap();
             for(Bullet b: theBullets){
+                b.tick();
                 gc.drawImage(b.getSprite(), b.getPosX(), b.getPosY());
             }
         }
@@ -114,41 +120,35 @@ public class Labb5GTA extends Application {
                     public void handle(KeyEvent e){
                         String code = e.getCode().toString();
                         switch(code){
-                        case "A": game.getPlayer(0).setVelX(-5);
+                        case "A": game.getPlayer(0).setVelX(-2);
                                   game.getPlayer(0).setDirection(LookDirection.LEFT);
                                   break;
-                        case "D": game.getPlayer(0).setVelX(5);
+                        case "D": game.getPlayer(0).setVelX(2);
                                   game.getPlayer(0).setDirection(LookDirection.RIGHT);
                                   break;
-                        case "S": game.getPlayer(0).setVelY(5);
+                        case "S": game.getPlayer(0).setVelY(2);
                                   game.getPlayer(0).setDirection(LookDirection.DOWN);
                                   break;
-                        case "W": game.getPlayer(0).setVelY(-5);
+                        case "W": game.getPlayer(0).setVelY(-2);
                                   game.getPlayer(0).setDirection(LookDirection.UP);
                                   break;
-                        case "Z": game.getPlayer(0).shoot();
+                        case "SPACE": game.getPlayer(0).shoot();
                                   break;
                    
-                        case "LEFT": game.getPlayer(1).setVelX(-5);
+                        case "LEFT": game.getPlayer(1).setVelX(-2);
                                     game.getPlayer(1).setDirection(LookDirection.LEFT);
                                     break;
-                        case "DOWN": game.getPlayer(1).setVelY(5);
+                        case "DOWN": game.getPlayer(1).setVelY(2);
                                     game.getPlayer(1).setDirection(LookDirection.DOWN);
                                   break;
-                        case "RIGHT": game.getPlayer(1).setVelX(5);
+                        case "RIGHT": game.getPlayer(1).setVelX(2);
                                     game.getPlayer(1).setDirection(LookDirection.RIGHT);
                                   break;
-                        case "UP": game.getPlayer(1).setVelY(-5);
+                        case "UP": game.getPlayer(1).setVelY(-2);
                                    game.getPlayer(1).setDirection(LookDirection.UP);
                                    break;
-                        
-                     }
-                            
-
-
-                        
-
-                        
+                        case "ENTER": game.getPlayer(1).shoot(); break;
+                     }     
                     }
                 }
         

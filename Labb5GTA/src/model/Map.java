@@ -13,14 +13,33 @@ import javafx.scene.image.Image;
  * @author Jakob
  */
 public class Map {
-    private Image background;
-    private int width, height;
+    private final Image background;
+    private final double width, height;
     
     public Map(Image background){
        this.background = background;
+       this.width = background.getWidth();
+       this.height = background.getHeight();
     }
     
     public Image getImage(){
         return background;
     }
+
+    /**
+     * @return the width
+     */
+    public double getWidth() {
+        return width;
+    }
+
+    /**
+     * @return the height
+     */
+    public double getHeight() {
+        return height;
+    }
+    
+    
+    
 }

@@ -5,6 +5,7 @@
  */
 package model;
 
+import static java.lang.Math.sqrt;
 import java.lang.Thread.State;
 import java.util.ArrayList;
 import javafx.scene.image.Image;
@@ -19,16 +20,17 @@ public class Game {
     private Map theMap;
     private GameState gameState = GameState.MENU;
     private Bullet bullet;
+    private Bot theBot;
     
     
     
     
     public Game(){
         thePlayers = new ArrayList<Player>();
-        theMap = new Map(new Image("karta.png"));
-        for(int i = 0; i<2;i++){
-            thePlayers.add(new Player(i));
-        }
+        theMap = new Map(new Image("images/karta.png"));
+        thePlayers.add(new Player(100,300,new Image("images/BigBlueGuy.png")));
+        thePlayers.add(new Player(900,530,new Image("images/BigRedGuy.png")));
+        theBot = new Bot();
     }
     
     public Image getBackground(){
@@ -72,4 +74,22 @@ public class Game {
         return thePlayers.get(index);
     }
     
+    public Bot getBot(){
+        return theBot;
+    }
+    
+    public void followPlayer(){
+        double x,y;
+        x = thePlayers.get(0).getX() - theBot.getPosX();
+        y = thePlayers.get(0).getY() - theBot.getPosY();
+        
+        double hyp = sqrt((x*x) + (y*y));
+        
+        x /= hyp;
+        y /= hyp;
+        
+        theBot.setPosX(x*1);
+        theBot.setPosY(y*1);
+        
+    }
 }
