@@ -14,11 +14,13 @@ import javafx.scene.image.Image;
 public class Bullet {
     private Image sprite;
     private double posX,posY;
+    private LookDirection direction;
     
-    public Bullet(double x, double y, Game game){
+    public Bullet(double x, double y, LookDirection direction){
         this.posX=x;
         this.posY=y;
         this.sprite=new Image("bullet.png");
+        this.direction=direction;
     }
     
     public void tick(){

@@ -30,7 +30,7 @@ import model.*;
 public class Labb5GTA extends Application {
     
     private AnimationTimer timer;
-    private final long FRAME_NS = 25_000_000;
+    private final long FRAME_NS = 1_000_000;
     private GraphicsContext gc;
     private Canvas canvas;
     private Game game;
@@ -49,6 +49,8 @@ public class Labb5GTA extends Application {
             } else {  
                 previousNs = nowNs;
             }
+
+
             
             if(game.getState() == GameState.GAMEOVER){
                 showAlert("Game over!");
@@ -57,6 +59,12 @@ public class Labb5GTA extends Application {
 
             drawBackground();
             drawPlayers();
+            drawBullet();
+
+                  
+        
+
+
         }
     }
     
@@ -67,7 +75,8 @@ public class Labb5GTA extends Application {
     private void drawPlayers(){
         ArrayList<Player> thePlayers = game.getPlayers();
         for(Player p : thePlayers){
-            WritableImage croppedImage = new WritableImage(p.getSprite().getPixelReader(),0,0,64,64);
+            p.tick();
+            WritableImage croppedImage = new WritableImage(p.getSprite().getPixelReader(),p.getFrameX(),0,64,64);
             gc.drawImage(croppedImage, p.getX(), p.getY());
         }
     }
@@ -105,17 +114,63 @@ public class Labb5GTA extends Application {
                     public void handle(KeyEvent e){
                         String code = e.getCode().toString();
                         switch(code){
-                            case "A": game.getPlayer(0).move(LookDirection.LEFT);break;
-                            case "S": game.getPlayer(0).move(LookDirection.DOWN);break;
-                            case "D": game.getPlayer(0).move(LookDirection.RIGHT);break;
-                            case "W": game.getPlayer(0).move(LookDirection.UP);break;
+                        case "A": game.getPlayer(0).setVelX(-5);
+                                  game.getPlayer(0).setDirection(LookDirection.LEFT);
+                                  break;
+                        case "D": game.getPlayer(0).setVelX(5);
+                                  game.getPlayer(0).setDirection(LookDirection.RIGHT);
+                                  break;
+                        case "S": game.getPlayer(0).setVelY(5);
+                                  game.getPlayer(0).setDirection(LookDirection.DOWN);
+                                  break;
+                        case "W": game.getPlayer(0).setVelY(-5);
+                                  game.getPlayer(0).setDirection(LookDirection.UP);
+                                  break;
+                        case "Z": game.getPlayer(0).shoot();
+                                  break;
+                   
+                        case "LEFT": game.getPlayer(1).setVelX(-5);
+                                    game.getPlayer(1).setDirection(LookDirection.LEFT);
+                                    break;
+                        case "DOWN": game.getPlayer(1).setVelY(5);
+                                    game.getPlayer(1).setDirection(LookDirection.DOWN);
+                                  break;
+                        case "RIGHT": game.getPlayer(1).setVelX(5);
+                                    game.getPlayer(1).setDirection(LookDirection.RIGHT);
+                                  break;
+                        case "UP": game.getPlayer(1).setVelY(-5);
+                                   game.getPlayer(1).setDirection(LookDirection.UP);
+                                   break;
+                        
+                     }
                             
-                            
-                            case "LEFT": game.getPlayer(1).move(LookDirection.LEFT);break;
-                            case "DOWN": game.getPlayer(0).move(LookDirection.DOWN);break;
-                            case "RIGHT": game.getPlayer(0).move(LookDirection.RIGHT);break;
-                            case "UP": game.getPlayer(0).move(LookDirection.UP);break;
-                        }
+
+
+                        
+
+                        
+                    }
+                }
+        
+        
+        );
+        
+        theScene.setOnKeyReleased(
+                new EventHandler<KeyEvent>(){
+                    public void handle(KeyEvent e){
+                        String code = e.getCode().toString();
+                        switch(code){
+                        case "A": game.getPlayer(0).setVelX(0);break;
+                        case "D": game.getPlayer(0).setVelX(0);break;
+                        case "S": game.getPlayer(0).setVelY(0);break;
+                        case "W": game.getPlayer(0).setVelY(0);break;
+                   
+                        case "LEFT": game.getPlayer(1).setVelX(0);break;
+                        case "DOWN": game.getPlayer(1).setVelY(0);break;
+                        case "RIGHT": game.getPlayer(1).setVelX(0);break;
+                        case "UP": game.getPlayer(1).setVelY(0);break;
+            }
+
                             
                         
                     }
@@ -123,7 +178,9 @@ public class Labb5GTA extends Application {
         
         
         );
+        
         primaryStage.show();
+        
     }
     public static void main(String[] args) {
         launch(args);
