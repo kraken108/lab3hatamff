@@ -60,12 +60,9 @@ public class Game {
         return (ArrayList<Player>) thePlayers.clone();
     }
     
-<<<<<<< HEAD
+
     public Player getPlayer(int index){
         return thePlayers.get(index);
     }
     
-=======
-
->>>>>>> 2f2cac05a7171adc8ee80d650d2cc5c8d15e19ba
 }
