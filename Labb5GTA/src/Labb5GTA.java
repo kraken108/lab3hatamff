@@ -20,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.scene.input.KeyEvent;
 import model.*;
 
 /**
@@ -30,7 +31,7 @@ public class Labb5GTA extends Application {
     
     private AnimationTimer timer;
     private final long FRAME_NS = 25_000_000;
-    
+    private GraphicsContext gc;
     private Canvas canvas;
     private Game game;
     
@@ -43,18 +44,35 @@ public class Labb5GTA extends Application {
                 previousNs = nowNs;
             }
             
-            if(nowNs - previousNs < FRAME_NS){
-                
+            if(nowNs - previousNs < FRAME_NS){  
                 return;
-            } else {
-                
+            } else {  
                 previousNs = nowNs;
             }
+<<<<<<< HEAD
             
             if(game.getState() == GameState.GAMEOVER){
                 showAlert("Game over!");
                 stop();
             }       
+=======
+            drawBackground();
+            drawPlayers();
+                  
+        
+>>>>>>> 6300099f07609b6479099612cb003c272e09cdef
+        }
+    }
+    
+    private void drawBackground(){
+        gc.drawImage(game.getBackground(), 0, 0);
+    }
+    
+    private void drawPlayers(){
+        ArrayList<Player> thePlayers = game.getPlayers();
+        for(Player p : thePlayers){
+            WritableImage croppedImage = new WritableImage(p.getSprite().getPixelReader(),0,0,64,64);
+            gc.drawImage(croppedImage, p.getX(), p.getY());
         }
     }
     
@@ -70,17 +88,35 @@ public class Labb5GTA extends Application {
         canvas = new Canvas(1024,768);
         root.getChildren().add(canvas);
         
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc = canvas.getGraphicsContext2D();
         
         game = new Game();
         
-        gc.drawImage(game.getBackground(), 0, 0);
-        ArrayList<Player> thePlayers = game.getPlayers();
-        for(Player p : thePlayers){
-            WritableImage croppedImage = new WritableImage(p.getSprite().getPixelReader(),0,0,64,64);
-            gc.drawImage(croppedImage, p.getX(), p.getY());
-        }
+        timer = new GameTimer();
+        timer.start();
         
+        theScene.setOnKeyPressed(
+                new EventHandler<KeyEvent>(){
+                    public void handle(KeyEvent e){
+                        String code = e.getCode().toString();
+                        switch(code){
+                            case "A": game.getPlayer(0).move(LookDirection.LEFT);break;
+                            case "S": game.getPlayer(0).move(LookDirection.DOWN);break;
+                            case "D": game.getPlayer(0).move(LookDirection.RIGHT);break;
+                            case "W": game.getPlayer(0).move(LookDirection.UP);break;
+                            
+                            case "LEFT": game.getPlayer(1).move(LookDirection.LEFT);break;
+                            case "DOWN": game.getPlayer(0).move(LookDirection.DOWN);break;
+                            case "RIGHT": game.getPlayer(0).move(LookDirection.RIGHT);break;
+                            case "UP": game.getPlayer(0).move(LookDirection.UP);break;
+                        }
+                            
+                        
+                    }
+                }
+        
+        
+        );
         primaryStage.show();
     }
     public static void main(String[] args) {

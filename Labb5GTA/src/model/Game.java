@@ -61,4 +61,8 @@ public class Game {
     }
     
 
+    public Player getPlayer(int index){
+        return thePlayers.get(index);
+    }
+    
 }
