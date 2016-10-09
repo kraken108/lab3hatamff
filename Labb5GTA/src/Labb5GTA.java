@@ -49,18 +49,18 @@ public class Labb5GTA extends Application {
             } else {  
                 previousNs = nowNs;
             }
-<<<<<<< HEAD
+
             
             if(game.getState() == GameState.GAMEOVER){
                 showAlert("Game over!");
                 stop();
             }       
-=======
+
             drawBackground();
             drawPlayers();
                   
         
->>>>>>> 6300099f07609b6479099612cb003c272e09cdef
+
         }
     }
     
