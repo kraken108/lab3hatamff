@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+import java.util.ArrayList;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -13,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import model.*;
@@ -55,7 +57,11 @@ public class Labb5GTA extends Application {
         game = new Game();
         
         gc.drawImage(game.getBackground(), 0, 0);
-        
+        ArrayList<Player> thePlayers = game.getPlayers();
+        for(Player p : thePlayers){
+            WritableImage croppedImage = new WritableImage(p.getSprite().getPixelReader(),0,0,64,64);
+            gc.drawImage(croppedImage, p.getX(), p.getY());
+        }
         
         primaryStage.show();
     }

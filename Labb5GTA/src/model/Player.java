@@ -15,7 +15,32 @@ import javafx.scene.image.Image;
 public class Player {
     private ArrayList<Bullet> theBullets;
     private String name;
-    private double posX, posY;
+    private int posX, posY;
     private Image sprite;
+    
+    public Player(int sprite){
+        if(sprite==0){
+            this.sprite = new Image("BigBlueGuy.png");
+            posX = 100;
+            posY = 300;
+        }
+        else{
+            this.sprite = new Image("BigBlueGuy.png");
+            posX = 900;
+            posY = 300;
+        }
+    }
+    
+    public int getX(){
+        return posX;
+    }
+    
+    public int getY(){
+        return posY;
+    }
+    
+    public Image getSprite(){
+        return sprite;
+    }
     
 }

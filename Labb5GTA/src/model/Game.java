@@ -17,11 +17,19 @@ public class Game {
     private Map theMap;
     
     public Game(){
+        thePlayers = new ArrayList<Player>();
         theMap = new Map(new Image("karta.png"));
+        for(int i = 0; i<2;i++){
+            thePlayers.add(new Player(i));
+        }
     }
     
     public Image getBackground(){
         return theMap.getImage();
+    }
+    
+    public ArrayList<Player> getPlayers(){
+        return (ArrayList<Player>) thePlayers.clone();
     }
     
 }
