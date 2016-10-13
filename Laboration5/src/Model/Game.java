@@ -114,6 +114,8 @@ public class Game implements Serializable{
                             System.out.println("Hit");
                             p.getRealBullets().remove(b);
                             k.SetPlayerState(PlayerState.DEAD);
+                            p.addKill();
+                            k.addDeath();
                             respawn(k);
                         }                            
                     }

@@ -33,6 +33,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import model.*;
 import View.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 /**
  *
@@ -49,6 +54,8 @@ public class Laboration5 extends Application {
     private FileChooser fileChooser;
     private NewGame newGameWindow;
     private FileHandler fileHandler;
+    private Text player1score,player2score,pausedText;
+    private Group root;
     
     private class GameTimer extends AnimationTimer{
         private long previousNs = 0;
@@ -70,14 +77,29 @@ public class Laboration5 extends Application {
                 stop();
             }       
             
+            
             drawBackground();
             drawPlayers();
             drawBot();
             drawBullets();
+            drawScoreboard();
+            
             game.paintScoreboard();
 
         }
     }
+    
+    private void drawScoreboard(){
+        ArrayList<Player> thePlayers = game.getPlayers();
+        Score s1 = thePlayers.get(0).getScore();
+        player1score.setText(thePlayers.get(0).getName()+" / "
+                               +s1.getKills()+" / "+s1.getDeaths());
+        Score s2 = thePlayers.get(1).getScore();
+        player2score.setText(thePlayers.get(1).getName()+" / "
+                               +s2.getKills()+" / "+s2.getDeaths());
+
+    }
+    
     private void drawBot(){
 
         game.followPlayer();
@@ -114,11 +136,22 @@ public class Laboration5 extends Application {
         }
     }
     
+    private void gamePause(){
+        timer.stop();
+        root.getChildren().add(pausedText);
+        
+    }
+    
+    private void gameResume(){
+        timer.start();
+        root.getChildren().remove(pausedText);
+    }
+    
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Map example");
         
-        Group root = new Group();
+        root = new Group();
         Scene theScene = new Scene ( root );
         fileChooser = new FileChooser();
         primaryStage.setScene(theScene);
@@ -134,10 +167,12 @@ public class Laboration5 extends Application {
         
         game = new Game("Player 1","Player 2");
         
-        theMap = new Image("images/karta.png");
+        theMap = new Image("images/karta2.png");
         player1 = new Image("images/BigBlueGuy.png");
         player2 = new Image("images/BigRedGuy.png");
         bullet = new Image("images/BigBullet.png");
+        initiateScoreboard();
+        
         
         timer = new GameTimer();
         timer.start();
@@ -190,7 +225,7 @@ public class Laboration5 extends Application {
         MenuItem addNew = new MenuItem("New game");
         addNew.setOnAction(new EventHandler<ActionEvent>() {
            public void handle(ActionEvent t) {
-               timer.stop();
+               gamePause();
                newGameWindow.showAndWait();
                if(newGameWindow.getStart()){
                    game = new Game(newGameWindow.getPlayer1(),
@@ -198,20 +233,20 @@ public class Laboration5 extends Application {
                    System.out.println(newGameWindow.getPlayer1());
                    System.out.println(newGameWindow.getPlayer2());
                }
-               timer.start();
+               gameResume();
    
            } 
         });
         MenuItem addPause = new MenuItem("Pause");
         addPause.setOnAction(new EventHandler<ActionEvent>(){
            public void handle(ActionEvent t) {
-               timer.stop();
+               gamePause();
            } 
         });
         MenuItem addResume = new MenuItem("Resume");
         addResume.setOnAction(new EventHandler<ActionEvent>(){
            public void handle(ActionEvent t) {
-               timer.start();
+               gameResume();
            } 
         });
         menuGame.getItems().addAll(addNew,addPause,addResume);
@@ -224,6 +259,26 @@ public class Laboration5 extends Application {
         menuBar.getMenus().addAll(menuFile,menuGame,menuHelp);
         
         return menuBar;
+    }
+    
+    private void initiateScoreboard(){
+        pausedText = new Text(440,375,"PAUSED");
+        pausedText.setFill(Color.DARKTURQUOISE);
+        pausedText.setFont(Font.font(30));
+        
+        ArrayList<Player> thePlayers = game.getPlayers();
+        player1score = new Text(48,667,thePlayers.get(0).getName()+" / "
+                            +thePlayers.get(0).getScore().getKills()
+                            +" / "+thePlayers.get(0).getScore().getDeaths());
+        player1score.setFill(Color.WHITE);
+        player1score.setFont(Font.font(25));
+        root.getChildren().add(player1score);
+        player2score = new Text(48,697,thePlayers.get(1).getName()+" / "
+                            +thePlayers.get(1).getScore().getKills()
+                            +" / "+thePlayers.get(1).getScore().getDeaths());
+        player2score.setFill(Color.WHITE);
+        player2score.setFont(Font.font(25));
+        root.getChildren().add(player2score);
     }
     
     private void initiateKeys(Scene theScene){
