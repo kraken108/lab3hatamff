@@ -20,11 +20,12 @@ public class Player implements Serializable{
     private final int playerNo;
     private double frameWidth;
     private PlayerState playerState;
+    private double timeOfDeath;
 
     private Sprite theSprite;
 
 
-    private double velX;
+    private double velX; 
     private double velY;
     
     
@@ -46,6 +47,15 @@ public class Player implements Serializable{
         playerState = PlayerState.ALIVE;
         updateFrame();
     }
+     
+    public void setTimeOfDeath(double timeOfDeath){
+        this.timeOfDeath=timeOfDeath;
+    }
+    
+    public double getTimeOfDeath(){
+        return timeOfDeath;
+    }
+    
     
     public void setX(double x){
         theSprite.setPosX(x);
@@ -138,6 +148,7 @@ public class Player implements Serializable{
         }
     }
     
+
     public void setVelX(double velX){
         this.velX = velX;
     }

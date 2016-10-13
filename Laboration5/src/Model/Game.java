@@ -4,11 +4,12 @@
  * and open the template in the editor.
  */
 package model;
-
+import java.util.Date;
 import java.io.Serializable;
 import static java.lang.Math.sqrt;
 import java.lang.Thread.State;
 import java.util.ArrayList;
+import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 
 /**
@@ -21,6 +22,11 @@ public class Game implements Serializable{
     private Map theMap;
     private GameState gameState = GameState.MENU;
     private Bot theBot;
+    private long previousNs = 0;
+    private final long FRAME_NS = 10_000_000;
+
+
+    
     //private Score scoreBoard;
     
     
@@ -78,11 +84,27 @@ public class Game implements Serializable{
     public Bot getBot(){
         return theBot;
     }
+ 
+    public void respawn(){        
+        for(Player p: thePlayers){
+            if(p.getPlayerState()==PlayerState.DEAD){
+                p.setY(60);
+                p.setX(60);
+                p.SetPlayerState(PlayerState.ALIVE); 
+            }
+        }
+
+    }    
     
-    public void respawn(Player p){    
-        p.setY(60);
-        p.setX(60);
-        p.SetPlayerState(PlayerState.ALIVE);        
+    public double checkIfDead(){
+        
+        for(Player p: thePlayers){
+            if(p.getPlayerState()==PlayerState.DEAD){
+                double time=p.getTimeOfDeath();
+                return time;
+            }            
+        }
+        return 0;
     }
     
     public void followPlayer(){
@@ -109,7 +131,7 @@ public class Game implements Serializable{
                             System.out.println("Hit");
                             p.getRealBullets().remove(b);
                             k.SetPlayerState(PlayerState.DEAD);
-                            respawn(k);
+                            k.setTimeOfDeath(System.nanoTime());
                         }                            
                     }
                 }
@@ -117,4 +139,9 @@ public class Game implements Serializable{
         }
         
     }
+
+  
+    
+
+
 }

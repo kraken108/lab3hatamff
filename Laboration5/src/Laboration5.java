@@ -47,6 +47,8 @@ public class Laboration5 extends Application {
     private Image theMap,player1,player2,bullet;
     private FileChooser fileChooser;
     
+    public static final double FOURBILLION = 4_000_000_000.0;
+                                              
     private class GameTimer extends AnimationTimer{
         private long previousNs = 0;
         
@@ -69,14 +71,18 @@ public class Laboration5 extends Application {
                 stop();
             }       
             
+            double newTime = System.nanoTime();
+            
             drawBackground();
             drawPlayers();
             drawBot();
             drawBullets();
             game.paintScoreboard();
-
+            if(newTime-game.checkIfDead()>FOURBILLION)
+            game.respawn();          
         }
     }
+    
     private void drawBot(){
         game.followPlayer();
         WritableImage croppedImage = new WritableImage(player1.getPixelReader(),0,0,64,64);
