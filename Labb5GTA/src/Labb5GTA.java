@@ -5,21 +5,22 @@
  * and open the template in the editor.
  */
 
+
 import java.util.ArrayList;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.scene.input.KeyEvent;
 import model.*;
@@ -31,10 +32,13 @@ import model.*;
 public class Labb5GTA extends Application {
     
     private AnimationTimer timer;
-    private final long FRAME_NS = 1_000_000;
+    private final long FRAME_NS = 10_000_000;
     private GraphicsContext gc;
     private Canvas canvas;
     private Game game;
+    private ComboBox<String> comboBox;
+    
+
     
     private class GameTimer extends AnimationTimer{
         private long previousNs = 0;
@@ -57,12 +61,12 @@ public class Labb5GTA extends Application {
                 showAlert("Game over!");
                 stop();
             }       
-
+            
             drawBackground();
             drawPlayers();
             drawBot();
             drawBullets();
-            
+            game.paintScoreboard();
 
         }
     }
@@ -79,13 +83,17 @@ public class Labb5GTA extends Application {
     private void drawPlayers(){
         ArrayList<Player> thePlayers = game.getPlayers();
         for(Player p : thePlayers){
-            p.tick();
-            WritableImage croppedImage = new WritableImage(p.getSprite().getPixelReader(),p.getFrameX(),0,64,64);
-            gc.drawImage(croppedImage, p.getX(), p.getY());
+            if(p.getPlayerState() == PlayerState.ALIVE){
+                p.tick();
+                WritableImage croppedImage = new WritableImage(p.getSprite().getPixelReader(),p.getFrameX(),0,64,64);
+                gc.drawImage(croppedImage, p.getX(), p.getY());
+            }
+            
         }
     }
     
     private void drawBullets(){
+        game.detectHit();
         ArrayList<Player> thePlayers = game.getPlayers();
         for(Player p: thePlayers){
             ArrayList<Bullet> theBullets = p.getBullets();
@@ -105,13 +113,37 @@ public class Labb5GTA extends Application {
         Scene theScene = new Scene ( root );
         primaryStage.setScene(theScene);
         
+        /*BorderPane borderPane = new BorderPane();
+        ToolBar toolbar = new ToolBar();
+        borderPane.setTop(toolbar); */
+        
+        MenuBar menuBar = new MenuBar();
+        Menu menuFile = new Menu("File");
+        MenuItem addSave = new MenuItem("Save game");
+        MenuItem addLoad = new MenuItem("Load game");
+        menuFile.getItems().addAll(addSave,addLoad);
+        
+        Menu menuGame = new Menu("Game");
+        MenuItem addNew = new MenuItem("New game");
+        MenuItem addPause = new MenuItem("Pause");
+        MenuItem addResume = new MenuItem("Resume");
+        menuGame.getItems().addAll(addNew,addPause,addResume);
+        
+        Menu menuHelp = new Menu("Help");
+        MenuItem addControls = new MenuItem("Controls");
+        MenuItem addAbout = new MenuItem("About");
+        menuHelp.getItems().addAll(addControls,addAbout);
+        
+        menuBar.getMenus().addAll(menuFile,menuGame,menuHelp);
+        
         canvas = new Canvas(1024,768);
-        root.getChildren().add(canvas);
+        root.getChildren().addAll(canvas,menuBar);
         
         gc = canvas.getGraphicsContext2D();
         
         game = new Game();
-        
+        comboBox = new ComboBox<>();
+        //comboBox;
         timer = new GameTimer();
         timer.start();
         

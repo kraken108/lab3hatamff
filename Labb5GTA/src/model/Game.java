@@ -21,18 +21,22 @@ public class Game {
     private GameState gameState = GameState.MENU;
     private Bullet bullet;
     private Bot theBot;
-    
+    private Score scoreBoard;
     
     
     
     public Game(){
         thePlayers = new ArrayList<Player>();
         theMap = new Map(new Image("images/karta.png"));
-        thePlayers.add(new Player(100,300,new Image("images/BigBlueGuy.png")));
-        thePlayers.add(new Player(900,530,new Image("images/BigRedGuy.png")));
+        thePlayers.add(new Player(100,300,new Image("images/BigBlueGuy.png"),1));
+        thePlayers.add(new Player(900,530,new Image("images/BigRedGuy.png"),2));
         theBot = new Bot();
+        scoreBoard = new Score();
     }
     
+    public void paintScoreboard(){
+        scoreBoard.paintScore();
+    }
     public Image getBackground(){
         return theMap.getImage();
     }
@@ -90,6 +94,24 @@ public class Game {
         
         theBot.setPosX(x*1);
         theBot.setPosY(y*1);
+    }
+    
+    public void detectHit(){
+        for(Player p : thePlayers){
+            for(Player k : thePlayers){
+                if(k.getPlayerNo() != p.getPlayerNo()){
+                    for(Bullet b : p.getRealBullets()){
+                        if(b.getPosY() > k.getY() && b.getPosY()<(k.getY()+k.getFrameWidth())
+                                && b.getPosX()>k.getX() && b.getPosX()<(k.getX()+k.getFrameWidth())){
+                            System.out.println("Hit");
+                            p.getRealBullets().remove(b);
+                            k.SetPlayerState(PlayerState.DEAD);
+                        }
+                            
+                    }
+                }
+            }
+        }
         
     }
 }

@@ -16,6 +16,9 @@ public class Player {
     private ArrayList<Bullet> theBullets;
     private String name;
     private int frameX,frameY;
+    private final int playerNo;
+    private double frameWidth;
+    private PlayerState playerState;
 
     private Sprite theSprite;
 
@@ -23,24 +26,41 @@ public class Player {
     private double velX;
     private double velY;
     
+    
     public Player(){
         theSprite = new Sprite(0,0,null,LookDirection.UP);
         theBullets = new ArrayList<Bullet>();
         velX = 0;
         velY = 0;
+        playerNo = 0;
         updateFrame();
     }
-    public Player(double posX,double posY,Image image){
+    public Player(double posX,double posY,Image image, int playerNo){
         theSprite = new Sprite(posX,posY,image,LookDirection.UP);
         theBullets = new ArrayList<Bullet>();
         velX = 0;
         velY = 0;
+        this.playerNo = playerNo;
+        this.frameWidth = image.getWidth()/4;
+        playerState = PlayerState.ALIVE;
         updateFrame();
     }
-
+    
+    public void SetPlayerState(PlayerState playerState){
+        this.playerState = playerState;
+    }
+    public PlayerState getPlayerState(){
+        return playerState;
+    }
+    
+    public int getPlayerNo(){
+        return this.playerNo;
+    }
+    
     public int getFrameX(){
         return frameX;
     }
+    
     private void updateFrame(){
         switch(theSprite.getLookDirection()){
             case UP: frameX = 0;break;
@@ -50,7 +70,9 @@ public class Player {
         }
     }
 
-    
+    public double getFrameWidth(){
+        return frameWidth;
+    }
     public void setDirection(LookDirection lookDirection){
         theSprite.setLookDirection(lookDirection);
         updateFrame();
@@ -80,6 +102,10 @@ public class Player {
         return (ArrayList<Bullet>) theBullets.clone();
     }
     
+    public ArrayList<Bullet> getRealBullets(){
+        return theBullets;
+    }
+    
     public void bulletsOutOfMap(){
         for(Bullet b : theBullets){
             if(b.getPosX()<0 || b.getPosX()>1000 || b.getPosY()<100 || b.getPosY()>570){
@@ -87,7 +113,7 @@ public class Player {
             }
         }  
     }
-
+    
     public void tick(){
         double prevX = theSprite.getPosX(),prevY = theSprite.getPosY();
         theSprite.moveX(velX);
