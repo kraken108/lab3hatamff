@@ -20,7 +20,11 @@ public class Player implements Serializable{
     private final int playerNo;
     private double frameWidth;
     private PlayerState playerState;
+
     private double timeOfDeath;
+
+
+    private Score theScore;
 
     private Sprite theSprite;
 
@@ -32,19 +36,22 @@ public class Player implements Serializable{
     public Player(){
         theSprite = new Sprite(0,0,null,LookDirection.UP);
         theBullets = new ArrayList<Bullet>();
+        theScore = new Score();
         velX = 0;
         velY = 0;
         playerNo = 0;
         updateFrame();
     }
-    public Player(double posX,double posY,Image image, int playerNo){
+    public Player(double posX,double posY,Image image, int playerNo,String name){
         theSprite = new Sprite(posX,posY,image,LookDirection.UP);
         theBullets = new ArrayList<Bullet>();
         velX = 0;
         velY = 0;
+        theScore = new Score();
         this.playerNo = playerNo;
         this.frameWidth = image.getWidth()/4;
         playerState = PlayerState.ALIVE;
+        this.name = name;
         updateFrame();
     }
      
@@ -80,6 +87,14 @@ public class Player implements Serializable{
         return frameX;
     }
     
+    public void setName(String name){
+        this.name = name;
+    }
+    
+    public String getName(){
+        return this.name;
+    }
+    
     private void updateFrame(){
         switch(theSprite.getLookDirection()){
             case UP: frameX = 0;break;
@@ -106,7 +121,17 @@ public class Player implements Serializable{
         return theSprite.getPosY();
     }
     
+    public void addKill(){
+        theScore.addKill();
+    }
     
+    public void addDeath(){
+        theScore.addDeath();
+    }
+    
+    public Score getScore(){
+        return theScore;
+    }
     public LookDirection getDirection() {
         return theSprite.getLookDirection();
     }

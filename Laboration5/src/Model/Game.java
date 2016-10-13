@@ -30,12 +30,17 @@ public class Game implements Serializable{
     //private Score scoreBoard;
     
     
-    
     public Game(){
         thePlayers = new ArrayList<Player>();
+        thePlayers.add(new Player(100,300,new Image("images/BigBlueGuy.png"),1,"Player 1"));
+        thePlayers.add(new Player(900,530,new Image("images/BigRedGuy.png"),2,"Player 2"));
+        theBot = new Bot();
+    }
+    public Game(String player1name,String player2name){
+        thePlayers = new ArrayList<Player>();
         //theMap = new Map(new Image("images/karta.png"));
-        thePlayers.add(new Player(100,300,new Image("images/BigBlueGuy.png"),1));
-        thePlayers.add(new Player(900,530,new Image("images/BigRedGuy.png"),2));
+        thePlayers.add(new Player(100,300,new Image("images/BigBlueGuy.png"),1,player1name));
+        thePlayers.add(new Player(900,530,new Image("images/BigRedGuy.png"),2,player2name));
         theBot = new Bot();
         //scoreBoard = new Score();
     }
@@ -131,7 +136,11 @@ public class Game implements Serializable{
                             System.out.println("Hit");
                             p.getRealBullets().remove(b);
                             k.SetPlayerState(PlayerState.DEAD);
+
                             k.setTimeOfDeath(System.nanoTime());
+
+                            p.addKill();
+                            k.addDeath();
                         }                            
                     }
                 }
