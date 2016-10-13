@@ -1,4 +1,3 @@
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -38,7 +37,7 @@ import model.*;
  *
  * @author Jakob
  */
-public class Labb5GTA extends Application {
+public class Laboration5 extends Application {
     
     private AnimationTimer timer;
     private final long FRAME_NS = 10_000_000;

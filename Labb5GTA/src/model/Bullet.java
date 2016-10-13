@@ -5,13 +5,14 @@
  */
 package model;
 
+import java.io.Serializable;
 import javafx.scene.image.Image;
 
 /**
  *
  * @author Jakob
  */
-public class Bullet {
+public class Bullet implements Serializable{
     
     private Sprite theSprite;
     private final int velocity = 10;
@@ -37,10 +38,6 @@ public class Bullet {
             case LEFT: theSprite.moveX(-velocity);break;
             case RIGHT: theSprite.moveX(velocity);break;
         }
-    }
-
-    public Image getSprite(){
-        return theSprite.getImage();
     }
 
     /**
