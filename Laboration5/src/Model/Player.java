@@ -36,7 +36,7 @@ public class Player implements Serializable{
         playerNo = 0;
         updateFrame();
     }
-    public Player(double posX,double posY,Image image, int playerNo){
+    public Player(double posX,double posY,Image image, int playerNo,String name){
         theSprite = new Sprite(posX,posY,image,LookDirection.UP);
         theBullets = new ArrayList<Bullet>();
         velX = 0;
@@ -44,6 +44,7 @@ public class Player implements Serializable{
         this.playerNo = playerNo;
         this.frameWidth = image.getWidth()/4;
         playerState = PlayerState.ALIVE;
+        this.name = name;
         updateFrame();
     }
     
@@ -68,6 +69,14 @@ public class Player implements Serializable{
     
     public int getFrameX(){
         return frameX;
+    }
+    
+    public void setName(String name){
+        this.name = name;
+    }
+    
+    public String getName(){
+        return this.name;
     }
     
     private void updateFrame(){

@@ -12,5 +12,5 @@ import java.io.Serializable;
  * @author micke1
  */
 public enum GameState implements Serializable{
-    MENU, RUNNING, GAMEOVER
+    MENU, RUNNING, GAMEOVER,PAUSED
 }

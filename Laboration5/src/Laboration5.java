@@ -32,6 +32,7 @@ import javafx.stage.Stage;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import model.*;
+import View.*;
 
 /**
  *
@@ -46,6 +47,8 @@ public class Laboration5 extends Application {
     private Game game;
     private Image theMap,player1,player2,bullet;
     private FileChooser fileChooser;
+    private NewGame newGameWindow;
+    private FileHandler fileHandler;
     
     private class GameTimer extends AnimationTimer{
         private long previousNs = 0;
@@ -61,9 +64,7 @@ public class Laboration5 extends Application {
             } else {  
                 previousNs = nowNs;
             }
-
-
-            
+  
             if(game.getState() == GameState.GAMEOVER){
                 showAlert("Game over!");
                 stop();
@@ -78,6 +79,7 @@ public class Laboration5 extends Application {
         }
     }
     private void drawBot(){
+
         game.followPlayer();
         WritableImage croppedImage = new WritableImage(player1.getPixelReader(),0,0,64,64);
         gc.drawImage(croppedImage, game.getBot().getPosX(), game.getBot().getPosY());
@@ -124,9 +126,13 @@ public class Laboration5 extends Application {
         canvas = new Canvas(1024,768);
         root.getChildren().addAll(canvas,menuBar);
         
+        fileHandler = new FileHandler();
+        newGameWindow = new NewGame();
+        newGameWindow.initOwner(primaryStage);
+        
         gc = canvas.getGraphicsContext2D();
         
-        game = new Game();
+        game = new Game("Player 1","Player 2");
         
         theMap = new Image("images/karta.png");
         player1 = new Image("images/BigBlueGuy.png");
@@ -151,56 +157,7 @@ public class Laboration5 extends Application {
         alert.show();           
         }        
     }
-    
-    private void saveFile(File file){
-        FileOutputStream fout = null;  
-                
-            // Serialize to file
-	    try {
-	      fout = new FileOutputStream(file);
-	      ObjectOutputStream ous = new ObjectOutputStream(fout); 
-              //is used for communication with the file
-	      ous.writeObject(game);
-	      
-	      System.out.println("Serializing successfully completed");
-	    }
-	    catch (Exception e) {
-	      System.out.println(e);
-	    }
-	    finally {
-	    	try {
-	    		if(fout != null) fout.close();
-	    	}
-	    	catch(IOException e) {}
-	    }
-    }
-    
-    private void loadFile(File file){
-        FileInputStream fin = null;
-        
-        try {
-	    	
-	      fin = new FileInputStream(file);
-	      ObjectInputStream ois = new ObjectInputStream(fin);
-	      
-	      game = (Game) ois.readObject(); // Downcast from Object
-	      
-	      System.out.println("Deserializing successfully completed");
-	      
-	    }
-	    catch (IOException e) {
-	      System.out.println(e);
-	    }
-	    catch (ClassNotFoundException e) { // !!!
-	      System.out.println("Class not found");
-	    }
-	    finally {
-			try {
-				if(fin != null) fin.close();
-			}
-			catch(IOException e) {}
-	    }
-    }
+
     private MenuBar initiateMenuBar(Stage primaryStage){
         MenuBar menuBar = new MenuBar();
         Menu menuFile = new Menu("File");
@@ -209,7 +166,7 @@ public class Laboration5 extends Application {
            public void handle (ActionEvent t) {
                File file = fileChooser.showSaveDialog(primaryStage);
                if(file != null){
-                   saveFile(file);
+                   fileHandler.saveFile(file,game);
                }
                file = null;
            } 
@@ -219,7 +176,9 @@ public class Laboration5 extends Application {
             public void handle (ActionEvent t) {
                 File file = fileChooser.showOpenDialog(primaryStage);
                 if(file!= null){
-                    loadFile(file);
+                    if(fileHandler.loadFile(file)!=null){
+                        game = fileHandler.loadFile(file);
+                    }
                 }
                 file = null;
             }
@@ -229,8 +188,32 @@ public class Laboration5 extends Application {
         
         Menu menuGame = new Menu("Game");
         MenuItem addNew = new MenuItem("New game");
+        addNew.setOnAction(new EventHandler<ActionEvent>() {
+           public void handle(ActionEvent t) {
+               timer.stop();
+               newGameWindow.showAndWait();
+               if(newGameWindow.getStart()){
+                   game = new Game(newGameWindow.getPlayer1(),
+                                   newGameWindow.getPlayer2());
+                   System.out.println(newGameWindow.getPlayer1());
+                   System.out.println(newGameWindow.getPlayer2());
+               }
+               timer.start();
+   
+           } 
+        });
         MenuItem addPause = new MenuItem("Pause");
+        addPause.setOnAction(new EventHandler<ActionEvent>(){
+           public void handle(ActionEvent t) {
+               timer.stop();
+           } 
+        });
         MenuItem addResume = new MenuItem("Resume");
+        addResume.setOnAction(new EventHandler<ActionEvent>(){
+           public void handle(ActionEvent t) {
+               timer.start();
+           } 
+        });
         menuGame.getItems().addAll(addNew,addPause,addResume);
         
         Menu menuHelp = new Menu("Help");
@@ -298,10 +281,9 @@ public class Laboration5 extends Application {
                         case "DOWN": game.getPlayer(1).setVelY(0);break;
                         case "RIGHT": game.getPlayer(1).setVelX(0);break;
                         case "UP": game.getPlayer(1).setVelY(0);break;
-            }
+                        }
 
-                            
-                        
+    
                     }
                 }
         
