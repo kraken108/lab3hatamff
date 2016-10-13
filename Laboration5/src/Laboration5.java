@@ -120,14 +120,7 @@ public class Laboration5 extends Application {
         Scene theScene = new Scene ( root );
         fileChooser = new FileChooser();
         primaryStage.setScene(theScene);
-        
-        /*BorderPane borderPane = new BorderPane();
-        ToolBar toolbar = new ToolBar();
-        borderPane.setTop(toolbar); */
-        
         MenuBar menuBar = initiateMenuBar(primaryStage);
-        
-        
         canvas = new Canvas(1024,768);
         root.getChildren().addAll(canvas,menuBar);
         
@@ -144,10 +137,7 @@ public class Laboration5 extends Application {
         timer.start();
         
         initiateKeys(theScene);
-        
-        
         primaryStage.show();
-        
     }
     public static void main(String[] args) {
         launch(args);
@@ -252,6 +242,7 @@ public class Laboration5 extends Application {
         
         return menuBar;
     }
+    
     private void initiateKeys(Scene theScene){
         theScene.setOnKeyPressed(
                 new EventHandler<KeyEvent>(){

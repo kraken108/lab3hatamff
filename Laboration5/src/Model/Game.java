@@ -20,7 +20,6 @@ public class Game implements Serializable{
     private ArrayList<Bullet> theBullets;
     private Map theMap;
     private GameState gameState = GameState.MENU;
-    private Bullet bullet;
     private Bot theBot;
     //private Score scoreBoard;
     
