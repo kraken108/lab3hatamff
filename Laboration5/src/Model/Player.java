@@ -47,6 +47,14 @@ public class Player implements Serializable{
         updateFrame();
     }
     
+    public void setX(double x){
+        theSprite.setPosX(x);
+    }
+    
+    public void setY(double y){
+        theSprite.setPosY(y);
+    }
+    
     public void SetPlayerState(PlayerState playerState){
         this.playerState = playerState;
     }
@@ -74,10 +82,12 @@ public class Player implements Serializable{
     public double getFrameWidth(){
         return frameWidth;
     }
+    
     public void setDirection(LookDirection lookDirection){
         theSprite.setLookDirection(lookDirection);
         updateFrame();
     }
+    
     public double getX(){
         return theSprite.getPosX();
     }

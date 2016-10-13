@@ -79,6 +79,12 @@ public class Game implements Serializable{
         return theBot;
     }
     
+    public void respawn(Player p){    
+        p.setY(60);
+        p.setX(60);
+        p.SetPlayerState(PlayerState.ALIVE);        
+    }
+    
     public void followPlayer(){
         double x,y;
         x = thePlayers.get(0).getX() - theBot.getPosX();
@@ -103,8 +109,8 @@ public class Game implements Serializable{
                             System.out.println("Hit");
                             p.getRealBullets().remove(b);
                             k.SetPlayerState(PlayerState.DEAD);
-                        }
-                            
+                            respawn(k);
+                        }                            
                     }
                 }
             }
