@@ -45,6 +45,7 @@ public class Laboration5 extends Application {
     private Canvas canvas;
     private Game game;
     private Image theMap,player1,player2,bullet;
+    private FileChooser fileChooser;
     
     private class GameTimer extends AnimationTimer{
         private long previousNs = 0;
@@ -117,50 +118,15 @@ public class Laboration5 extends Application {
         
         Group root = new Group();
         Scene theScene = new Scene ( root );
-        FileChooser fileChooser = new FileChooser();
+        fileChooser = new FileChooser();
         primaryStage.setScene(theScene);
         
         /*BorderPane borderPane = new BorderPane();
         ToolBar toolbar = new ToolBar();
         borderPane.setTop(toolbar); */
         
-        MenuBar menuBar = new MenuBar();
-        Menu menuFile = new Menu("File");
-        MenuItem addSave = new MenuItem("Save game");
-        addSave.setOnAction(new EventHandler<ActionEvent>() {
-           public void handle (ActionEvent t) {
-               File file = fileChooser.showSaveDialog(primaryStage);
-               if(file != null){
-                   saveFile(file);
-               }
-               file = null;
-           } 
-        });
-        MenuItem addLoad = new MenuItem("Load game");
-        addLoad.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle (ActionEvent t) {
-                File file = fileChooser.showOpenDialog(primaryStage);
-                if(file!= null){
-                    loadFile(file);
-                }
-                file = null;
-            }
-        });
+        MenuBar menuBar = initiateMenuBar(primaryStage);
         
-        menuFile.getItems().addAll(addSave,addLoad);
-        
-        Menu menuGame = new Menu("Game");
-        MenuItem addNew = new MenuItem("New game");
-        MenuItem addPause = new MenuItem("Pause");
-        MenuItem addResume = new MenuItem("Resume");
-        menuGame.getItems().addAll(addNew,addPause,addResume);
-        
-        Menu menuHelp = new Menu("Help");
-        MenuItem addControls = new MenuItem("Controls");
-        MenuItem addAbout = new MenuItem("About");
-        menuHelp.getItems().addAll(addControls,addAbout);
-        
-        menuBar.getMenus().addAll(menuFile,menuGame,menuHelp);
         
         canvas = new Canvas(1024,768);
         root.getChildren().addAll(canvas,menuBar);
@@ -177,69 +143,8 @@ public class Laboration5 extends Application {
         timer = new GameTimer();
         timer.start();
         
-        theScene.setOnKeyPressed(
-                new EventHandler<KeyEvent>(){
-                    public void handle(KeyEvent e){
-                        String code = e.getCode().toString();
-                        switch(code){
-                        case "A": game.getPlayer(0).setVelX(-2);
-                                  game.getPlayer(0).setDirection(LookDirection.LEFT);
-                                  break;
-                        case "D": game.getPlayer(0).setVelX(2);
-                                  game.getPlayer(0).setDirection(LookDirection.RIGHT);
-                                  break;
-                        case "S": game.getPlayer(0).setVelY(2);
-                                  game.getPlayer(0).setDirection(LookDirection.DOWN);
-                                  break;
-                        case "W": game.getPlayer(0).setVelY(-2);
-                                  game.getPlayer(0).setDirection(LookDirection.UP);
-                                  break;
-                        case "SPACE": game.getPlayer(0).shoot();
-                                  break;
-                   
-                        case "LEFT": game.getPlayer(1).setVelX(-2);
-                                    game.getPlayer(1).setDirection(LookDirection.LEFT);
-                                    break;
-                        case "DOWN": game.getPlayer(1).setVelY(2);
-                                    game.getPlayer(1).setDirection(LookDirection.DOWN);
-                                  break;
-                        case "RIGHT": game.getPlayer(1).setVelX(2);
-                                    game.getPlayer(1).setDirection(LookDirection.RIGHT);
-                                  break;
-                        case "UP": game.getPlayer(1).setVelY(-2);
-                                   game.getPlayer(1).setDirection(LookDirection.UP);
-                                   break;
-                        case "ENTER": game.getPlayer(1).shoot(); break;
-                     }     
-                    }
-                }
+        initiateKeys(theScene);
         
-        
-        );
-        
-        theScene.setOnKeyReleased(
-                new EventHandler<KeyEvent>(){
-                    public void handle(KeyEvent e){
-                        String code = e.getCode().toString();
-                        switch(code){
-                        case "A": game.getPlayer(0).setVelX(0);break;
-                        case "D": game.getPlayer(0).setVelX(0);break;
-                        case "S": game.getPlayer(0).setVelY(0);break;
-                        case "W": game.getPlayer(0).setVelY(0);break;
-                   
-                        case "LEFT": game.getPlayer(1).setVelX(0);break;
-                        case "DOWN": game.getPlayer(1).setVelY(0);break;
-                        case "RIGHT": game.getPlayer(1).setVelX(0);break;
-                        case "UP": game.getPlayer(1).setVelY(0);break;
-            }
-
-                            
-                        
-                    }
-                }
-        
-        
-        );
         
         primaryStage.show();
         
@@ -306,7 +211,112 @@ public class Laboration5 extends Application {
 			catch(IOException e) {}
 	    }
     }
-    
+    private MenuBar initiateMenuBar(Stage primaryStage){
+        MenuBar menuBar = new MenuBar();
+        Menu menuFile = new Menu("File");
+        MenuItem addSave = new MenuItem("Save game");
+        addSave.setOnAction(new EventHandler<ActionEvent>() {
+           public void handle (ActionEvent t) {
+               File file = fileChooser.showSaveDialog(primaryStage);
+               if(file != null){
+                   saveFile(file);
+               }
+               file = null;
+           } 
+        });
+        MenuItem addLoad = new MenuItem("Load game");
+        addLoad.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle (ActionEvent t) {
+                File file = fileChooser.showOpenDialog(primaryStage);
+                if(file!= null){
+                    loadFile(file);
+                }
+                file = null;
+            }
+        });
+        
+        menuFile.getItems().addAll(addSave,addLoad);
+        
+        Menu menuGame = new Menu("Game");
+        MenuItem addNew = new MenuItem("New game");
+        MenuItem addPause = new MenuItem("Pause");
+        MenuItem addResume = new MenuItem("Resume");
+        menuGame.getItems().addAll(addNew,addPause,addResume);
+        
+        Menu menuHelp = new Menu("Help");
+        MenuItem addControls = new MenuItem("Controls");
+        MenuItem addAbout = new MenuItem("About");
+        menuHelp.getItems().addAll(addControls,addAbout);
+        
+        menuBar.getMenus().addAll(menuFile,menuGame,menuHelp);
+        
+        return menuBar;
+    }
+    private void initiateKeys(Scene theScene){
+        theScene.setOnKeyPressed(
+                new EventHandler<KeyEvent>(){
+                    public void handle(KeyEvent e){
+                        String code = e.getCode().toString();
+                        switch(code){
+                        case "A": game.getPlayer(0).setVelX(-2);
+                                  game.getPlayer(0).setDirection(LookDirection.LEFT);
+                                  break;
+                        case "D": game.getPlayer(0).setVelX(2);
+                                  game.getPlayer(0).setDirection(LookDirection.RIGHT);
+                                  break;
+                        case "S": game.getPlayer(0).setVelY(2);
+                                  game.getPlayer(0).setDirection(LookDirection.DOWN);
+                                  break;
+                        case "W": game.getPlayer(0).setVelY(-2);
+                                  game.getPlayer(0).setDirection(LookDirection.UP);
+                                  break;
+                        case "SPACE": game.getPlayer(0).shoot();
+                                  break;
+                   
+                        case "LEFT": game.getPlayer(1).setVelX(-2);
+                                    game.getPlayer(1).setDirection(LookDirection.LEFT);
+                                    break;
+                        case "DOWN": game.getPlayer(1).setVelY(2);
+                                    game.getPlayer(1).setDirection(LookDirection.DOWN);
+                                  break;
+                        case "RIGHT": game.getPlayer(1).setVelX(2);
+                                    game.getPlayer(1).setDirection(LookDirection.RIGHT);
+                                  break;
+                        case "UP": game.getPlayer(1).setVelY(-2);
+                                   game.getPlayer(1).setDirection(LookDirection.UP);
+                                   break;
+                        case "ENTER": game.getPlayer(1).shoot(); break;
+                     }     
+                    }
+                }
+        
+        
+        );
+        
+        theScene.setOnKeyReleased(
+                new EventHandler<KeyEvent>(){
+                    public void handle(KeyEvent e){
+                        String code = e.getCode().toString();
+                        switch(code){
+                        case "A": game.getPlayer(0).setVelX(0);break;
+                        case "D": game.getPlayer(0).setVelX(0);break;
+                        case "S": game.getPlayer(0).setVelY(0);break;
+                        case "W": game.getPlayer(0).setVelY(0);break;
+                   
+                        case "LEFT": game.getPlayer(1).setVelX(0);break;
+                        case "DOWN": game.getPlayer(1).setVelY(0);break;
+                        case "RIGHT": game.getPlayer(1).setVelX(0);break;
+                        case "UP": game.getPlayer(1).setVelY(0);break;
+            }
+
+                            
+                        
+                    }
+                }
+        
+        
+        );
+    }
     private final Alert alert = new Alert(Alert.AlertType.INFORMATION);
     
 }
