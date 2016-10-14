@@ -11,6 +11,7 @@ import java.lang.Thread.State;
 import java.util.ArrayList;
 import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
+import java.util.Random;
 
 /**
  *
@@ -90,16 +91,37 @@ public class Game implements Serializable{
         return theBot;
     }
  
-    public void respawn(){        
+    public void respawn(double x, double y){        
         for(Player p: thePlayers){
             if(p.getPlayerState()==PlayerState.DEAD){
-                p.setY(60);
-                p.setX(60);
+                p.setY(y);
+                p.setX(x);
                 p.SetPlayerState(PlayerState.ALIVE); 
             }
         }
-
     }    
+    
+    public void randSpawn(){
+        int rand = RNG();
+        if(rand == 1){
+            respawn(50,200);
+        }
+        if(rand == 2){
+            respawn(50,500);
+        }
+        if(rand == 3){
+            respawn(900,200);
+        }
+        if(rand == 4){
+            respawn(900,500);
+        }
+    }
+    
+    public int RNG(){
+        Random random = new Random();
+        int rand = random.nextInt(4)+1;
+        return rand;
+    }
     
     public double checkIfDead(){
         
