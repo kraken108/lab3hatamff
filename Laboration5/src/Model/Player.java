@@ -151,7 +151,7 @@ public class Player implements Serializable{
     
     public void bulletsOutOfMap(){
         for(Bullet b : theBullets){
-            if(b.getPosX()<0 || b.getPosX()>1000 || b.getPosY()<100 || b.getPosY()>570){
+            if(b.getPosX()<0 || b.getPosX()>1000 || b.getPosY()<100 || b.getPosY()>650){
                 theBullets.remove(b);
             }
         }  

@@ -120,13 +120,17 @@ public class Laboration5 extends Application {
     
     private void drawPlayers(){
         ArrayList<Player> thePlayers = game.getPlayers();
-        for(Player p : thePlayers){
-            if(p.getPlayerState() == PlayerState.ALIVE){
-                p.tick();
-                WritableImage croppedImage = new WritableImage(player1.getPixelReader(),p.getFrameX(),0,64,64);
-                gc.drawImage(croppedImage, p.getX(), p.getY());
-            }
-            
+        Player p = thePlayers.get(0);
+        if(p.getPlayerState()==PlayerState.ALIVE){
+            p.tick();
+            WritableImage croppedImage = new WritableImage(player1.getPixelReader(),p.getFrameX(),0,64,64);
+            gc.drawImage(croppedImage, p.getX(), p.getY());
+        }
+        Player k = thePlayers.get(1);
+        if(k.getPlayerState()==PlayerState.ALIVE){
+            p.tick();
+            WritableImage croppedImage2 = new WritableImage(player2.getPixelReader(),k.getFrameX(),0,64,64);
+            gc.drawImage(croppedImage2, k.getX(), k.getY());
         }
     }
     
@@ -134,8 +138,8 @@ public class Laboration5 extends Application {
         game.detectHit();
         ArrayList<Player> thePlayers = game.getPlayers();
         for(Player p: thePlayers){
-            ArrayList<Bullet> theBullets = p.getBullets();
             p.bulletsOutOfMap();
+            ArrayList<Bullet> theBullets = p.getBullets();
             for(Bullet b: theBullets){
                 b.tick();
                 gc.drawImage(bullet, b.getPosX(), b.getPosY());
