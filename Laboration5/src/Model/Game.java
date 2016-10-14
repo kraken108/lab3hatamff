@@ -151,18 +151,19 @@ public class Game implements Serializable{
     public void detectHit(){
         for(Player p : thePlayers){
             for(Player k : thePlayers){
-                if(k.getPlayerNo() != p.getPlayerNo()){
-                    for(Bullet b : p.getRealBullets()){
-                        if(b.getPosY() > k.getY() && b.getPosY()<(k.getY()+k.getFrameWidth())
-                                && b.getPosX()>k.getX() && b.getPosX()<(k.getX()+k.getFrameWidth())){
-                            System.out.println("Hit");
-                            p.getRealBullets().remove(b);
-                            k.SetPlayerState(PlayerState.DEAD);
+                if(k.getPlayerState()==PlayerState.ALIVE)
+                    if(k.getPlayerNo() != p.getPlayerNo()){
+                        for(Bullet b : p.getRealBullets()){
+                            if(b.getPosY() > k.getY() && b.getPosY()<(k.getY()+k.getFrameWidth())
+                                    && b.getPosX()>k.getX() && b.getPosX()<(k.getX()+k.getFrameWidth())){
+                                System.out.println("Hit");
+                                p.getRealBullets().remove(b);
+                                p.addKill();
+                                k.addDeath();
+                                k.SetPlayerState(PlayerState.DEAD);
+                                k.setTimeOfDeath(System.nanoTime());
 
-                            k.setTimeOfDeath(System.nanoTime());
-
-                            p.addKill();
-                            k.addDeath();
+                            
                         }                            
                     }
                 }
