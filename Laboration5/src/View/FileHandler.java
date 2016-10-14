@@ -60,9 +60,11 @@ public class FileHandler {
 	    }
 	    catch (IOException e) {
 	      System.out.println(e);
+              game = null;
 	    }
 	    catch (ClassNotFoundException e) { // !!!
 	      System.out.println("Class not found");
+              game = null;
 	    }
 	    finally {
 			try {

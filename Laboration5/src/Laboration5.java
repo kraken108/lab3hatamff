@@ -33,6 +33,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import model.*;
 import View.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -47,15 +48,18 @@ public class Laboration5 extends Application {
     
     private AnimationTimer timer;
     private final long FRAME_NS = 10_000_000;
-    private GraphicsContext gc;
-    private Canvas canvas;
+    private GraphicsContext gc,menuGc;
+    private Canvas canvas, menuCanvas;
     private Game game;
-    private Image theMap,player1,player2,bullet;
+    private Image theMap,player1,player2,bullet,menuBackground;
     private FileChooser fileChooser;
     private NewGame newGameWindow;
     private FileHandler fileHandler;
     private Text player1score,player2score,pausedText;
-    private Group root;
+    private Group root,menu;
+    private Scene theScene,menuScene;
+    private Stage window;
+    private boolean gameRunning;
     
     public static final double FOURBILLION = 4_000_000_000.0;
                                               
@@ -74,18 +78,13 @@ public class Laboration5 extends Application {
                 previousNs = nowNs;
             }
   
-            if(game.getState() == GameState.GAMEOVER){
-                showAlert("Game over!");
-                stop();
-            }       
-            
 
             double newTime = System.nanoTime();
 
             
             drawBackground();
             drawPlayers();
-            drawBot();
+            //drawBot();
             drawBullets();
             drawScoreboard();
             
@@ -158,19 +157,25 @@ public class Laboration5 extends Application {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Map example");
-        
+        window = primaryStage;
         root = new Group();
-        Scene theScene = new Scene ( root );
+        menu = new Group();
+        theScene = new Scene ( root );
+        menuScene = new Scene ( menu );
+        gameRunning = false;
         fileChooser = new FileChooser();
-        primaryStage.setScene(theScene);
         MenuBar menuBar = initiateMenuBar(primaryStage);
+        MenuBar gameBar = initiateMenuBar(primaryStage);
         canvas = new Canvas(1024,768);
-        root.getChildren().addAll(canvas,menuBar);
-        
+        menuCanvas = new Canvas(1024,768);
+        root.getChildren().addAll(canvas,gameBar);
+        menu.getChildren().addAll(menuCanvas,menuBar);
+                
         fileHandler = new FileHandler();
         newGameWindow = new NewGame();
         newGameWindow.initOwner(primaryStage);
         
+        menuGc = menuCanvas.getGraphicsContext2D();
         gc = canvas.getGraphicsContext2D();
         
         game = new Game("Player 1","Player 2");
@@ -179,17 +184,73 @@ public class Laboration5 extends Application {
         player1 = new Image("images/BigBlueGuy.png");
         player2 = new Image("images/BigRedGuy.png");
         bullet = new Image("images/BigBullet.png");
+        menuBackground = new Image("images/MenuBackground.png");
         initiateScoreboard();
         
-        
         timer = new GameTimer();
-        timer.start();
-        
         initiateKeys(theScene);
+        initMainMenu();
+        startMenu();
         primaryStage.show();
     }
     public static void main(String[] args) {
         launch(args);
+    }
+    private void setMenuTextAtt(Text text){
+        text.setFill(Color.WHITE);
+        text.setFont(Font.font(30));
+        text.setOnMouseEntered(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent e){
+                text.setFont(Font.font(40));
+            }
+        });
+        text.setOnMouseExited(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent e){
+                text.setFont(Font.font(30));
+            }
+        });
+    }
+    private void initMainMenu(){
+        menuGc.drawImage(menuBackground, 0, 0);
+        Text newGame = new Text(420,320,"NEW GAME");
+        setMenuTextAtt(newGame);
+        newGame.setOnMouseClicked(new EventHandler<MouseEvent>(){
+           @Override
+           public void handle(MouseEvent e){
+               initNewGame();
+           }
+        });
+        
+        Text loadGame = new Text(420,370,"LOAD GAME");
+        setMenuTextAtt(loadGame);
+        loadGame.setOnMouseClicked(new EventHandler<MouseEvent>(){
+           @Override
+           public void handle(MouseEvent e){
+               loadGame();
+           }
+        });
+        
+        Text exitGame = new Text(420,420,"EXIT");
+        setMenuTextAtt(exitGame);
+        exitGame.setOnMouseClicked(new EventHandler<MouseEvent>(){
+           @Override
+           public void handle(MouseEvent e){
+               window.close();
+           }
+        });
+        menu.getChildren().addAll(newGame,loadGame,exitGame);
+    }
+    
+    private void startMenu(){
+        window.setScene(menuScene);
+    }
+    
+    private void startGame(){
+        window.setScene(theScene);
+        gameRunning = true;
+        timer.start();
     }
     
     public void showAlert(String message){
@@ -200,7 +261,29 @@ public class Laboration5 extends Application {
         alert.show();           
         }        
     }
-
+    
+    private void initNewGame(){
+        newGameWindow.showAndWait();
+        if(newGameWindow.getStart()){
+            game = new Game(newGameWindow.getPlayer1(),
+            newGameWindow.getPlayer2());
+            System.out.println(newGameWindow.getPlayer1());
+            System.out.println(newGameWindow.getPlayer2());
+        }
+        startGame();
+    }
+    
+    private void loadGame(){
+        File file = fileChooser.showOpenDialog(window);
+        if(file!= null){
+            if(fileHandler.loadFile(file)!=null){
+                game = fileHandler.loadFile(file);
+                startGame();
+            }
+        }
+        file = null;
+    }
+    
     private MenuBar initiateMenuBar(Stage primaryStage){
         MenuBar menuBar = new MenuBar();
         Menu menuFile = new Menu("File");
@@ -217,13 +300,7 @@ public class Laboration5 extends Application {
         MenuItem addLoad = new MenuItem("Load game");
         addLoad.setOnAction(new EventHandler<ActionEvent>() {
             public void handle (ActionEvent t) {
-                File file = fileChooser.showOpenDialog(primaryStage);
-                if(file!= null){
-                    if(fileHandler.loadFile(file)!=null){
-                        game = fileHandler.loadFile(file);
-                    }
-                }
-                file = null;
+                loadGame();
             }
         });
         
@@ -234,15 +311,8 @@ public class Laboration5 extends Application {
         addNew.setOnAction(new EventHandler<ActionEvent>() {
            public void handle(ActionEvent t) {
                gamePause();
-               newGameWindow.showAndWait();
-               if(newGameWindow.getStart()){
-                   game = new Game(newGameWindow.getPlayer1(),
-                                   newGameWindow.getPlayer2());
-                   System.out.println(newGameWindow.getPlayer1());
-                   System.out.println(newGameWindow.getPlayer2());
-               }
+               initNewGame();
                gameResume();
-   
            } 
         });
         MenuItem addPause = new MenuItem("Pause");
@@ -323,6 +393,8 @@ public class Laboration5 extends Application {
                                    game.getPlayer(1).setDirection(LookDirection.UP);
                                    break;
                         case "ENTER": game.getPlayer(1).shoot(); break;
+                        
+                        case "ESCAPE": timer.stop();startMenu(); break;
                      }     
                     }
                 }
