@@ -33,6 +33,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import model.*;
 import View.*;
+import java.util.Random;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -90,7 +91,7 @@ public class Laboration5 extends Application {
             
             game.paintScoreboard();
             if(newTime-game.checkIfDead()>FOURBILLION)
-            game.respawn();          
+            game.randSpawn();          
         }
     }
     
