@@ -55,7 +55,7 @@ public class Laboration5 extends Application {
     private FileChooser fileChooser;
     private NewGame newGameWindow;
     private FileHandler fileHandler;
-    private Text player1score,player2score,pausedText;
+    private Text player1score,player2score,pausedText,continueGame;
     private Group root,menu;
     private Scene theScene,menuScene;
     private Stage window;
@@ -212,8 +212,19 @@ public class Laboration5 extends Application {
             }
         });
     }
+    
     private void initMainMenu(){
         menuGc.drawImage(menuBackground, 0, 0);
+        
+        continueGame = new Text(420,270,"CONTINUE");
+        setMenuTextAtt(continueGame);
+        continueGame.setOnMouseClicked(new EventHandler<MouseEvent>(){
+           @Override
+           public void handle(MouseEvent e){
+               startGame();
+           }
+        });
+        
         Text newGame = new Text(420,320,"NEW GAME");
         setMenuTextAtt(newGame);
         newGame.setOnMouseClicked(new EventHandler<MouseEvent>(){
@@ -244,10 +255,14 @@ public class Laboration5 extends Application {
     }
     
     private void startMenu(){
+        if(gameRunning){
+            menu.getChildren().add(continueGame);
+        }
         window.setScene(menuScene);
     }
     
     private void startGame(){
+        menu.getChildren().remove(continueGame);
         window.setScene(theScene);
         gameRunning = true;
         timer.start();
