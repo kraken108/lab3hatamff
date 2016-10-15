@@ -68,9 +68,11 @@ public class Laboration5 extends Application {
     private Scene theScene,menuScene;
     private Stage window;
     private boolean gameRunning,exit;
-    private double deltaTime,frameStart,frameEnd;
+    private double lastTopSpawn,lastBotSpawn,topCooldown,botCooldown;
     
     public static final double FOURBILLION = 4_000_000_000.0;
+    public static final double TWOBILLION = 2_000_000_000.0;
+    public static final double ONEBILLION = 1_000_000_000.0;
                                               
     private class GameTimer extends AnimationTimer{
         private long previousNs = 0;
@@ -89,25 +91,37 @@ public class Laboration5 extends Application {
 
             double newTime = System.nanoTime();
 
-            
             drawBackground();
             drawPlayers();
             //drawBot();
             drawBullets();
             drawScoreboard();
             drawCar();
-            
+            carSpawn();
             if(newTime-game.checkIfDead()>FOURBILLION){
                 game.randSpawn();
             }
-            
-            
-            
-            frameEnd = System.nanoTime();
+    
+
             checkWinner();
         }
     }
-    
+    private void carSpawn(){
+        double newTime = System.nanoTime();
+        if(newTime-lastTopSpawn>ONEBILLION+topCooldown){
+            game.addCar(getRandomCar(LookDirection.LEFT), LookDirection.LEFT);
+            Random rand = new Random();
+            topCooldown = FOURBILLION*rand.nextDouble();
+            lastTopSpawn = System.nanoTime();
+        }
+        if(newTime-lastBotSpawn>ONEBILLION+botCooldown){
+            game.addCar(getRandomCar(LookDirection.RIGHT),LookDirection.RIGHT);
+            Random rand = new Random();
+            botCooldown = FOURBILLION*rand.nextDouble();
+            lastBotSpawn = System.nanoTime();
+        }
+        
+    }
     private void drawCar(){
         ArrayList<Car> theCar = game.getCar();
         for(Car c: theCar){
@@ -143,6 +157,9 @@ public class Laboration5 extends Application {
     
     private void drawPlayers(){
         ArrayList<Player> thePlayers = game.getPlayers();
+        
+        game.detectCarHit();
+        
         Player p = thePlayers.get(0);
         if(p.getPlayerState()==PlayerState.ALIVE){
             p.tick();
@@ -547,8 +564,6 @@ public class Laboration5 extends Application {
                                   break;
                         case "SPACE": game.getPlayer(0).shoot(bullet);
                                       game.getPlayer(0).setGunLock(true);
-                                      LookDirection d = randomDirection();
-                                      game.addCar(getRandomCar(d),d);
                                   break;
                    
                         case "LEFT": game.getPlayer(1).setVelX(-4);

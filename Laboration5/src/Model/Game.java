@@ -141,6 +141,20 @@ public class Game implements Serializable{
         }
         return 0;
     }
+    public void detectCarHit(){
+        for(Player p : thePlayers){
+            if(p.getPlayerState()==PlayerState.ALIVE)
+            for(Car c : theCars){
+                if(p.getX()>c.getPosX()&&p.getX()<c.getPosX()+c.getImage().getWidth())
+                    if(p.getY()+p.getImage().getHeight()>c.getPosY()&&p.getY()<c.getPosY()+c.getImage().getHeight()){
+                        p.removeKill();
+                        p.addDeath();
+                        p.SetPlayerState(PlayerState.DEAD);
+                        p.setTimeOfDeath(System.nanoTime());   
+                    }
+            }
+        }
+    }
     
     public void CarfollowPlayer(){
         double x,y;
@@ -175,6 +189,7 @@ public class Game implements Serializable{
         theBot.setPosX(x*1);
         theBot.setPosY(y*1);
     }
+
     
     public void detectHit(){
         for(Player p : thePlayers){

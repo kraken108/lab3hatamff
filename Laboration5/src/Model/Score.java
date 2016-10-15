@@ -39,6 +39,9 @@ public class Score implements Serializable{
     public void addDeath(){
         deaths++;
     }
+    public void removeKill(){
+        kills--;
+    }
     public void setKills(int kills) {
         this.kills = kills;
     }
