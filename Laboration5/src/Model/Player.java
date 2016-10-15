@@ -41,6 +41,9 @@ public class Player implements Serializable{
         velX = 0;
         velY = 0;
         playerNo = 0;
+        playerState=PlayerState.ALIVE;
+        this.name = name;
+        gunLock = false;
         updateFrame();
     }
     public Player(double posX,double posY,Image image, int playerNo,String name){

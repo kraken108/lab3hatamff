@@ -93,14 +93,26 @@ public class Laboration5 extends Application {
             //drawBot();
             drawBullets();
             drawScoreboard();
+            drawCar();
             
-            if(newTime-game.checkIfDead()>FOURBILLION)
-                game.randSpawn();    
+            if(newTime-game.checkIfDead()>FOURBILLION){
+                game.randSpawn();
+                game.addCar(new Image("Car.png"));
+            }
+                
+            
             
             frameEnd = System.nanoTime();
         }
     }
     
+    private void drawCar(){
+        ArrayList<Car> theCar = game.getCar();
+        for(Car c: theCar){
+            c.tick();
+            gc.drawImage(new Image("Car.png"), c.getPosX(), c.getPosY);
+        }
+    }
 
     private void drawScoreboard(){
         ArrayList<Player> thePlayers = game.getPlayers();

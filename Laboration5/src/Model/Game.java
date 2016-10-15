@@ -22,19 +22,21 @@ public class Game implements Serializable{
     private ArrayList<Bullet> theBullets;
     private GameState gameState = GameState.MENU;
     private Bot theBot;
-
+    private ArrayList<Car> theCars;
 
     
     //private Score scoreBoard;
     
     
     public Game(){
+        theCars = new ArrayList<Car>();
         thePlayers = new ArrayList<Player>();
         thePlayers.add(new Player());
         thePlayers.add(new Player());
         theBot = new Bot();
     }
     public Game(String player1name,String player2name,Image player1img,Image player2img){
+        theCars = new ArrayList<Car>();
         thePlayers = new ArrayList<Player>();
         //theMap = new Map(new Image("images/karta.png"));
         thePlayers.add(new Player(100,300,player1img,1,player1name));
@@ -47,7 +49,14 @@ public class Game implements Serializable{
         //scoreBoard.paintScore();
     }
     
+    public void addCar(Image image){
+        theCars.add(new Car(image));
+    }
 
+    public ArrayList<Car> getCar(){
+        return (ArrayList<Car>) theCars.clone();
+    }
+    
     public GameState getState(){
         return gameState;
     }
