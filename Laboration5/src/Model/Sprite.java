@@ -24,7 +24,7 @@ public class Sprite implements Serializable{
         imageHeight = 0;
         lookDirection = null;
     }
-    
+
     public Sprite(double posX,double posY,Image image,LookDirection lookDirection){
         this.posX = posX;
         this.posY = posY;

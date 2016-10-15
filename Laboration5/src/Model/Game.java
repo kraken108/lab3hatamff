@@ -20,11 +20,8 @@ import java.util.Random;
 public class Game implements Serializable{
     private ArrayList<Player> thePlayers;
     private ArrayList<Bullet> theBullets;
-    private Map theMap;
     private GameState gameState = GameState.MENU;
     private Bot theBot;
-    private long previousNs = 0;
-    private final long FRAME_NS = 10_000_000;
 
 
     
@@ -33,15 +30,15 @@ public class Game implements Serializable{
     
     public Game(){
         thePlayers = new ArrayList<Player>();
-        thePlayers.add(new Player(100,300,new Image("images/BigBlueGuy.png"),1,"Player 1"));
-        thePlayers.add(new Player(900,530,new Image("images/BigRedGuy.png"),2,"Player 2"));
+        thePlayers.add(new Player());
+        thePlayers.add(new Player());
         theBot = new Bot();
     }
-    public Game(String player1name,String player2name){
+    public Game(String player1name,String player2name,Image player1img,Image player2img){
         thePlayers = new ArrayList<Player>();
         //theMap = new Map(new Image("images/karta.png"));
-        thePlayers.add(new Player(100,300,new Image("images/BigBlueGuy.png"),1,player1name));
-        thePlayers.add(new Player(900,530,new Image("images/BigRedGuy.png"),2,player2name));
+        thePlayers.add(new Player(100,300,player1img,1,player1name));
+        thePlayers.add(new Player(900,530,player2img,2,player2name));
         theBot = new Bot();
         //scoreBoard = new Score();
     }
