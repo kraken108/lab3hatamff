@@ -150,19 +150,20 @@ public class Game implements Serializable{
             for(Player k : thePlayers){
                 if(k.getPlayerState()==PlayerState.ALIVE)
                     if(k.getPlayerNo() != p.getPlayerNo()){
-                        for(Bullet b : p.getRealBullets()){
+                        ArrayList<Bullet> bullets = p.getBullets();
+                        for(int i = 0; i<bullets.size(); i++){
+                            Bullet b = bullets.get(i);
                             if(b.getPosY() > k.getY() && b.getPosY()<(k.getY()+k.getFrameWidth())
-                                    && b.getPosX()>k.getX() && b.getPosX()<(k.getX()+k.getFrameWidth())){
-                                System.out.println("Hit");
-                                p.getRealBullets().remove(b);
+                                    && b.getPosX()>k.getX() && b.getPosX()<(k.getX()+k.getFrameWidth())) {
+                                p.removeBullet(i);
                                 p.addKill();
                                 k.addDeath();
                                 k.SetPlayerState(PlayerState.DEAD);
                                 k.setTimeOfDeath(System.nanoTime());
+                            }                            
 
-                            
-                        }                            
-                    }
+                        }
+
                 }
             }
         }

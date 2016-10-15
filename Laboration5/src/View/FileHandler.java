@@ -45,7 +45,7 @@ public class FileHandler {
 	    }
     }
     
-    public Game loadFile(File file){
+    public Game loadFile(File file) throws ClassNotFoundException,IOException{
         Game game = null;
         FileInputStream fin = null;
         
@@ -59,18 +59,18 @@ public class FileHandler {
 	      System.out.println("Deserializing successfully completed");
 	    }
 	    catch (IOException e) {
-	      System.out.println(e);
               game = null;
+              throw new IOException("IO Exception");
 	    }
 	    catch (ClassNotFoundException e) { // !!!
-	      System.out.println("Class not found");
               game = null;
+              throw new ClassNotFoundException("Class not found");
 	    }
 	    finally {
-			try {
-				if(fin != null) fin.close();
-			}
-			catch(IOException e) {}
+		try {
+                    if(fin != null) fin.close();
+		}
+		catch(IOException e) {}
 	    }
         return game;
     }
