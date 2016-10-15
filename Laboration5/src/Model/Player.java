@@ -20,6 +20,7 @@ public class Player implements Serializable{
     private final int playerNo;
     private double frameWidth;
     private PlayerState playerState;
+    private boolean gunLock;
 
     private double timeOfDeath;
 
@@ -34,7 +35,7 @@ public class Player implements Serializable{
     
     
     public Player(){
-        theSprite = new Sprite(0,0,null,LookDirection.UP);
+        theSprite = new Sprite();
         theBullets = new ArrayList<Bullet>();
         theScore = new Score();
         velX = 0;
@@ -52,6 +53,7 @@ public class Player implements Serializable{
         this.frameWidth = image.getWidth()/4;
         playerState = PlayerState.ALIVE;
         this.name = name;
+        gunLock = false;
         updateFrame();
     }
      
@@ -63,6 +65,13 @@ public class Player implements Serializable{
         return timeOfDeath;
     }
     
+    public boolean getGunLock(){
+        return gunLock;
+    }
+    
+    public void setGunLock(boolean gunLock){
+        this.gunLock = gunLock;
+    }
     
     public void setX(double x){
         theSprite.setPosX(x);
@@ -96,6 +105,7 @@ public class Player implements Serializable{
     }
     
     private void updateFrame(){
+        if(theSprite.getImageWidth()==256)
         switch(theSprite.getLookDirection()){
             case UP: frameX = 0;break;
             case LEFT: frameX = 64; break;
@@ -137,8 +147,9 @@ public class Player implements Serializable{
     }
     
 
-    public void shoot(){
-        theBullets.add(new Bullet(theSprite.getPosX(),theSprite.getPosY(),theSprite.getLookDirection()));
+    public void shoot(Image bullet){
+        if(playerState==PlayerState.ALIVE && gunLock == false)
+            theBullets.add(new Bullet(theSprite.getPosX(),theSprite.getPosY(),theSprite.getLookDirection(),bullet));
     }
     
     public ArrayList<Bullet> getBullets(){
@@ -165,10 +176,10 @@ public class Player implements Serializable{
     }
     
     private void outOfMap(double prevX,double prevY){
-        if(theSprite.getPosX()<0 || theSprite.getPosX() > 980){
+        if(theSprite.getPosX()<-20 || theSprite.getPosX() > 980){
             theSprite.setPosX(prevX);
         }
-        if(theSprite.getPosY()<100 || theSprite.getPosY() > 575){
+        if(theSprite.getPosY()<100 || theSprite.getPosY() > 600){
             theSprite.setPosY(prevY);
         }
     }

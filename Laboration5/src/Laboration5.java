@@ -33,9 +33,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import model.*;
 import View.*;
+import java.io.FileNotFoundException;
 import java.util.Random;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -53,6 +56,8 @@ public class Laboration5 extends Application {
     private Canvas canvas, menuCanvas;
     private Game game;
     private Image theMap,player1,player2,bullet,menuBackground;
+    private Circle altBullet;
+    private Rectangle altPlayer1,altPlayer2;
     private FileChooser fileChooser;
     private NewGame newGameWindow;
     private FileHandler fileHandler;
@@ -60,7 +65,8 @@ public class Laboration5 extends Application {
     private Group root,menu;
     private Scene theScene,menuScene;
     private Stage window;
-    private boolean gameRunning;
+    private boolean gameRunning,exit;
+    private double deltaTime,frameStart,frameEnd;
     
     public static final double FOURBILLION = 4_000_000_000.0;
                                               
@@ -71,14 +77,13 @@ public class Laboration5 extends Application {
         public void handle(long nowNs) {
             if (previousNs == 0) {
                 previousNs = nowNs;
-            }
+            }     
             
             if(nowNs - previousNs < FRAME_NS){  
                 return;
             } else {  
                 previousNs = nowNs;
             }
-  
 
             double newTime = System.nanoTime();
 
@@ -89,9 +94,10 @@ public class Laboration5 extends Application {
             drawBullets();
             drawScoreboard();
             
-            game.paintScoreboard();
             if(newTime-game.checkIfDead()>FOURBILLION)
-            game.randSpawn();          
+                game.randSpawn();    
+            
+            frameEnd = System.nanoTime();
         }
     }
     
@@ -109,11 +115,11 @@ public class Laboration5 extends Application {
     
 
     private void drawBot(){
-
         game.followPlayer();
         WritableImage croppedImage = new WritableImage(player1.getPixelReader(),0,0,64,64);
         gc.drawImage(croppedImage, game.getBot().getPosX(), game.getBot().getPosY());
     }
+    
     
     private void drawBackground(){
         gc.drawImage(theMap, 0, 0);
@@ -125,11 +131,11 @@ public class Laboration5 extends Application {
         if(p.getPlayerState()==PlayerState.ALIVE){
             p.tick();
             WritableImage croppedImage = new WritableImage(player1.getPixelReader(),p.getFrameX(),0,64,64);
-            gc.drawImage(croppedImage, p.getX(), p.getY());
+            gc.drawImage(croppedImage, p.getX(), p.getY()); 
         }
         Player k = thePlayers.get(1);
         if(k.getPlayerState()==PlayerState.ALIVE){
-            p.tick();
+            k.tick();
             WritableImage croppedImage2 = new WritableImage(player2.getPixelReader(),k.getFrameX(),0,64,64);
             gc.drawImage(croppedImage2, k.getX(), k.getY());
         }
@@ -143,7 +149,12 @@ public class Laboration5 extends Application {
             ArrayList<Bullet> theBullets = p.getBullets();
             for(Bullet b: theBullets){
                 b.tick();
-                gc.drawImage(bullet, b.getPosX(), b.getPosY());
+                if(bullet!=null){
+                    gc.drawImage(bullet, b.getPosX(), b.getPosY());
+                }
+                else
+                    gc.strokeOval(b.getPosX(),b.getPosY(),altBullet.getRadius()*2,altBullet.getRadius()*2);
+                
             }
         }
     }
@@ -183,13 +194,10 @@ public class Laboration5 extends Application {
         menuGc = menuCanvas.getGraphicsContext2D();
         gc = canvas.getGraphicsContext2D();
         
-        game = new Game("Player 1","Player 2");
+        game = new Game();
         
-        theMap = new Image("images/karta2.png");
-        player1 = new Image("images/BigBlueGuy.png");
-        player2 = new Image("images/BigRedGuy.png");
-        bullet = new Image("images/BigBullet.png");
-        menuBackground = new Image("images/MenuBackground.png");
+        loadImages();
+        
         initiateScoreboard();
         
         timer = new GameTimer();
@@ -197,6 +205,9 @@ public class Laboration5 extends Application {
         initMainMenu();
         startMenu();
         primaryStage.show();
+        if(exit){
+            window.close();
+        }
     }
     public static void main(String[] args) {
         launch(args);
@@ -218,6 +229,63 @@ public class Laboration5 extends Application {
         });
     }
     
+    private void loadImages() throws IllegalArgumentException{
+
+        try{
+            theMap = new Image("images/ImagePack/karta3.png");
+        }catch(IllegalArgumentException i){
+            noImageAlert("Failed to load image: Game Background.\nTerminating program..");
+            exit = true;
+        }
+        
+        try{
+            player1 = new Image("images/ImagePack/BigBlueGuy.png");
+        }catch(IllegalArgumentException i){
+            try{
+                player1 = new Image("images/standardBlueguy.png");
+            }catch(IllegalArgumentException i2){
+                noImageAlert("Failed to load image: Player 1.\nTerminating program..");
+                exit = true;
+            }
+        }
+        
+        try{
+            player2 = new Image("images/ImagePack/BigRedGuy.png");
+        }catch(IllegalArgumentException i){
+            try{
+                player2 = new Image("images/standardRedguy.png");
+            }catch(IllegalArgumentException i2){
+                noImageAlert("Failed to load image: Player 2.\nTerminating program..");
+                exit = true;
+            }
+        }
+        
+        try{
+            bullet = new Image("images/BigBullet.png");
+        }catch(IllegalArgumentException i){
+            noImageAlert("Failed to load image: Bullet.\nTerminating program..");
+            exit = true;
+        }
+        
+        try{
+            menuBackground = new Image("images/ImagePack/MenuBackground.png");
+        }catch(IllegalArgumentException i){
+            try{
+                menuBackground = new Image("images/standardMenuBackground.png");
+            }catch(IllegalArgumentException i2){
+                noImageAlert("Failed to load image: Menu Background.\nTerminating program..");
+                exit = true;
+            }
+        }
+        
+    }
+    private void noImageAlert(String message){
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Image not found");
+        alert.setHeaderText("Sorry");
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
     private void initMainMenu(){
         menuGc.drawImage(menuBackground, 0, 0);
         
@@ -226,6 +294,7 @@ public class Laboration5 extends Application {
         continueGame.setOnMouseClicked(new EventHandler<MouseEvent>(){
            @Override
            public void handle(MouseEvent e){
+               gameResume();
                startGame();
            }
         });
@@ -286,10 +355,11 @@ public class Laboration5 extends Application {
         newGameWindow.showAndWait();
         if(newGameWindow.getStart()){
             game = new Game(newGameWindow.getPlayer1(),
-            newGameWindow.getPlayer2());
+            newGameWindow.getPlayer2(),player1,player2);
             System.out.println(newGameWindow.getPlayer1());
             System.out.println(newGameWindow.getPlayer2());
         }
+        gameResume();
         startGame();
     }
     
@@ -365,13 +435,13 @@ public class Laboration5 extends Application {
         pausedText.setFont(Font.font(30));
         
         ArrayList<Player> thePlayers = game.getPlayers();
-        player1score = new Text(48,667,thePlayers.get(0).getName()+" / "
+        player1score = new Text(317,708,thePlayers.get(0).getName()+" / "
                             +thePlayers.get(0).getScore().getKills()
                             +" / "+thePlayers.get(0).getScore().getDeaths());
         player1score.setFill(Color.WHITE);
         player1score.setFont(Font.font(25));
         root.getChildren().add(player1score);
-        player2score = new Text(48,697,thePlayers.get(1).getName()+" / "
+        player2score = new Text(317,750,thePlayers.get(1).getName()+" / "
                             +thePlayers.get(1).getScore().getKills()
                             +" / "+thePlayers.get(1).getScore().getDeaths());
         player2score.setFill(Color.WHITE);
@@ -385,34 +455,35 @@ public class Laboration5 extends Application {
                     public void handle(KeyEvent e){
                         String code = e.getCode().toString();
                         switch(code){
-                        case "A": game.getPlayer(0).setVelX(-2);
+                        case "A": game.getPlayer(0).setVelX(-4);
                                   game.getPlayer(0).setDirection(LookDirection.LEFT);
                                   break;
-                        case "D": game.getPlayer(0).setVelX(2);
+                        case "D": game.getPlayer(0).setVelX(4);
                                   game.getPlayer(0).setDirection(LookDirection.RIGHT);
                                   break;
-                        case "S": game.getPlayer(0).setVelY(2);
+                        case "S": game.getPlayer(0).setVelY(4);
                                   game.getPlayer(0).setDirection(LookDirection.DOWN);
                                   break;
-                        case "W": game.getPlayer(0).setVelY(-2);
+                        case "W": game.getPlayer(0).setVelY(-4);
                                   game.getPlayer(0).setDirection(LookDirection.UP);
                                   break;
-                        case "SPACE": game.getPlayer(0).shoot();
+                        case "SPACE": game.getPlayer(0).shoot(bullet);
+                                      game.getPlayer(0).setGunLock(true);
                                   break;
                    
-                        case "LEFT": game.getPlayer(1).setVelX(-2);
+                        case "LEFT": game.getPlayer(1).setVelX(-4);
                                     game.getPlayer(1).setDirection(LookDirection.LEFT);
                                     break;
-                        case "DOWN": game.getPlayer(1).setVelY(2);
+                        case "DOWN": game.getPlayer(1).setVelY(4);
                                     game.getPlayer(1).setDirection(LookDirection.DOWN);
                                   break;
-                        case "RIGHT": game.getPlayer(1).setVelX(2);
+                        case "RIGHT": game.getPlayer(1).setVelX(4);
                                     game.getPlayer(1).setDirection(LookDirection.RIGHT);
                                   break;
-                        case "UP": game.getPlayer(1).setVelY(-2);
+                        case "UP": game.getPlayer(1).setVelY(-4);
                                    game.getPlayer(1).setDirection(LookDirection.UP);
                                    break;
-                        case "ENTER": game.getPlayer(1).shoot(); break;
+                        case "ENTER": game.getPlayer(1).shoot(bullet); game.getPlayer(1).setGunLock(true);break;
                         
                         case "ESCAPE": timer.stop();startMenu(); break;
                      }     
@@ -431,11 +502,12 @@ public class Laboration5 extends Application {
                         case "D": game.getPlayer(0).setVelX(0);break;
                         case "S": game.getPlayer(0).setVelY(0);break;
                         case "W": game.getPlayer(0).setVelY(0);break;
-                   
+                        case "SPACE": game.getPlayer(0).setGunLock(false);break;
                         case "LEFT": game.getPlayer(1).setVelX(0);break;
                         case "DOWN": game.getPlayer(1).setVelY(0);break;
                         case "RIGHT": game.getPlayer(1).setVelX(0);break;
                         case "UP": game.getPlayer(1).setVelY(0);break;
+                        case "ENTER": game.getPlayer(1).setGunLock(false);break;
                         }
 
     
