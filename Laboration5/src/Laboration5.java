@@ -36,6 +36,7 @@ import View.*;
 import java.io.FileNotFoundException;
 import java.util.Random;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
@@ -56,6 +57,7 @@ public class Laboration5 extends Application {
     private Canvas canvas, menuCanvas;
     private Game game;
     private Image theMap,player1,player2,bullet,menuBackground,car;
+    private ArrayList<Image> carImages,rightCarImages;
     private Circle altBullet;
     private Rectangle altPlayer1,altPlayer2;
     private FileChooser fileChooser;
@@ -98,7 +100,7 @@ public class Laboration5 extends Application {
             if(newTime-game.checkIfDead()>FOURBILLION){
                 game.randSpawn();
             }
-                
+            
             
             
             frameEnd = System.nanoTime();
@@ -109,10 +111,11 @@ public class Laboration5 extends Application {
     private void drawCar(){
         ArrayList<Car> theCar = game.getCar();
         for(Car c: theCar){
-
+            game.CarfollowPlayer();
             c.tick();
-            gc.drawImage(car, c.getPosX(), c.getPosY());
-       }
+            gc.drawImage(c.getImage(), c.getPosX(), c.getPosY());
+        }
+
     }
 
     private void drawScoreboard(){
@@ -183,6 +186,34 @@ public class Laboration5 extends Application {
         root.getChildren().remove(pausedText);
     }
     
+    private Image getRandomCar(LookDirection direction){
+        Random rand = new Random();
+        int n;
+        if(direction == LookDirection.LEFT){
+            n = rand.nextInt(carImages.size());
+            return carImages.get(n);
+        }
+        else{
+            n = rand.nextInt(rightCarImages.size());
+            return rightCarImages.get(n);
+        }
+
+       
+        
+    }
+    
+    private LookDirection randomDirection(){
+        Random rand = new Random();
+        
+        int random = rand.nextInt(2)+1;
+        
+        if(random == 1){
+            return LookDirection.RIGHT;
+        }
+        else
+            return LookDirection.LEFT;
+    }
+    
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Map example");
@@ -242,63 +273,72 @@ public class Laboration5 extends Application {
         });
     }
     
-    private void loadImages() throws IllegalArgumentException{
-
+    private Image tryLoad(String fileName,String secFileName){
         try{
-            theMap = new Image("images/ImagePack/karta3.png");
+            Image image = new Image(fileName);
+            return image;
         }catch(IllegalArgumentException i){
-            errorAlert("Failed to load image: Game Background.\nTerminating program..");
-            exit = true;
-        }
-        
-        try{
-            player1 = new Image("images/ImagePack/BigBlueGuy.png");
-        }catch(IllegalArgumentException i){
-            try{
-                player1 = new Image("images/standardBlueguy.png");
-            }catch(IllegalArgumentException i2){
-                errorAlert("Failed to load image: Player 1.\nTerminating program..");
+            if(secFileName!=null){
+                try{
+                    Image image = new Image(secFileName);
+                    return image;
+                }catch(IllegalArgumentException i2){
+                    errorAlert("Failed to load image: "+fileName+".\nTerminating program..");
+                    exit = true;
+                }
+            }
+            else{
+                errorAlert("Failed to load image: "+fileName+".\nTerminating program..");
                 exit = true;
             }
         }
+        return null;
+    }
+    
+    private void loadImages(){
         
-        try{
-            player2 = new Image("images/ImagePack/BigRedGuy.png");
-        }catch(IllegalArgumentException i){
-            try{
-                player2 = new Image("images/standardRedguy.png");
-            }catch(IllegalArgumentException i2){
-                errorAlert("Failed to load image: Player 2.\nTerminating program..");
-                exit = true;
-            }
-        }
+        theMap = tryLoad("images/ImagePack/karta3.png",null);
+        player1 = tryLoad("images/ImagePack/BigBlueGuy.png","images/standardBlueguy.png");
+        player2 = tryLoad("images/ImagePack/BigRedGuy.png","images/standardRedguy.png");
+        bullet = tryLoad("images/BigBullet.png",null);
+        menuBackground = tryLoad("images/ImagePack/MenuBackground.png","images/standardMenuBackground.png");
+        car = tryLoad("images/Car.png",null);
         
-        try{
-            bullet = new Image("images/BigBullet.png");
-        }catch(IllegalArgumentException i){
-            errorAlert("Failed to load image: Bullet.\nTerminating program..");
-            exit = true;
-        }
+        carImages = new ArrayList<Image>();
+        rightCarImages = new ArrayList<Image>();
+        carImages.add(tryLoad("images/carPack/Beamer-GTA2.png","images/Car.png"));
+        carImages.add(tryLoad("images/carPack/B-Type-GTA2.png","images/Car.png"));
+        carImages.add(tryLoad("images/carPack/Bulwark-GTA2.png","images/Car.png"));
+        carImages.add(tryLoad("images/carPack/FuroreGT-GTA2.png","images/Car.png"));
+        carImages.add(tryLoad("images/carPack/HotDogVan-GTA2.png","images/Car.png"));
+        carImages.add(tryLoad("images/carPack/Maurice-GTA2.png","images/Car.png"));
+        carImages.add(tryLoad("images/carPack/Meteor-GTA2.png","images/Car.png"));
+        carImages.add(tryLoad("images/carPack/Panto-GTA2.png","images/Car.png"));
+        carImages.add(tryLoad("images/carPack/Pickup-GTA2-gang.png","images/Car.png"));
+        carImages.add(tryLoad("images/carPack/Romero-GTA2.png","images/Car.png"));
+        carImages.add(tryLoad("images/carPack/Stinger-GTA2.png","images/Car.png"));
+        carImages.add(tryLoad("images/carPack/TaxiXpress-GTA2.png","images/Car.png"));
+        carImages.add(tryLoad("images/carPack/TVVan-GTA2.png","images/Car.png"));
+        carImages.add(tryLoad("images/carPack/Z-Type-GTA2.png","images/Car.png"));
         
-        try{
-            menuBackground = new Image("images/ImagePack/MenuBackground.png");
-        }catch(IllegalArgumentException i){
-            try{
-                menuBackground = new Image("images/standardMenuBackground.png");
-            }catch(IllegalArgumentException i2){
-                errorAlert("Failed to load image: Menu Background.\nTerminating program..");
-                exit = true;
-            }
-        }
+        rightCarImages.add(tryLoad("images/carPack/rotated/Beamer-GTA2.png","images/Car.png"));
+        rightCarImages.add(tryLoad("images/carPack/rotated/B-Type-GTA2.png","images/Car.png"));
+        rightCarImages.add(tryLoad("images/carPack/rotated/Bulwark-GTA2.png","images/Car.png"));
+        rightCarImages.add(tryLoad("images/carPack/rotated/FuroreGT-GTA2.png","images/Car.png"));
+        rightCarImages.add(tryLoad("images/carPack/rotated/HotDogVan-GTA2.png","images/Car.png"));
+        rightCarImages.add(tryLoad("images/carPack/rotated/Maurice-GTA2.png","images/Car.png"));
+        rightCarImages.add(tryLoad("images/carPack/rotated/Meteor-GTA2.png","images/Car.png"));
+        rightCarImages.add(tryLoad("images/carPack/rotated/Panto-GTA2.png","images/Car.png"));
+        rightCarImages.add(tryLoad("images/carPack/rotated/Pickup-GTA2-gang.png","images/Car.png"));
+        rightCarImages.add(tryLoad("images/carPack/rotated/Romero-GTA2.png","images/Car.png"));
+        rightCarImages.add(tryLoad("images/carPack/rotated/Stinger-GTA2.png","images/Car.png"));
+        rightCarImages.add(tryLoad("images/carPack/rotated/TaxiXpress-GTA2.png","images/Car.png"));
+        rightCarImages.add(tryLoad("images/carPack/rotated/TVVan-GTA2.png","images/Car.png"));
+        rightCarImages.add(tryLoad("images/carPack/rotated/Z-Type-GTA2.png","images/Car.png"));
         
-        try{
-            car = new Image("images/Car.png");
-        }catch(IllegalArgumentException i){
-            errorAlert("Failed to load image: Car.\nTerminating program..");
-            exit = true;
-        }
         
     }
+    
     private void checkWinner(){
         ArrayList<Player> thePlayers = game.getPlayers();
         for(Player p : thePlayers){
@@ -507,7 +547,8 @@ public class Laboration5 extends Application {
                                   break;
                         case "SPACE": game.getPlayer(0).shoot(bullet);
                                       game.getPlayer(0).setGunLock(true);
-                                      game.addCar(car);
+                                      LookDirection d = randomDirection();
+                                      game.addCar(getRandomCar(d),d);
                                   break;
                    
                         case "LEFT": game.getPlayer(1).setVelX(-4);

@@ -6,7 +6,12 @@
 package model;
 
 import javafx.scene.image.Image;
+
 import java.util.Random;
+
+import javafx.scene.image.ImageView;
+
+
 /**
  *
  * @author micke1
@@ -14,16 +19,32 @@ import java.util.Random;
 public class Car {
     
     private Sprite theSprite;
-    private final int velocity=2;
+    private int velocity;
     private double posX;
     private double posY;
-    private LookDirection lookDirection;
+    private LookDirection lookDirection; 
+
+
+    public Car(Image image,LookDirection direction){
+        this.lookDirection = direction;
+        if(direction==LookDirection.RIGHT){
+            this.theSprite = new Sprite(-250,490-image.getHeight(),image,lookDirection);
+            velocity = 5;
+        }
+        else{
+            this.theSprite = new Sprite(1024,270,image,lookDirection);
+            velocity = -5;
+        }
+        
+    }
     
-    public Car(Image image, double posX, double posY, LookDirection direction){
-        setPosX(posX);
-        setPosY(posY);
-        setDirection(direction);
-        this.theSprite = new Sprite(getPosX(),getPosY(),image,getDirection());
+    public void roadRage(){
+        this.velocity=15;
+    }
+    
+    public Image getImage(){
+        return theSprite.getImage();
+
     }
     
     public void setDirection(LookDirection lookDirection){
