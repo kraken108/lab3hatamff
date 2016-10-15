@@ -129,7 +129,7 @@ public class Laboration5 extends Application {
         }
         Player k = thePlayers.get(1);
         if(k.getPlayerState()==PlayerState.ALIVE){
-            p.tick();
+            k.tick();
             WritableImage croppedImage2 = new WritableImage(player2.getPixelReader(),k.getFrameX(),0,64,64);
             gc.drawImage(croppedImage2, k.getX(), k.getY());
         }

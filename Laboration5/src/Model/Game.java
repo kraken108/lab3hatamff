@@ -161,17 +161,13 @@ public class Game implements Serializable{
                                 p.addKill();
                                 k.addDeath();
                                 k.SetPlayerState(PlayerState.DEAD);
-                                k.setTimeOfDeath(System.nanoTime());
-
-                            
+                                k.setTimeOfDeath(System.nanoTime());                            
                         }                            
                     }
                 }
             }
-        }
-        
+        }        
     }
-
   
     
 
