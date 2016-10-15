@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 import java.util.Random;
+import javafx.scene.image.ImageView;
 
 /**
  *
@@ -49,8 +50,9 @@ public class Game implements Serializable{
         //scoreBoard.paintScore();
     }
     
-    public void addCar(Image image){
-        theCars.add(new Car(image));
+    
+    public void addCar(Image image,LookDirection direction){
+        theCars.add(new Car(image,direction));
     }
 
     public ArrayList<Car> getCar(){

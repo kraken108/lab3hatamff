@@ -6,6 +6,7 @@
 package model;
 
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  *
@@ -14,14 +15,26 @@ import javafx.scene.image.Image;
 public class Car {
     
     private Sprite theSprite;
-    private final int velocity=2;
+    private final int velocity;
     private double posX;
     private double posY;
     private LookDirection lookDirection;
     
-    public Car(Image image){
-        this.theSprite = new Sprite(-250,320,image,lookDirection);
-        drive();
+    public Car(Image image,LookDirection direction){
+        this.lookDirection = direction;
+        if(direction==LookDirection.RIGHT){
+            this.theSprite = new Sprite(-250,490-image.getHeight(),image,lookDirection);
+            velocity = 5;
+        }
+        else{
+            this.theSprite = new Sprite(1024,270,image,lookDirection);
+            velocity = -5;
+        }
+        
+    }
+    
+    public Image getImage(){
+        return theSprite.getImage();
     }
     
     public void setDirection(LookDirection lookDirection){

@@ -16,12 +16,14 @@ public class Sprite implements Serializable{
     private double posX,posY;
     private double imageWidth,imageHeight;
     private LookDirection lookDirection;
+    private Image image;
     
     public Sprite(){
         posX = 0;
         posY = 0;
         imageWidth = 0;
         imageHeight = 0;
+        image = null;
         lookDirection = null;
     }
 
@@ -30,6 +32,7 @@ public class Sprite implements Serializable{
         this.posY = posY;
         imageWidth = image.getWidth();
         imageHeight = image.getHeight();
+        this.image = image;
         this.lookDirection = lookDirection;
     }
     
@@ -44,8 +47,9 @@ public class Sprite implements Serializable{
         posX+=velX;
         posY+=velY;
     }
-
-
+    public Image getImage(){
+        return image;
+    }
     /**
      * @return the posX
      */
