@@ -62,12 +62,10 @@ public class NewGame extends Stage{
                     else
                         player2name = player2field.getText();
                     startgame = true;
-                    System.out.println("Start!");
                 }
                 
                 else if(event.getSource().equals(cancelButton)){
                     startgame = false;
-                    System.out.println("Cancel!");
                 }
                 NewGame.this.hide();
             }

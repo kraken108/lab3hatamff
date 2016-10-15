@@ -103,6 +103,7 @@ public class Laboration5 extends Application {
             
             
             frameEnd = System.nanoTime();
+            checkWinner();
         }
     }
     
@@ -246,7 +247,7 @@ public class Laboration5 extends Application {
         try{
             theMap = new Image("images/ImagePack/karta3.png");
         }catch(IllegalArgumentException i){
-            noImageAlert("Failed to load image: Game Background.\nTerminating program..");
+            errorAlert("Failed to load image: Game Background.\nTerminating program..");
             exit = true;
         }
         
@@ -256,7 +257,7 @@ public class Laboration5 extends Application {
             try{
                 player1 = new Image("images/standardBlueguy.png");
             }catch(IllegalArgumentException i2){
-                noImageAlert("Failed to load image: Player 1.\nTerminating program..");
+                errorAlert("Failed to load image: Player 1.\nTerminating program..");
                 exit = true;
             }
         }
@@ -267,7 +268,7 @@ public class Laboration5 extends Application {
             try{
                 player2 = new Image("images/standardRedguy.png");
             }catch(IllegalArgumentException i2){
-                noImageAlert("Failed to load image: Player 2.\nTerminating program..");
+                errorAlert("Failed to load image: Player 2.\nTerminating program..");
                 exit = true;
             }
         }
@@ -275,7 +276,7 @@ public class Laboration5 extends Application {
         try{
             bullet = new Image("images/BigBullet.png");
         }catch(IllegalArgumentException i){
-            noImageAlert("Failed to load image: Bullet.\nTerminating program..");
+            errorAlert("Failed to load image: Bullet.\nTerminating program..");
             exit = true;
         }
         
@@ -285,19 +286,40 @@ public class Laboration5 extends Application {
             try{
                 menuBackground = new Image("images/standardMenuBackground.png");
             }catch(IllegalArgumentException i2){
-                noImageAlert("Failed to load image: Menu Background.\nTerminating program..");
+                errorAlert("Failed to load image: Menu Background.\nTerminating program..");
                 exit = true;
             }
         }
         
     }
-    private void noImageAlert(String message){
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle("Image not found");
-        alert.setHeaderText("Sorry");
-        alert.setContentText(message);
-        alert.showAndWait();
+    private void checkWinner(){
+        ArrayList<Player> thePlayers = game.getPlayers();
+        for(Player p : thePlayers){
+            if(p.getScore().getKills()>=5){
+                timer.stop();
+                infoAlert("We have a winner!!!\nCongratulations "+p.getName()+" you have won!");
+                gameRunning = false;
+                startMenu();
+            }
+        }
     }
+    
+    private void errorAlert(String message){
+        Alert alerta = new Alert(AlertType.ERROR);
+        alerta.setTitle("Error");
+        alerta.setHeaderText("Sorry");
+        alerta.setContentText(message);
+        alerta.showAndWait();
+    }
+    
+    private void infoAlert(String message){
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Message");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.show();
+    }
+    
     private void initMainMenu(){
         menuGc.drawImage(menuBackground, 0, 0);
         
@@ -354,34 +376,31 @@ public class Laboration5 extends Application {
         timer.start();
     }
     
-    public void showAlert(String message){
-        if(!alert.isShowing()){
-        alert.setHeaderText("");
-        alert.setTitle("Alert!");
-        alert.setContentText(message);
-        alert.show();           
-        }        
-    }
     
     private void initNewGame(){
         newGameWindow.showAndWait();
         if(newGameWindow.getStart()){
             game = new Game(newGameWindow.getPlayer1(),
             newGameWindow.getPlayer2(),player1,player2);
-            System.out.println(newGameWindow.getPlayer1());
-            System.out.println(newGameWindow.getPlayer2());
+            gameResume();
+            startGame();
         }
-        gameResume();
-        startGame();
+        
     }
     
     private void loadGame(){
         File file = fileChooser.showOpenDialog(window);
         if(file!= null){
-            if(fileHandler.loadFile(file)!=null){
+            try{
                 game = fileHandler.loadFile(file);
                 startGame();
+            }catch(IOException e){
+                errorAlert("Could not load file..");
             }
+            catch(ClassNotFoundException c){
+                errorAlert("Could not load file..");
+            }
+            
         }
         file = null;
     }
@@ -529,6 +548,5 @@ public class Laboration5 extends Application {
         
         );
     }
-    private final Alert alert = new Alert(Alert.AlertType.INFORMATION);
     
 }

@@ -59,7 +59,9 @@ public class Player implements Serializable{
         gunLock = false;
         updateFrame();
     }
-     
+    public void removeBullet(int index){
+        theBullets.remove(index);
+    }
     public void setTimeOfDeath(double timeOfDeath){
         this.timeOfDeath=timeOfDeath;
     }
@@ -159,16 +161,14 @@ public class Player implements Serializable{
         return (ArrayList<Bullet>) theBullets.clone();
     }
     
-    public ArrayList<Bullet> getRealBullets(){
-        return theBullets;
-    }
     
     public void bulletsOutOfMap(){
-        for(Bullet b : theBullets){
+        for(int i = 0; i<theBullets.size();i++){
+            Bullet b = theBullets.get(i);
             if(b.getPosX()<0 || b.getPosX()>1000 || b.getPosY()<100 || b.getPosY()>650){
-                theBullets.remove(b);
+                theBullets.remove(i);
             }
-        }  
+        }
     }
     
     public void tick(){
