@@ -136,10 +136,16 @@ public class Player implements Serializable{
         return theSprite.getPosY();
     }
     
+    public Image getImage(){
+        return theSprite.getImage();
+    }
+    
     public void addKill(){
         theScore.addKill();
     }
-    
+    public void removeKill(){
+        theScore.removeKill();
+    }
     public void addDeath(){
         theScore.addDeath();
     }
