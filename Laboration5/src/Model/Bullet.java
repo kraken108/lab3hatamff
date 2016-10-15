@@ -12,54 +12,35 @@ import javafx.scene.image.Image;
  *
  * @author Jakob
  */
-public class Bullet implements Serializable{
-    
-    private Sprite theSprite;
+public class Bullet extends Sprite implements Serializable{
     private final int velocity = 20;
     
     public Bullet(){
-        this.theSprite = new Sprite(0,0,null,null);
+        super(0,0,null,null);
+        //this.theSprite = new Sprite(0,0,null,null);
     }
     
     public Bullet(double x, double y, LookDirection direction,Image image){
-        switch(direction){
-            case UP: x+=17;break;
-            case DOWN: x+=26; y+=56;break;
-            case LEFT: y+=28;break;
-            case RIGHT: x+=56; y+=25;break;
-        }
-        this.theSprite = new Sprite(x,y,image,direction);
+        super(x,y,image,direction);
+        calculateSpawn(direction,x,y);
     }
     
     public void tick(){
-        switch(theSprite.getLookDirection()){
-            case UP: theSprite.moveY(-velocity);break;
-            case DOWN: theSprite.moveY(velocity);break;
-            case LEFT: theSprite.moveX(-velocity);break;
-            case RIGHT: theSprite.moveX(velocity);break;
+        switch(getLookDirection()){
+            case UP: moveY(-velocity);break;
+            case DOWN: moveY(velocity);break;
+            case LEFT: moveX(-velocity);break;
+            case RIGHT: moveX(velocity);break;
         }
     }
 
-    /**
-     * @return the posX
-     */
-    public double getPosX() {
-        return theSprite.getPosX();
-    }
 
-    /**
-     * @return the posY
-     */
-    public double getPosY() {
-        return theSprite.getPosY();
-    }
-    
     public void calculateSpawn(LookDirection direction,double x, double y){
         switch(direction){
-            case UP: x+=17;break;
-            case DOWN: x+=26; y+=56;break;
-            case LEFT: y+=28;break;
-            case RIGHT: x+=56; y+=25;break;
+            case UP: setPosX(getPosX()+17);break;
+            case DOWN: setPosX(getPosX()+26); setPosY(getPosY()+56);break;
+            case LEFT: setPosY(getPosY()+28);break;
+            case RIGHT: setPosX(getPosX()+56); setPosY(getPosY()+26);break;
         }
     }
  

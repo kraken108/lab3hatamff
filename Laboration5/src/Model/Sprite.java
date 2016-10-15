@@ -12,13 +12,13 @@ import javafx.scene.image.Image;
  *
  * @author Jakob
  */
-public class Sprite implements Serializable{
+abstract public class Sprite implements Serializable{
     private double posX,posY;
     private double imageWidth,imageHeight;
     private LookDirection lookDirection;
     private Image image;
     
-    public Sprite(){
+    protected Sprite(){
         posX = 0;
         posY = 0;
         imageWidth = 0;
@@ -27,7 +27,7 @@ public class Sprite implements Serializable{
         lookDirection = null;
     }
 
-    public Sprite(double posX,double posY,Image image,LookDirection lookDirection){
+    protected Sprite(double posX,double posY,Image image,LookDirection lookDirection){
         this.posX = posX;
         this.posY = posY;
         imageWidth = image.getWidth();
