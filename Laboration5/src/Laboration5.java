@@ -55,7 +55,7 @@ public class Laboration5 extends Application {
     private GraphicsContext gc,menuGc;
     private Canvas canvas, menuCanvas;
     private Game game;
-    private Image theMap,player1,player2,bullet,menuBackground;
+    private Image theMap,player1,player2,bullet,menuBackground,car;
     private Circle altBullet;
     private Rectangle altPlayer1,altPlayer2;
     private FileChooser fileChooser;
@@ -97,7 +97,6 @@ public class Laboration5 extends Application {
             
             if(newTime-game.checkIfDead()>FOURBILLION){
                 game.randSpawn();
-                game.addCar(new Image("Car.png"));
             }
                 
             
@@ -110,9 +109,10 @@ public class Laboration5 extends Application {
     private void drawCar(){
         ArrayList<Car> theCar = game.getCar();
         for(Car c: theCar){
-            c.tic();
-            gc.drawImage(new Image("Car.png"), c.getPosX(), c.getPosY());
-        }
+
+            c.tick();
+            gc.drawImage(car, c.getPosX(), c.getPosY());
+       }
     }
 
     private void drawScoreboard(){
@@ -289,6 +289,13 @@ public class Laboration5 extends Application {
                 errorAlert("Failed to load image: Menu Background.\nTerminating program..");
                 exit = true;
             }
+        }
+        
+        try{
+            car = new Image("images/Car.png");
+        }catch(IllegalArgumentException i){
+            errorAlert("Failed to load image: Car.\nTerminating program..");
+            exit = true;
         }
         
     }
@@ -500,6 +507,7 @@ public class Laboration5 extends Application {
                                   break;
                         case "SPACE": game.getPlayer(0).shoot(bullet);
                                       game.getPlayer(0).setGunLock(true);
+                                      game.addCar(car);
                                   break;
                    
                         case "LEFT": game.getPlayer(1).setVelX(-4);

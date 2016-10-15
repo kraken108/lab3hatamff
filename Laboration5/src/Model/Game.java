@@ -172,10 +172,6 @@ public class Game implements Serializable{
                                 k.setTimeOfDeath(System.nanoTime());                            
                         }                            
                     }
-
-
-
-
                 }
             }
         }        

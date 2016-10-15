@@ -6,7 +6,7 @@
 package model;
 
 import javafx.scene.image.Image;
-
+import java.util.Random;
 /**
  *
  * @author micke1
@@ -19,9 +19,11 @@ public class Car {
     private double posY;
     private LookDirection lookDirection;
     
-    public Car(Image image){
-        this.theSprite = new Sprite(0,320,image,lookDirection);
-        drive();
+    public Car(Image image, double posX, double posY, LookDirection direction){
+        setPosX(posX);
+        setPosY(posY);
+        setDirection(direction);
+        this.theSprite = new Sprite(getPosX(),getPosY(),image,getDirection());
     }
     
     public void setDirection(LookDirection lookDirection){
@@ -40,8 +42,8 @@ public class Car {
         theSprite.moveX(velX);
     }
     
-    public void tic(){
-        posX+=velocity;
+    public void tick(){
+        theSprite.moveX(velocity);
     }
     
     public LookDirection getDirection(){
@@ -51,6 +53,13 @@ public class Car {
     public double getPosY(){
         return theSprite.getPosY();
     }
+    
+    
+    public int RNG(){
+        Random random = new Random();
+        int rand = random.nextInt(1)+1;
+        return rand;        
+    }        
     
     public double getPosX(){
         return theSprite.getPosX();
