@@ -110,8 +110,8 @@ public class Laboration5 extends Application {
     private void drawCar(){
         ArrayList<Car> theCar = game.getCar();
         for(Car c: theCar){
-            c.tick();
-            gc.drawImage(new Image("Car.png"), c.getPosX(), c.getPosY);
+            c.tic();
+            gc.drawImage(new Image("Car.png"), c.getPosX(), c.getPosY());
         }
     }
 

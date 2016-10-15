@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model;
+package model;
 
 import javafx.scene.image.Image;
 
@@ -29,11 +29,11 @@ public class Car {
     }
     
     public void setPosX(double posX){
-        theSprite.setPosX=posX;
+        theSprite.setPosX(posX);
     }
     
     public void setPosY(double posY){
-        theSprite.setPosY=posY;
+        theSprite.setPosY(posY);
     }
     
     public void moveX(double velX){
@@ -49,11 +49,11 @@ public class Car {
     }    
     
     public double getPosY(){
-        return theSprite.posY;
+        return theSprite.getPosY();
     }
     
-    public double getPosx(){
-        return theSprite.posX;
+    public double getPosX(){
+        return theSprite.getPosX();
     }
     
     public void drive(){
