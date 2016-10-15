@@ -36,6 +36,7 @@ public class Game implements Serializable{
         thePlayers.add(new Player());
         theBot = new Bot();
     }
+    
     public Game(String player1name,String player2name,Image player1img,Image player2img){
         theCars = new ArrayList<Car>();
         thePlayers = new ArrayList<Player>();
@@ -49,12 +50,18 @@ public class Game implements Serializable{
     public void paintScoreboard(){
         //scoreBoard.paintScore();
     }
-    
-    
+        
     public void addCar(Image image,LookDirection direction){
         theCars.add(new Car(image,direction));
     }
 
+    public void removeCar(){
+        for(int i=0; i<theCars.size(); i++)
+            if(theCars.get(i).getPosX()>1124 || theCars.get(i).getPosX()<-400){
+                theCars.remove(i);
+            }
+    }
+    
     public ArrayList<Car> getCar(){
         return (ArrayList<Car>) theCars.clone();
     }
@@ -156,6 +163,22 @@ public class Game implements Serializable{
         }
     }
     
+    public void bulletHitCar(){
+        for(Car c: theCars){
+            for(Player p: thePlayers){
+                ArrayList<Bullet> bullets = p.getBullets();
+                for(int i=0; i<bullets.size(); i++){
+                    Bullet b = bullets.get(i);
+                    if(b.getPosX()>c.getPosX()&&b.getPosX()<c.getPosX()+c.getImage().getWidth())
+                        if(b.getPosY()>c.getPosY()&&b.getPosY()<c.getPosY()+c.getImage().getHeight()){
+                            p.removeBullet(i);                            
+                    }
+                }
+            }
+        }
+    }
+
+    
     public void CarfollowPlayer(){
         double x,y;
         
@@ -189,30 +212,33 @@ public class Game implements Serializable{
         theBot.setPosX(x*1);
         theBot.setPosY(y*1);
     }
+    
 
     
     public void detectHit(){
-        for(Player p : thePlayers){
-            for(Player k : thePlayers){
-                if(k.getPlayerState()==PlayerState.ALIVE)
-                    if(k.getPlayerNo() != p.getPlayerNo()){
-                        ArrayList<Bullet> bullets = p.getBullets();
-                        for(int i = 0; i<bullets.size(); i++){
-                            Bullet b = bullets.get(i);
-                            if(b.getPosY() > k.getY() && b.getPosY()<(k.getY()+k.getFrameWidth())
-                                    && b.getPosX()>k.getX() && b.getPosX()<(k.getX()+k.getFrameWidth())) {
-                                p.removeBullet(i);
-                                p.addKill();
-                                k.addDeath();
-                                k.SetPlayerState(PlayerState.DEAD);
+        
+            for(Player p : thePlayers){
+                for(Player k : thePlayers){
+                    if(k.getPlayerState()==PlayerState.ALIVE)
+                        if(k.getPlayerNo() != p.getPlayerNo()){
+                            ArrayList<Bullet> bullets = p.getBullets();
+                            for(int i = 0; i<bullets.size(); i++){
+                                Bullet b = bullets.get(i);
+                                if(b.getPosY() > k.getY() && b.getPosY()<(k.getY()+k.getFrameWidth())
+                                        && b.getPosX()>k.getX() && b.getPosX()<(k.getX()+k.getFrameWidth())) {
+                                    p.removeBullet(i);
+                                    p.addKill();
+                                    k.addDeath();
+                                    k.SetPlayerState(PlayerState.DEAD);
 
-                                k.setTimeOfDeath(System.nanoTime());                            
-                        }                            
+                                    k.setTimeOfDeath(System.nanoTime());
+                                    
+                                }                            
+                            }
+                        }
                     }
-                }
+                } 
             }
-        }        
-    }
   
     
 

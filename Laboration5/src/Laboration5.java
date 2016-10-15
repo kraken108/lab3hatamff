@@ -98,6 +98,7 @@ public class Laboration5 extends Application {
             drawScoreboard();
             drawCar();
             carSpawn();
+            game.bulletHitCar();
             if(newTime-game.checkIfDead()>FOURBILLION){
                 game.randSpawn();
             }
@@ -124,12 +125,20 @@ public class Laboration5 extends Application {
     }
     private void drawCar(){
         ArrayList<Car> theCar = game.getCar();
-        for(Car c: theCar){
-            game.CarfollowPlayer();
-            c.tick();
-            gc.drawImage(c.getImage(), c.getPosX(), c.getPosY());
+        ArrayList<Player> thePlayers = game.getPlayers();
+        for(Player p: thePlayers){
+            for(Car c: theCar){
+                game.removeCar();                
+                if(p.getY()<=490 && p.getY()>=270){
+                if(c.getVelocity()<0 &&p.getX()<c.getPosX())
+                    c.roadRage(-10);
+                else if(c.getVelocity()>0 && p.getX()>c.getPosX())
+                    c.roadRage(10);
+                }                      
+                c.tick();
+                gc.drawImage(c.getImage(), c.getPosX(), c.getPosY());            
+             }
         }
-
     }
 
     private void drawScoreboard(){

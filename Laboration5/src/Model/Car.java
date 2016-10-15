@@ -38,13 +38,16 @@ public class Car {
         
     }
     
-    public void roadRage(){
-        this.velocity=15;
+    public void roadRage(int velocity){
+        this.velocity=velocity;
+    }
+    
+    public int getVelocity(){
+        return velocity;
     }
     
     public Image getImage(){
         return theSprite.getImage();
-
     }
     
     public void setDirection(LookDirection lookDirection){
