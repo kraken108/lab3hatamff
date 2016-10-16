@@ -18,6 +18,9 @@ public class Score implements Serializable{
     private int kills;
     private int deaths;
     
+    /*
+    **Empty constructor initializes the score
+    */
     public Score(){
         kills = 0;
         deaths = 0;
@@ -31,17 +34,30 @@ public class Score implements Serializable{
     }
 
     /**
-     * @param kills the kills to set
-     */
+    * Adds a kill to the score
+    */
     public void addKill(){
         kills++;
     }
+    
+    /**
+     *Adds a death to the score
+     */
     public void addDeath(){
         deaths++;
     }
+    
+    /**
+     * removes a kill from the score
+     */
     public void removeKill(){
         kills--;
     }
+    
+    /**
+     * 
+     * @param kills sets the kills
+     */
     public void setKills(int kills) {
         this.kills = kills;
     }
@@ -54,7 +70,7 @@ public class Score implements Serializable{
     }
 
     /**
-     * @param deaths the deaths to set
+     * @param deaths sets the deaths
      */
     public void setDeaths(int deaths) {
         this.deaths = deaths;

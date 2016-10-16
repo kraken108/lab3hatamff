@@ -12,13 +12,16 @@ import javafx.scene.image.Image;
  *
  * @author Jakob
  */
-public class Sprite implements Serializable{
+abstract public class Sprite implements Serializable{
     private double posX,posY;
     private double imageWidth,imageHeight;
     private LookDirection lookDirection;
     private Image image;
     
-    public Sprite(){
+    /**
+     * Empty constructor that creates empty sprite
+     */
+    protected Sprite(){
         posX = 0;
         posY = 0;
         imageWidth = 0;
@@ -27,7 +30,14 @@ public class Sprite implements Serializable{
         lookDirection = null;
     }
 
-    public Sprite(double posX,double posY,Image image,LookDirection lookDirection){
+    /**
+     * 
+     * @param posX is the x-coordinate of the sprite
+     * @param posY is the y-coordinate of the sprite
+     * @param image is the image of the sprite
+     * @param lookDirection is the LookDirection of the sprite
+     */
+    protected Sprite(double posX,double posY,Image image,LookDirection lookDirection){
         this.posX = posX;
         this.posY = posY;
         imageWidth = image.getWidth();
@@ -36,17 +46,36 @@ public class Sprite implements Serializable{
         this.lookDirection = lookDirection;
     }
     
+    /**
+     * velX moves the sprite in X-space
+     * @param velX Speed value in X-space
+     */
     public void moveX(double velX){
         posX+=velX;
     }
     
+    /**
+    * velX moves the sprite in Y-space
+    * @param velY Speed value in Y-space
+    */
     public void moveY(double velY){
         posY+=velY;
     }
+    
+    
+    /**
+     * the vel values move the sprite in X - and Y - space
+     * @param velX Speed value in X-space
+     * @param velY Speed value in Y-space
+     */
     public void move(double velX, double velY){
         posX+=velX;
         posY+=velY;
     }
+    /**
+     * 
+     * @return the image
+     */
     public Image getImage(){
         return image;
     }
@@ -58,7 +87,7 @@ public class Sprite implements Serializable{
     }
 
     /**
-     * @param posX the posX to set
+     * @param posX sets the X-value of the sprite
      */
     public void setPosX(double posX) {
         this.posX = posX;
@@ -72,7 +101,7 @@ public class Sprite implements Serializable{
     }
 
     /**
-     * @param posY the posY to set
+     * @param posY sets the Y-value of the sprite
      */
     public void setPosY(double posY) {
         this.posY = posY;
@@ -100,7 +129,7 @@ public class Sprite implements Serializable{
     }
 
     /**
-     * @param lookDirection the lookDirection to set
+     * @param lookDirection sets the LookDirection of the sprite
      */
     public void setLookDirection(LookDirection lookDirection) {
         this.lookDirection = lookDirection;

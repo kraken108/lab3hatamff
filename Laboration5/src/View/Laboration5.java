@@ -1,3 +1,5 @@
+package View;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -6,11 +8,7 @@
 
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -22,7 +20,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -33,16 +30,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import model.*;
 import View.*;
-import java.io.FileNotFoundException;
 import java.util.Random;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 /**
@@ -52,14 +45,13 @@ import javafx.scene.text.Text;
 public class Laboration5 extends Application {
     
     private AnimationTimer timer;
-    private final long FRAME_NS = 10_000_000;
+    
     private GraphicsContext gc,menuGc;
     private Canvas canvas, menuCanvas;
     private Game game;
     private Image theMap,player1,player2,bullet,menuBackground,car;
     private ArrayList<Image> carImages,rightCarImages;
     private Circle altBullet;
-    private Rectangle altPlayer1,altPlayer2;
     private FileChooser fileChooser;
     private NewGame newGameWindow;
     private FileHandler fileHandler;
@@ -70,6 +62,7 @@ public class Laboration5 extends Application {
     private boolean gameRunning,exit;
     private double lastTopSpawn,lastBotSpawn,topCooldown,botCooldown;
     
+    private final long FRAME_NS = 10_000_000;
     public static final double FOURBILLION = 4_000_000_000.0;
     public static final double TWOBILLION = 2_000_000_000.0;
     public static final double ONEBILLION = 1_000_000_000.0;
@@ -93,7 +86,6 @@ public class Laboration5 extends Application {
 
             drawBackground();
             drawPlayers();
-            //drawBot();
             drawBullets();
             drawScoreboard();
             drawCar();
@@ -102,8 +94,7 @@ public class Laboration5 extends Application {
             if(newTime-game.checkIfDead()>FOURBILLION){
                 game.randSpawn();
             }
-    
-
+                
             checkWinner();
         }
     }
@@ -129,10 +120,10 @@ public class Laboration5 extends Application {
         for(Player p: thePlayers){
             for(Car c: theCar){
                 game.removeCar();                
-                if(p.getY()<=490 && p.getY()>=270){
-                if(c.getVelocity()<0 &&p.getX()<c.getPosX())
+                if(p.getPosY()<=490 && p.getPosY()>=270){
+                if(c.getVelocity()<0 &&p.getPosX()<c.getPosX())
                     c.roadRage(-10);
-                else if(c.getVelocity()>0 && p.getX()>c.getPosX())
+                else if(c.getVelocity()>0 && p.getPosX()>c.getPosX())
                     c.roadRage(10);
                 }                      
                 c.tick();
@@ -152,12 +143,6 @@ public class Laboration5 extends Application {
 
     }
     
-
-    private void drawBot(){
-        game.followPlayer();
-        WritableImage croppedImage = new WritableImage(player1.getPixelReader(),0,0,64,64);
-        gc.drawImage(croppedImage, game.getBot().getPosX(), game.getBot().getPosY());
-    }
     
     
     private void drawBackground(){
@@ -173,13 +158,13 @@ public class Laboration5 extends Application {
         if(p.getPlayerState()==PlayerState.ALIVE){
             p.tick();
             WritableImage croppedImage = new WritableImage(player1.getPixelReader(),p.getFrameX(),0,64,64);
-            gc.drawImage(croppedImage, p.getX(), p.getY()); 
+            gc.drawImage(croppedImage, p.getPosX(), p.getPosY()); 
         }
         Player k = thePlayers.get(1);
         if(k.getPlayerState()==PlayerState.ALIVE){
             k.tick();
             WritableImage croppedImage2 = new WritableImage(player2.getPixelReader(),k.getFrameX(),0,64,64);
-            gc.drawImage(croppedImage2, k.getX(), k.getY());
+            gc.drawImage(croppedImage2, k.getPosX(), k.getPosY());
         }
     }
     
@@ -226,18 +211,6 @@ public class Laboration5 extends Application {
 
        
         
-    }
-    
-    private LookDirection randomDirection(){
-        Random rand = new Random();
-        
-        int random = rand.nextInt(2)+1;
-        
-        if(random == 1){
-            return LookDirection.RIGHT;
-        }
-        else
-            return LookDirection.LEFT;
     }
     
     @Override
@@ -361,8 +334,6 @@ public class Laboration5 extends Application {
         rightCarImages.add(tryLoad("images/carPack/rotated/TaxiXpress-GTA2.png","images/Car.png"));
         rightCarImages.add(tryLoad("images/carPack/rotated/TVVan-GTA2.png","images/Car.png"));
         rightCarImages.add(tryLoad("images/carPack/rotated/Z-Type-GTA2.png","images/Car.png"));
-        
-        
     }
     
     private void checkWinner(){
@@ -376,7 +347,9 @@ public class Laboration5 extends Application {
             }
         }
     }
-    
+    public void stopGame(){
+        timer.stop();
+    }
     private void errorAlert(String message){
         Alert alerta = new Alert(AlertType.ERROR);
         alerta.setTitle("Error");
@@ -593,8 +566,6 @@ public class Laboration5 extends Application {
                      }     
                     }
                 }
-        
-        
         );
         
         theScene.setOnKeyReleased(
@@ -613,12 +584,9 @@ public class Laboration5 extends Application {
                         case "UP": game.getPlayer(1).setVelY(0);break;
                         case "ENTER": game.getPlayer(1).setGunLock(false);break;
                         }
-
-    
                     }
                 }
-        
-        
+
         );
     }
     
