@@ -21,7 +21,7 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author Jakob
+ * @author Jakob Danielsson & Michael Hjälmö
  */
 public class NewGame extends Stage{
     private final TextField player1field;

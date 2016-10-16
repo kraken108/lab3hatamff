@@ -1,30 +1,40 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package model;
 
 import java.io.Serializable;
 import javafx.scene.image.Image;
 
 /**
- *
- * @author Jakob
+ * Bullet holds all nessecary elements for a visual bullet in the game
+ * @author Jakob Danielsson & Michael Hjälmö
  */
-public class Bullet extends Sprite implements Serializable{
+
+
+public class Bullet extends Object implements Serializable{
     private final int velocity = 20;
     
+    /**
+     * Empty constructor
+     */
     public Bullet(){
-        super(0,0,null,null);
-        //this.theSprite = new Sprite(0,0,null,null);
+        super();
     }
     
+    /**
+     * Constructor
+     * @param x X position of the bullet spawn point
+     * @param y Y Position of the bullet spawn point
+     * @param direction Direction of the bullet
+     * @param image Image of the bullet
+     */
     public Bullet(double x, double y, LookDirection direction,Image image){
-        super(x,y,image,direction);
+        super(x,y,image.getWidth(),image.getHeight(),direction);
         calculateSpawn(direction,x,y);
     }
     
+    /**
+     * Update the bullets position
+     */
     public void tick(){
         switch(getLookDirection()){
             case UP: moveY(-velocity);break;
@@ -35,7 +45,13 @@ public class Bullet extends Sprite implements Serializable{
     }
 
 
-    public void calculateSpawn(LookDirection direction,double x, double y){
+    /**
+     * Calculate spawn point depending of which way the player faces.
+     * @param direction The direction
+     * @param x The x position
+     * @param y The y position
+     */
+    private void calculateSpawn(LookDirection direction,double x, double y){
         switch(direction){
             case UP: setPosX(getPosX()+17);break;
             case DOWN: setPosX(getPosX()+26); setPosY(getPosY()+56);break;

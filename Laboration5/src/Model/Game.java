@@ -55,6 +55,9 @@ public class Game implements Serializable{
         return (ArrayList<Car>) theCars.clone();
     }
     
+    public void addPlayer(Player p,int i){
+        thePlayers.add(i,p);
+    }
     /**
      * @return the state of the game
      */
@@ -97,7 +100,12 @@ public class Game implements Serializable{
      * @return the player at the stated <em>index</em>
      */
     public Player getPlayer(int index){
-        return thePlayers.get(index);
+        try{
+            return thePlayers.get(index);
+        }catch(IndexOutOfBoundsException e){
+            return null;
+        }
+        
     }
     
     /**
@@ -168,7 +176,7 @@ public class Game implements Serializable{
             if(p.getPlayerState()==PlayerState.ALIVE)
             for(Car c : theCars){
                 if(p.getPosX()>c.getPosX()&&p.getPosX()<c.getPosX()+c.getImage().getWidth())
-                    if(p.getPosY()+p.getImage().getHeight()>c.getPosY()&&p.getPosY()<c.getPosY()+c.getImage().getHeight()){
+                    if(p.getPosY()+p.getImageHeight()>c.getPosY()&&p.getPosY()<c.getPosY()+c.getImage().getHeight()){
                         p.removeKill();
                         p.addDeath();
                         p.SetPlayerState(PlayerState.DEAD);
@@ -232,8 +240,12 @@ public class Game implements Serializable{
     public void removeCar(){
         for(int i=0; i<theCars.size(); i++)
             if(theCars.get(i).getPosX()>1124 || theCars.get(i).getPosX()<-400){
-                System.out.println("RÄDD OCH ÄGD AV PROFESSOR BENGTSSON");
-                theCars.remove(i);
+                try{
+                    theCars.remove(i);
+                }catch(IndexOutOfBoundsException e){
+                    return;
+                }
+                
             }
     }
 }

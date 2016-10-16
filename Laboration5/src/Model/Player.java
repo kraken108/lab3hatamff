@@ -13,7 +13,7 @@ import javafx.scene.image.Image;
  * A player holds all neccesary elements that is special for a player.
  * @author Jakob Danielsson & Michael Hjälmö
  */
-public class Player extends Sprite implements Serializable{
+public class Player extends Object implements Serializable{
     private ArrayList<Bullet> theBullets;
     private String name;
     private int frameX,frameY;
@@ -52,7 +52,7 @@ public class Player extends Sprite implements Serializable{
      * @param name The name of the player
      */
     public Player(double posX,double posY,Image image, int playerNo,String name){
-        super(posX,posY,image,LookDirection.UP);
+        super(posX,posY,image.getWidth(),image.getHeight(),LookDirection.UP);
         theBullets = new ArrayList<Bullet>();
         velX = 0;
         velY = 0;
@@ -70,7 +70,11 @@ public class Player extends Sprite implements Serializable{
      * @param index Index of the bullets position in the bullet list
      */
     public void removeBullet(int index){
-        theBullets.remove(index);
+        try{
+            theBullets.remove(index);
+        }catch(IndexOutOfBoundsException e){
+        }
+        
     }
     
     /**

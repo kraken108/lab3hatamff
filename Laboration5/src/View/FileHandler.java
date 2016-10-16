@@ -6,36 +6,38 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import model.Game;
-
+import java.util.ArrayList;
+import model.*;
+/**
+ * Handler for loading and saving files.
+ * @author Jakob Danielsson & Michael Hjälmö
+ */
 public class FileHandler {
     
     public FileHandler(){
         
     }
-    public void saveFile(File file,Game game){
+    public void saveFile(File file,ArrayList<Player> thePlayers) throws Exception{
         FileOutputStream fout = null;  
 
 	    try {
 	      fout = new FileOutputStream(file);
 	      ObjectOutputStream ous = new ObjectOutputStream(fout); 
-	      ous.writeObject(game);
-	      
-	      System.out.println("Serializing successfully completed");
+	      ous.writeObject(thePlayers);
 	    }
 	    catch (Exception e) {
-	      System.out.println(e);
+	      throw new Exception();
 	    }
 	    finally {
 	    	try {
-	    		if(fout != null) fout.close();
+                    if(fout != null) fout.close();
 	    	}
 	    	catch(IOException e) {}
 	    }
     }
     
-    public Game loadFile(File file) throws ClassNotFoundException,IOException{
-        Game game = null;
+    public ArrayList<Player> loadFile(File file) throws ClassNotFoundException,IOException{
+        ArrayList<Player> thePlayers = null;
         FileInputStream fin = null;
         
         try {
@@ -43,16 +45,16 @@ public class FileHandler {
 	      fin = new FileInputStream(file);
 	      ObjectInputStream ois = new ObjectInputStream(fin);
 	      
-	      game = (Game) ois.readObject();
+	      thePlayers = (ArrayList<Player>) ois.readObject();
 	      
 	      System.out.println("Deserializing successfully completed");
 	    }
 	    catch (IOException e) {
-              game = null;
+              thePlayers = null;
               throw new IOException("IO Exception");
 	    }
 	    catch (ClassNotFoundException e) {
-              game = null;
+              thePlayers = null;
               throw new ClassNotFoundException("Class not found");
 	    }
 	    finally {
@@ -61,6 +63,6 @@ public class FileHandler {
 		}
 		catch(IOException e) {}
 	    }
-        return game;
+        return thePlayers;
     }
 }
