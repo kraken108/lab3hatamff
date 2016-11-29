@@ -84,6 +84,10 @@ public class Car extends Object implements Serializable{
         return lookDirection;
     }    
 
+    /**
+     * 
+     * @return Image of car
+     */
     public Image getImage(){
         return image;
     }

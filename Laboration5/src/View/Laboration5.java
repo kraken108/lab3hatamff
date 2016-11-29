@@ -1,12 +1,5 @@
 package View;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -123,12 +116,12 @@ public class Laboration5 extends Application {
         for(Player p: thePlayers){
             for(Car c: theCar){
                 game.removeCar();                
-                if(p.getPosY()<=490 && p.getPosY()>=270){
+                /*if(p.getPosY()<=490 && p.getPosY()>=270){
                 if(c.getVelocity()<0 &&p.getPosX()<c.getPosX())
                     c.roadRage(-10);
                 else if(c.getVelocity()>0 && p.getPosX()>c.getPosX())
                     c.roadRage(10);
-                }                      
+                }      */                
                 c.tick();
                 gc.drawImage(c.getImage(), c.getPosX(), c.getPosY());            
              }
@@ -218,7 +211,7 @@ public class Laboration5 extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Map example");
+        primaryStage.setTitle("Dodgecar");
         window = primaryStage;
         root = new Group();
         menu = new Group();

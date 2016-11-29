@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 import java.io.Serializable;
@@ -10,7 +5,7 @@ import java.util.ArrayList;
 import javafx.scene.image.Image;
 
 /**
- * A player holds all neccesary elements that is special for a player.
+ * A player extends an object and holds necessary player elements
  * @author Jakob Danielsson & Michael Hjälmö
  */
 public class Player extends Object implements Serializable{

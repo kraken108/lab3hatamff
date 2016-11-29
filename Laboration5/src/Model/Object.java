@@ -12,7 +12,7 @@ abstract public class Object implements Serializable{
     private LookDirection lookDirection;
     
     /**
-     * Empty constructor that creates empty sprite
+     * Empty constructor that creates empty object
      */
     protected Object(){
         posX = 0;
@@ -21,11 +21,12 @@ abstract public class Object implements Serializable{
     }
 
     /**
-     * 
-     * @param posX is the x-coordinate of the sprite
-     * @param posY is the y-coordinate of the sprite
-     * @param image is the image of the sprite
-     * @param lookDirection is the LookDirection of the sprite
+     * Constructor
+     * @param posX X coordinate value
+     * @param posY Y coordinate value
+     * @param imageWidth Width of image
+     * @param imageHeight Height of image
+     * @param lookDirection Look direction
      */
     protected Object(double posX,double posY,double imageWidth, double imageHeight,LookDirection lookDirection){
         this.posX = posX;
