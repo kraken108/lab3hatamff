@@ -1,18 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 import java.io.Serializable;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 
 /**
- *
- * @author Jakob
+ * Score keeps track of players ammount of kills and deaths.
+ * @author Jakob Danielsson & Michael Hjälmö
  */
 public class Score implements Serializable{
     private int kills;

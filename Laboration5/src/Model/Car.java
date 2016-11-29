@@ -1,37 +1,46 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
-
 import java.io.Serializable;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+
 
 /**
  * A car holds all necesarry information and methods for a visual car in the game
- * @author micke1
+ * @author Jakob Danielsson & Michael Hjälmö
  */
-public class Car extends Sprite implements Serializable{
+public class Car extends Object implements Serializable{
     
     private int velocity;
+    private Image image;
     private LookDirection lookDirection;
     
+    /**
+     * Empty constructor
+     */
     public Car(){
         super();
         calculateSpawn();
     }
+    /**
+     * Constructor
+     * @param image Image of the car
+     * @param direction Direction of the car
+     */
     public Car(Image image,LookDirection direction){
-        super(0,0,image,direction);
+        super(0,0,image.getWidth(),image.getHeight(),direction);
+        this.image = image;
         calculateSpawn();
-        
     }
     
+    /**
+     * @return The velocity of the car
+     */
     public int getVelocity(){
         return velocity;
     }
     
+    /**
+     * Calculates a new spawn depending on which way the car is facing.
+     */
     public void calculateSpawn(){
         if(getLookDirection()==LookDirection.RIGHT){
             setPosX(-250);
@@ -45,29 +54,41 @@ public class Car extends Sprite implements Serializable{
         }
     }
     
+    /**
+     * Changes the velocity of the car.
+     * @param velocity The new velocity
+     */
     public void roadRage(int velocity){
         this.velocity=velocity;
     }
     
+    /**
+     * Set the direction the car is facing
+     * @param lookDirection The direction
+     */
     public void setDirection(LookDirection lookDirection){
         this.lookDirection=lookDirection;
     }
     
-    
+    /**
+     * Update the cars position
+     */
     public void tick(){
         moveX(velocity);
     }
     
+    /**
+     * @return the direction the car is facing.
+     */
     public LookDirection getDirection(){
         return lookDirection;
     }    
-    
-    
-    public void drive(){
-        setPosX(getPosX()-250);
-        setPosY(getPosY()+320);  
-        setDirection(lookDirection.RIGHT);
-        moveX(velocity);        
-    }        
-    
+
+    /**
+     * 
+     * @return Image of car
+     */
+    public Image getImage(){
+        return image;
+    }
 }

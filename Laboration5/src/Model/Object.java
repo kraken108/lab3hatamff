@@ -1,49 +1,39 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 import java.io.Serializable;
-import javafx.scene.image.Image;
 
 /**
- *
- * @author Jakob
+ * Abstract class that represents a visual object and its elements
+ * @author Jakob Danielsson & Michael Hjälmö
  */
-abstract public class Sprite implements Serializable{
+abstract public class Object implements Serializable{
     private double posX,posY;
     private double imageWidth,imageHeight;
     private LookDirection lookDirection;
-    private Image image;
     
     /**
-     * Empty constructor that creates empty sprite
+     * Empty constructor that creates empty object
      */
-    protected Sprite(){
+    protected Object(){
         posX = 0;
         posY = 0;
-        imageWidth = 0;
-        imageHeight = 0;
-        image = null;
         lookDirection = null;
     }
 
     /**
-     * 
-     * @param posX is the x-coordinate of the sprite
-     * @param posY is the y-coordinate of the sprite
-     * @param image is the image of the sprite
-     * @param lookDirection is the LookDirection of the sprite
+     * Constructor
+     * @param posX X coordinate value
+     * @param posY Y coordinate value
+     * @param imageWidth Width of image
+     * @param imageHeight Height of image
+     * @param lookDirection Look direction
      */
-    protected Sprite(double posX,double posY,Image image,LookDirection lookDirection){
+    protected Object(double posX,double posY,double imageWidth, double imageHeight,LookDirection lookDirection){
         this.posX = posX;
         this.posY = posY;
-        imageWidth = image.getWidth();
-        imageHeight = image.getHeight();
-        this.image = image;
         this.lookDirection = lookDirection;
+        this.imageWidth = imageWidth;
+        this.imageHeight = imageHeight;
     }
     
     /**
@@ -71,13 +61,6 @@ abstract public class Sprite implements Serializable{
     public void move(double velX, double velY){
         posX+=velX;
         posY+=velY;
-    }
-    /**
-     * 
-     * @return the image
-     */
-    public Image getImage(){
-        return image;
     }
     /**
      * @return the posX

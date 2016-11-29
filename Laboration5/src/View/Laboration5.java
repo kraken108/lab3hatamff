@@ -40,7 +40,7 @@ import javafx.scene.text.Text;
 
 /**
  *
- * @author Jakob
+ * @author Jakob Danielsson & Michael Hjälmö
  */
 public class Laboration5 extends Application {
     
@@ -54,6 +54,9 @@ public class Laboration5 extends Application {
     private Circle altBullet;
     private FileChooser fileChooser;
     private NewGame newGameWindow;
+    private ControlsWindow controlsWindow;
+    private RulesWindow rulesWindow;
+    private AboutWindow aboutWindow;
     private FileHandler fileHandler;
     private Text player1score,player2score,pausedText,continueGame;
     private Group root,menu;
@@ -101,7 +104,7 @@ public class Laboration5 extends Application {
     private void carSpawn(){
         double newTime = System.nanoTime();
         if(newTime-lastTopSpawn>ONEBILLION+topCooldown){
-            game.addCar(getRandomCar(LookDirection.LEFT), LookDirection.LEFT);
+            game.addCar(getRandomCar(LookDirection.LEFT),LookDirection.LEFT);
             Random rand = new Random();
             topCooldown = FOURBILLION*rand.nextDouble();
             lastTopSpawn = System.nanoTime();
@@ -233,6 +236,12 @@ public class Laboration5 extends Application {
         fileHandler = new FileHandler();
         newGameWindow = new NewGame();
         newGameWindow.initOwner(primaryStage);
+        controlsWindow = new ControlsWindow();
+        controlsWindow.initOwner(primaryStage);
+        rulesWindow = new RulesWindow();
+        rulesWindow.initOwner(primaryStage);
+        aboutWindow = new AboutWindow();
+        aboutWindow.initOwner(primaryStage);
         
         menuGc = menuCanvas.getGraphicsContext2D();
         gc = canvas.getGraphicsContext2D();
@@ -421,7 +430,7 @@ public class Laboration5 extends Application {
         gameRunning = true;
         timer.start();
     }
-    
+   
     
     private void initNewGame(){
         newGameWindow.showAndWait();
@@ -431,14 +440,28 @@ public class Laboration5 extends Application {
             gameResume();
             startGame();
         }
-        
+    }
+    
+    private void controlsWindow(){
+        controlsWindow.showAndWait();
+    }
+    
+    private void rulesWindow(){
+        rulesWindow.showAndWait();
+    }
+    
+    private void aboutWindow(){
+        aboutWindow.showAndWait();
     }
     
     private void loadGame(){
         File file = fileChooser.showOpenDialog(window);
         if(file!= null){
             try{
-                game = fileHandler.loadFile(file);
+                ArrayList<Player> thePlayers =fileHandler.loadFile(file);
+                for(int i = 0;i<thePlayers.size();i++){
+                    game.addPlayer(thePlayers.get(i),i);
+                }
                 startGame();
             }catch(IOException e){
                 errorAlert("Could not load file..");
@@ -459,7 +482,11 @@ public class Laboration5 extends Application {
            public void handle (ActionEvent t) {
                File file = fileChooser.showSaveDialog(primaryStage);
                if(file != null){
-                   fileHandler.saveFile(file,game);
+                   try{
+                       fileHandler.saveFile(file,game.getPlayers());
+                   }catch(Exception e){
+                       errorAlert("Could not save file..");
+                   }
                }
                file = null;
            } 
@@ -498,8 +525,24 @@ public class Laboration5 extends Application {
         
         Menu menuHelp = new Menu("Help");
         MenuItem addControls = new MenuItem("Controls");
+        addControls.setOnAction(new EventHandler<ActionEvent>(){
+           public void handle(ActionEvent t){
+               controlsWindow();
+           } 
+        });
         MenuItem addAbout = new MenuItem("About");
-        menuHelp.getItems().addAll(addControls,addAbout);
+        addAbout.setOnAction(new EventHandler<ActionEvent>(){
+           public void handle(ActionEvent t){
+               aboutWindow();
+           } 
+        });
+        MenuItem addRules = new MenuItem("Rules");
+        addRules.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t){
+                rulesWindow();
+            }
+        });
+        menuHelp.getItems().addAll(addControls,addAbout,addRules);
         
         menuBar.getMenus().addAll(menuFile,menuGame,menuHelp);
         
