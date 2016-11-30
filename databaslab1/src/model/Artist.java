@@ -5,10 +5,40 @@
  */
 package model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Jakob
  */
-public class Artist {
+public class Artist extends Person{
+    
+    private String nickName;
+    private ArrayList<MusicAlbum> theMusicAlbums;
+    
+    public Artist(String SSN, String firstName, String lastName, String eMail, String phoneNumber, String nickName) {
+        super(SSN, firstName, lastName, eMail, phoneNumber);
+        this.nickName=nickName;
+    }
+
+    /**
+     * @return the nickName
+     */
+    public String getNickName() {
+        return nickName;
+    }
+
+    /**
+     * @param nickName the nickName to set
+     */
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
     
 }
+    
+    
+    
+    
+       
+
