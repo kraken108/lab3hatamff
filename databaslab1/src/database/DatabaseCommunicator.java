@@ -42,9 +42,10 @@ public class DatabaseCommunicator {
     }
     
     private String createQuery(String searchWord,String searchBy){
-        String query = "SELECT * FROM MusicAlbum,ArtistAlbum WHERE " 
-                        + searchBy + " = '" + searchWord +"';";
+        String query = "SELECT * FROM MusicAlbum WHERE " 
+                        + searchBy + " LIKE '" + searchWord +"';";
         
+        System.out.println(query);
         return query;
     }
     
@@ -54,32 +55,48 @@ public class DatabaseCommunicator {
         Statement stmt = null;
         ArrayList<MusicAlbum> musicAlbums = new ArrayList<>();
         try {
+            
             // Execute the SQL statement
             stmt = con.createStatement();
+            
             ResultSet rs = stmt.executeQuery(query);
-
             // Get the attribute names
-            /*
+            ResultSetMetaData metaData = rs.getMetaData();
+            int ccount = metaData.getColumnCount();
             for (int c = 1; c <= ccount; c++) {
                 System.out.print(metaData.getColumnName(c) + "\t");
             }
-            System.out.println();
-            */
+            System.out.println("");
             
-            ResultSetMetaData metaData = rs.getMetaData();
+            
             // Get the attribute values
             while (rs.next()) {
+                System.out.println("hej");
                 // NB! This is an example, -not- the preferred way to retrieve data.
                 // You should use methods that return a specific data type, like
                 // rs.getInt(), rs.getString() or such.
                 // It's also advisable to store each tuple (row) in an object of
                 // custom type (e.g. Employee).
-                musicAlbums.add((MusicAlbum)rs.getObject(1));
+                for (int c = 1; c <= ccount; c++) {
+                    System.out.print(rs.getObject(c) + "\t");
+                }
+                MusicAlbum m = null;
+                m.setAlbumId(rs.getInt("albumId"));
+                m.setTitle(rs.getString("title"));
+                m.setPublishDate(rs.getString("publishDate"));
+                m.setGenre(rs.getString("genre"));
+                m.setRating(rs.getFloat("rating"));
+                System.out.println(m.toString());
+
+                musicAlbums.add(m);
                     //System.out.print(rs.getObject(c) + "\t");
                 //System.out.println();
             }
 
-        } finally {
+        } catch(SQLException e){
+            System.out.println(e);
+        }
+        finally {
             if (stmt != null) {
                 stmt.close();
             }

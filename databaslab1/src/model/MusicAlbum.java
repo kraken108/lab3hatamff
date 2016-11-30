@@ -11,13 +11,20 @@ package model;
  */
 public class MusicAlbum {
     
-    private String albumId;
+    private int albumId;
     private String title;
     private String publishDate;
     private String genre;
-    private String rating;
+    private float rating;
     
-    public MusicAlbum(String albumId, String title, String publishDate, String genre, String rating){
+    public MusicAlbum(){
+        this.albumId=0;
+        this.title=null;
+        this.publishDate=null;
+        this.genre=null;
+        this.rating=0;
+    }
+    public MusicAlbum(int albumId, String title, String publishDate, String genre, float rating){
         this.albumId=albumId;
         this.title=title;
         this.publishDate=publishDate;
@@ -28,14 +35,14 @@ public class MusicAlbum {
     /**
      * @return the albumId
      */
-    public String getAlbumId() {
+    public int getAlbumId() {
         return albumId;
     }
 
     /**
      * @param albumId the albumId to set
      */
-    public void setAlbumId(String albumId) {
+    public void setAlbumId(int albumId) {
         this.albumId = albumId;
     }
 
@@ -84,16 +91,20 @@ public class MusicAlbum {
     /**
      * @return the rating
      */
-    public String getRating() {
+    public float getRating() {
         return rating;
     }
 
     /**
      * @param rating the rating to set
      */
-    public void setRating(String rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
     
-    
+    @Override
+    public String toString(){
+        String tmp = "Album: " + getTitle();
+        return tmp;
+    }
 }

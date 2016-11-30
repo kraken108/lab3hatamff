@@ -5,6 +5,8 @@
  */
 package databaslab1;
 
+
+import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -28,6 +30,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import model.*;
+import database.*;
 
 /**
  *
@@ -81,15 +85,33 @@ public class Databaslab1 extends Application{
         //NYTT
         
         ListView listView = new ListView<>();
-        listView.getItems().addAll("IronMan", "Bacon", "Contact", "Ham", "Ham");
         
  
         borderPane.setCenter(listView);
         statusbar2.getChildren().addAll(add,rate);
         statusbar.getChildren().addAll(btn,txt,choiceBox);
         Scene scene = new Scene(borderPane, 768, 512);
+        DatabaseCommunicator dbComm = null;
+        try{
+            dbComm = new DatabaseCommunicator();
+        }catch(Exception E){
+            
+        }
+        
+        Company theCompany = new Company();     
+        ArrayList<MusicAlbum> tempMusicAlbum = new ArrayList<>();
+        
+        try{
+           tempMusicAlbum = dbComm.searchAlbums("TestAlbum","title");
+           for(MusicAlbum ma : tempMusicAlbum){
+               theCompany.addMusicAlbum(ma);
+               listView.getItems().add(ma.toString());
+           }
+          
+        }catch(Exception E){}
         
         
+       
         
         primaryStage.setTitle("Main Menu");
         primaryStage.setScene(scene);
