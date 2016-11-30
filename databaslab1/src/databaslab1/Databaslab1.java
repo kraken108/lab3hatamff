@@ -88,6 +88,7 @@ public class Databaslab1 extends Application{
         Scene scene = new Scene(borderPane, 768, 512);
         
         
+        
         primaryStage.setTitle("Main Menu");
         primaryStage.setScene(scene);
         primaryStage.show();
