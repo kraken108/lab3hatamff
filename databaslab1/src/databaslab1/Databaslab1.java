@@ -9,22 +9,34 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
  *
  * @author Jakob
  */
-public class Databaslab1 extends Application {
+public class Databaslab1 extends Application{
+    
+    Stage window;
+    
     
     @Override
     public void start(Stage primaryStage) {
@@ -43,8 +55,8 @@ public class Databaslab1 extends Application {
         add.setText("Add CD");
         
         BorderPane borderPane = new BorderPane();
-     
-        
+  
+      
         HBox statusbar = new HBox();
         borderPane.setTop(statusbar);
         statusbar.setSpacing(10);
@@ -55,10 +67,6 @@ public class Databaslab1 extends Application {
         borderPane.setBottom(statusbar2);
         statusbar2.setPadding(new Insets(10, 0, 10, 10));
         
-        HBox midbar = new HBox();
-        borderPane.setCenter(midbar);
-        //midbar.setStyle("-fx-background-color: #000000;");
-        
         TextField txt = new TextField("Enter search word");
         
         ChoiceBox<String> choiceBox = new ChoiceBox<>();
@@ -66,11 +74,21 @@ public class Databaslab1 extends Application {
         choiceBox.setTooltip(new Tooltip("Search by"));
         choiceBox.setAccessibleText("Hej");
         
+        
+        //NYTT
+        
+        ListView listView = new ListView<>();
+        listView.getItems().addAll("IronMan", "Bacon", "Contact", "Ham", "Ham");
+        
+ 
+        borderPane.setCenter(listView);
+        
         statusbar2.getChildren().addAll(add);
         statusbar.getChildren().addAll(btn,txt,choiceBox);
         Scene scene = new Scene(borderPane, 768, 512);
         
-        primaryStage.setTitle("Hello World!");
+        
+        primaryStage.setTitle("Main Menu");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -78,8 +96,8 @@ public class Databaslab1 extends Application {
     /**
      * @param args the command line arguments
      */
+
     public static void main(String[] args) {
         launch(args);
     }
-    
 }
