@@ -43,6 +43,10 @@ public class Databaslab1 extends Application{
         
         Button btn = new Button();
         btn.setText("Search");
+        Button rate = new Button();
+        rate.setText("Rate");
+        
+        
         btn.setOnAction(new EventHandler<ActionEvent>() {
             
             @Override
@@ -53,10 +57,9 @@ public class Databaslab1 extends Application{
         
         Button add = new Button();
         add.setText("Add CD");
-        
         BorderPane borderPane = new BorderPane();
   
-      
+        
         HBox statusbar = new HBox();
         borderPane.setTop(statusbar);
         statusbar.setSpacing(10);
@@ -82,8 +85,7 @@ public class Databaslab1 extends Application{
         
  
         borderPane.setCenter(listView);
-        
-        statusbar2.getChildren().addAll(add);
+        statusbar2.getChildren().addAll(add,rate);
         statusbar.getChildren().addAll(btn,txt,choiceBox);
         Scene scene = new Scene(borderPane, 768, 512);
         

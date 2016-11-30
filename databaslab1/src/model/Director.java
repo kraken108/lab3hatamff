@@ -5,10 +5,23 @@
  */
 package model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Jakob
  */
-public class Director {
+public class Director extends Person{
+    
+    private ArrayList<Film> theFilms;
+    
+    
+    public Director(String SSN, String firstName, String lastName, String eMail, String phoneNumber) {
+        super(SSN, firstName, lastName, eMail, phoneNumber);
+    }
+    
+    
+    
+    
     
 }
