@@ -64,7 +64,7 @@ public class Databaslab1 extends Application {
         ChoiceBox<String> choiceBox = new ChoiceBox<>();
         choiceBox.getItems().addAll("Author", "Title", "Genre", "Rating");
         choiceBox.setTooltip(new Tooltip("Search by"));
-        choiceBox.getSelectionModel().selectFirst();
+        choiceBox.setAccessibleText("Hej");
         
         statusbar2.getChildren().addAll(add);
         statusbar.getChildren().addAll(btn,txt,choiceBox);
