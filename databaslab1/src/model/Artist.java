@@ -34,7 +34,6 @@ public class Artist extends Person{
     public void setNickName(String nickName) {
         this.nickName = nickName;
     }
-    
 }
     
     

@@ -5,6 +5,8 @@
  */
 package model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Jakob
@@ -16,6 +18,7 @@ public class MusicAlbum {
     private String publishDate;
     private String genre;
     private String rating;
+    private ArrayList<Artist> theArtists;
     
     public MusicAlbum(String albumId, String title, String publishDate, String genre, String rating){
         this.albumId=albumId;
@@ -93,7 +96,5 @@ public class MusicAlbum {
      */
     public void setRating(String rating) {
         this.rating = rating;
-    }
-    
-    
+    }   
 }
