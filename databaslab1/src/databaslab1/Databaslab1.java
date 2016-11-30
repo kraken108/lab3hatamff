@@ -16,7 +16,17 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToolBar;
+import javafx.scene.control.Tooltip;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -27,50 +37,67 @@ public class Databaslab1 extends Application{
     
     Stage window;
     
+    
+    @Override
+    public void start(Stage primaryStage) {
+        
+        Button btn = new Button();
+        btn.setText("Search");
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Hej");
+            }
+        });
+        
+        Button add = new Button();
+        add.setText("Add CD");
+        
+        BorderPane borderPane = new BorderPane();
+  
+      
+        HBox statusbar = new HBox();
+        borderPane.setTop(statusbar);
+        statusbar.setSpacing(10);
+        statusbar.setPadding(new Insets(10, 0, 10, 10));
+        
+        HBox statusbar2 = new HBox();  
+        statusbar2.setSpacing(10);
+        borderPane.setBottom(statusbar2);
+        statusbar2.setPadding(new Insets(10, 0, 10, 10));
+        
+        TextField txt = new TextField("Enter search word");
+        
+        ChoiceBox<String> choiceBox = new ChoiceBox<>();
+        choiceBox.getItems().addAll("Author", "Title", "Genre", "Rating");
+        choiceBox.setTooltip(new Tooltip("Search by"));
+        choiceBox.getSelectionModel().selectFirst();
+        
+        
+        //NYTT
+        
+        ListView listView = new ListView<>();
+        listView.getItems().addAll("IronMan", "Bacon", "Contact", "Ham", "Ham");
+        
+ 
+        borderPane.setCenter(listView);
+        
+        statusbar2.getChildren().addAll(add);
+        statusbar.getChildren().addAll(btn,txt,choiceBox);
+        Scene scene = new Scene(borderPane, 768, 512);
+        
+        
+        primaryStage.setTitle("Main Menu");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    /**
+     * @param args the command line arguments
+     */
+
     public static void main(String[] args) {
         launch(args);
     }
-    
-    @Override
-    public void start(Stage primaryStage) throws Exception{
-        window = primaryStage;
-        window.setTitle("Main Menu");
-        
-        GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10, 10, 10, 10));
-        grid.setVgap(3);
-        grid.setHgap(3);
-        
-        Button search = new Button("Search");
-        GridPane.setConstraints(search, 0, 0);
-        
-        TextField nameInput = new TextField("Enter input here..");
-        GridPane.setConstraints(nameInput, 15, 0);
-        
-        Label addLabel = new Label("Add");
-        GridPane.setConstraints(addLabel, 0, 35);
-        
-        ChoiceBox<String> choiceBox = new ChoiceBox<>();
-        GridPane.setConstraints(choiceBox, 25, 0);
-        choiceBox.getItems().addAll("Author", "CD", "Panrike");
-        
-        
-        
-        TextField passInput = new TextField();
-        passInput.setPromptText("To add");
-        GridPane.setConstraints(passInput, 1, 35);
-        
-        grid.getChildren().addAll(search, nameInput, addLabel, passInput, choiceBox);
-        
-        Scene scene = new Scene(grid,300,200);
-        window.setScene(scene);        
-        window.show();
-      
-    }
-    
-    
-    
-
-
-
 }
