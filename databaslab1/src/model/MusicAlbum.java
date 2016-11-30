@@ -5,6 +5,8 @@
  */
 package model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Jakob
@@ -16,15 +18,19 @@ public class MusicAlbum {
     private String publishDate;
     private String genre;
     private float rating;
+    private ArrayList<Artist> theArtists;
     
     public MusicAlbum(){
+        theArtists = new ArrayList<>();
         this.albumId=0;
         this.title=null;
         this.publishDate=null;
         this.genre=null;
         this.rating=0;
+        
     }
     public MusicAlbum(int albumId, String title, String publishDate, String genre, float rating){
+        theArtists = new ArrayList<>();
         this.albumId=albumId;
         this.title=title;
         this.publishDate=publishDate;
@@ -102,9 +108,24 @@ public class MusicAlbum {
         this.rating = rating;
     }
     
+    public void addArtist(Artist a){
+        if(!theArtists.contains(a))
+            theArtists.add(a);
+    }
+    
+    public ArrayList<Artist> getArtists(){
+        return (ArrayList<Artist>) theArtists.clone();
+    }
+    
     @Override
     public String toString(){
-        String tmp = "Album: " + getTitle();
+        String artists = "";
+        for(Artist a : getArtists()){
+            artists += a.getFirstName() + " " + a.getLastName() + ", ";
+        }
+        String tmp = "Album: " + getTitle() + "\tRelease date: " 
+                    + getPublishDate() + "\tGenre: " + getGenre() 
+                + "\tRating: " + getRating() + "\tArtists: " + artists;
         return tmp;
     }
 }

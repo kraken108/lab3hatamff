@@ -16,6 +16,10 @@ public class Artist extends Person{
     private String nickName;
     private ArrayList<MusicAlbum> theMusicAlbums;
     
+    public Artist(){
+        super();
+        nickName = null;
+    }
     public Artist(String SSN, String firstName, String lastName, String eMail, String phoneNumber, String nickName) {
         super(SSN, firstName, lastName, eMail, phoneNumber);
         this.nickName=nickName;

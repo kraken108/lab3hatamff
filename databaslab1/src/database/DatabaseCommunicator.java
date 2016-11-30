@@ -43,7 +43,7 @@ public class DatabaseCommunicator {
     
     private String createQuery(String searchWord,String searchBy){
         String query = "SELECT * FROM MusicAlbum WHERE " 
-                        + searchBy + " LIKE '" + searchWord +"';";
+                        + searchBy + " LIKE '%" + searchWord +"%';";
         
         System.out.println(query);
         return query;
@@ -71,26 +71,34 @@ public class DatabaseCommunicator {
             
             // Get the attribute values
             while (rs.next()) {
-                System.out.println("hej");
-                // NB! This is an example, -not- the preferred way to retrieve data.
-                // You should use methods that return a specific data type, like
-                // rs.getInt(), rs.getString() or such.
-                // It's also advisable to store each tuple (row) in an object of
-                // custom type (e.g. Employee).
+                
                 for (int c = 1; c <= ccount; c++) {
                     System.out.print(rs.getObject(c) + "\t");
                 }
-                MusicAlbum m = null;
+                MusicAlbum m = new MusicAlbum();
+                System.out.println("hej");
                 m.setAlbumId(rs.getInt("albumId"));
+                System.out.println("album id: " + m.getAlbumId());
                 m.setTitle(rs.getString("title"));
-                m.setPublishDate(rs.getString("publishDate"));
+                m.setPublishDate(rs.getString("releaseDate"));
                 m.setGenre(rs.getString("genre"));
                 m.setRating(rs.getFloat("rating"));
                 System.out.println(m.toString());
-
+                
+                ResultSet tmp = stmt.executeQuery("SELECT * FROM ArtistAlbum NATURAL JOIN Artist "
+                        + "WHERE albumId LIKE '"+m.getAlbumId()+"';");
+                while(tmp.next()){
+                    Artist a = new Artist();
+                    a.setFirstName(tmp.getString("firstName"));
+                    a.setLastName(tmp.getString("lastName"));
+                    a.setSSN(tmp.getString("ssn"));
+                    a.setNickName(tmp.getString("nickname"));
+                    a.seteMail(tmp.getString("email"));
+                    a.setPhoneNumber(tmp.getString("phoneNo"));
+                    m.addArtist(a);
+                }
                 musicAlbums.add(m);
-                    //System.out.print(rs.getObject(c) + "\t");
-                //System.out.println();
+
             }
 
         } catch(SQLException e){

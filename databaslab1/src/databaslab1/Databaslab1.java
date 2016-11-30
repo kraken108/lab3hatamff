@@ -102,7 +102,7 @@ public class Databaslab1 extends Application{
         ArrayList<MusicAlbum> tempMusicAlbum = new ArrayList<>();
         
         try{
-           tempMusicAlbum = dbComm.searchAlbums("TestAlbum","title");
+           tempMusicAlbum = dbComm.searchAlbums("T","title");
            for(MusicAlbum ma : tempMusicAlbum){
                theCompany.addMusicAlbum(ma);
                listView.getItems().add(ma.toString());
