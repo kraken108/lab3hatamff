@@ -17,5 +17,7 @@ import model.MusicAlbum;
  */
 public interface sqlqueries {
     public ArrayList<MusicAlbum> searchAlbums(String query) throws SQLException;
+    public void submitReview(float rating,String comment,MusicAlbum album) throws SQLException;
+    public void addAlbum(MusicAlbum album) throws SQLException;
     
 }

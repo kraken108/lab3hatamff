@@ -41,67 +41,49 @@ public class DatabaseCommunicator implements sqlqueries{
         }
     }
     
-    private void addNewArtist(Artist a){
-        Statement stmt = null;
-        String query = "INSERT INTO Artist (name) VALUES('"+a.getName() +"');";
+    public void newAlbumRequest(MusicAlbum album){
         try{
-            stmt = con.createStatement();
-            int n = stmt.executeUpdate(query);
-            System.out.println("lagt till ny");
+            addAlbum(album);
         }catch(SQLException e){
             System.out.println(e);
         }
         
-        
     }
-    private void checkNewArtists(ArrayList<Artist> theArtists) throws SQLException{
-        String query = null;
-        Statement stmt = null;
-        for(Artist a : theArtists){
-            query = "SELECT * FROM Artist WHERE name LIKE '" + a.getName() +"';";
-            stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            if(!rs.next()){
-                addNewArtist(a);
-            }
-        }
-    }
-    
-    public void newAlbumRequest(MusicAlbum album){
+
+    public void rateRequest(float rating,String comment,MusicAlbum album){
         try{
-            checkNewArtists(album.getArtists());
-            addAlbum(album);
+            submitReview(rating,comment,album);
         }catch(SQLException e){
-            
+            System.out.println(e);
         }
-        
     }
     
     public ArrayList<MusicAlbum> searchRequest(String searchWord,String searchBy){
-        
+        ArrayList<MusicAlbum> theAlbums = null;
         if(searchBy=="Title" || searchBy=="Genre" || searchBy=="Rating"){
             try{
-                return searchAlbums(searchAlbumQuery(searchWord,searchBy));
-            }catch(Exception E){} 
+                theAlbums = searchAlbums(searchAlbumQuery(searchWord,searchBy));
+            }finally{
+                return theAlbums;
+            }
         }
-        else if(searchBy=="Artist"){
+        else{
             try{
-                return searchAlbums(searchAuthorQuery(searchWord,searchBy));
-                
-            }catch(Exception E){}
+                 theAlbums = searchAlbums(searchArtistQuery(searchWord,searchBy));
+            }finally{
+                return theAlbums;
+            }
         }                      
-        return null;
     }
     
     private String searchAlbumQuery(String searchWord,String searchBy){
         String query = "SELECT * FROM MusicAlbum WHERE " 
                         + searchBy + " LIKE '%" + searchWord +"%';";
-        
         System.out.println(query);
         return query;
     }
 
-    private String searchAuthorQuery(String searchWord,String searchBy){
+    private String searchArtistQuery(String searchWord,String searchBy){
         String query = "SELECT * FROM ArtistAlbum NATURAL JOIN MusicAlbum "
                 + "WHERE name IN (SELECT name "
                 + "FROM Artist WHERE name "
@@ -115,12 +97,10 @@ public class DatabaseCommunicator implements sqlqueries{
         Statement tmpstmt = null;
         ArrayList<MusicAlbum> musicAlbums = new ArrayList<>();
         try {
+            con.setAutoCommit(false);
             // Execute the SQL statement
             stmt = con.createStatement();
-            
             ResultSet rs = stmt.executeQuery(query);
-            
-            
             // Get the attribute values
             while (rs.next()) {
                 MusicAlbum m = new MusicAlbum();   
@@ -148,26 +128,84 @@ public class DatabaseCommunicator implements sqlqueries{
                 }
                 if(!exists)musicAlbums.add(m);
             }
-
+            con.commit();
+            return musicAlbums;
         } catch(SQLException e){
-            System.out.println(e);
+            if(con!=null) con.rollback();
+            throw(e);
         }
         finally {
             if (stmt != null) {
                 stmt.close();
                 tmpstmt.close();
             }
-        } 
-        
-        return musicAlbums; 
+            con.setAutoCommit(true);
+        }  
     }
     
-    public void addAlbum(MusicAlbum album) throws SQLException{
+    
+    @Override
+    public void submitReview(float rating,String comment,MusicAlbum album) throws SQLException{
+        String query = "INSERT INTO review(rating,reviewText) VALUES('" 
+                + rating + "','" + comment + "');";
         Statement stmt = null;
-        String query = "INSERT INTO MusicAlbum(title,releaseDate,genre) "
+        try{
+            con.setAutoCommit(false);
+            stmt = con.createStatement();
+            int n = stmt.executeUpdate(query);
+            query = "SELECT LAST_INSERT_ID();";
+            ResultSet rs = stmt.executeQuery(query);
+            int reviewId;
+            if(rs.next()){
+                reviewId = rs.getInt(1);
+                query = "INSERT INTO ReviewedAlbum VALUES('" 
+                        + reviewId + "','" + album.getAlbumId() + "');";
+                stmt.executeUpdate(query);
+            }
+            query = "SELECT albumId, AVG(rating) FROM ReviewedAlbum,review "
+                    + "GROUP BY albumId HAVING albumId LIKE '" 
+                    + album.getAlbumId() + "';";
+            rs = stmt.executeQuery(query);
+            if(rs.next()){
+                float newRating = rs.getFloat(2);
+                query = "UPDATE MusicAlbum SET rating = '" + newRating + "' WHERE albumId = '" + album.getAlbumId() + "';";
+                stmt.executeUpdate(query);
+            }
+            con.commit();
+        }catch(SQLException e){
+            if(con!=null) con.rollback();
+            throw(e);
+        }
+        finally{
+            if(stmt!=null){
+                stmt.close();
+            }
+            con.setAutoCommit(true);
+        }
+    }
+    
+    
+    @Override
+    public void addAlbum(MusicAlbum album) throws SQLException{
+        String query = null;
+        Statement stmt = null;
+        ArrayList<Artist> theArtists = album.getArtists();
+        try{
+            con.setAutoCommit(false);
+            for(Artist a : theArtists){
+                query = "SELECT * FROM Artist WHERE name LIKE '" 
+                        + a.getName() +"';";
+                stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+                if(!rs.next()){
+                    query = "INSERT INTO Artist (name) VALUES('"+a.getName() +"');";
+                    stmt.executeUpdate(query);
+                }
+            }
+            query = "INSERT INTO MusicAlbum(title,releaseDate,genre) "
                 + "VALUES('" + album.getTitle() + "','" 
                 + album.getPublishDate() + "','"+album.getGenre() + "');";
-        try{
+            
             stmt = con.createStatement();
             int n = stmt.executeUpdate(query);
             
@@ -176,17 +214,24 @@ public class DatabaseCommunicator implements sqlqueries{
             if(rs.next()){
                 album.setAlbumId(rs.getInt(1));
             }
-            
-            
+ 
             for(Artist a : album.getArtists()){
                 System.out.println(a.getName());
                 query = "INSERT INTO ArtistAlbum VALUES('"
                         + a.getName() +"','" + album.getAlbumId() + "');";
                 stmt.executeUpdate(query);
             }
+            
+            con.commit();
         }catch(SQLException e){
-            System.out.println(e);
+            if(con!=null)con.rollback();
+            throw(e);
+        }finally{
+            if(stmt!=null){
+                stmt.close();
+            }
+            con.setAutoCommit(true);
         }
-       
+        
     }
 }
