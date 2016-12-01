@@ -40,7 +40,8 @@ import database.*;
 public class Databaslab1 extends Application{
     
     Stage window;
-    
+    ComfirmBox c = new ComfirmBox();
+    MusicAlbum m1 = new MusicAlbum();
     
     @Override
     public void start(Stage primaryStage) {
@@ -65,9 +66,13 @@ public class Databaslab1 extends Application{
         
         
         add.setOnAction(e -> {
-            boolean result = ComfirmBox.display("Title of Window", "Add Section");               
-            System.out.println(result);
+            m1=c.display();   
         });
+
+        System.out.println(m1.getGenre());
+        System.out.println(m1.getTitle());
+        System.out.println(m1.getPublishDate());
+        System.out.println(m1.getRating());
         
         BorderPane borderPane = new BorderPane();
   
@@ -108,7 +113,7 @@ public class Databaslab1 extends Application{
         
         Company theCompany = new Company();     
         ArrayList<MusicAlbum> tempMusicAlbum = new ArrayList<>();
-        
+        /*
         MusicAlbum m = new MusicAlbum("Ponny och Janriket","28-02-16","K-Pop");
         m.addArtist(new Artist("Henrik Lundström"));
         m.addArtist(new Artist("Michael Hjälmö"));
@@ -123,7 +128,7 @@ public class Databaslab1 extends Application{
            }
           
         }catch(Exception E){}
-        
+        */
         primaryStage.setTitle("Main Menu");
         primaryStage.setScene(scene);
         primaryStage.show();
