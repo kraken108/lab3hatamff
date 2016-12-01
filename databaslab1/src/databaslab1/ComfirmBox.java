@@ -5,6 +5,7 @@
  */
 package databaslab1;
 
+import database.DatabaseCommunicator;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -32,7 +33,7 @@ public class ComfirmBox{
         albumToReturn = new MusicAlbum();
     }    
     
-    public MusicAlbum display(){
+    public MusicAlbum display(DatabaseCommunicator dbComm){
         Stage window = new Stage();     
         
         GridPane grid = new GridPane();
@@ -76,11 +77,16 @@ public class ComfirmBox{
         GridPane.setConstraints(closeButton, 2, 5);
         
         
-        addButton.setOnAction(e ->{
+
+
+
+        
+        addButton.setOnMouseClicked(e ->{
             Artist tempArtist = new Artist(artistField.getText());
             if(tempArtist.getName().isEmpty() || tempArtist.getName().length()<2){
                 AlertBox.display("Error!", "You must specify a name.");
             }                
+
             if(!(tempArtist.getName() instanceof String)){
                 AlertBox.display("Error!", "Name must be a String.");
             }
@@ -89,14 +95,15 @@ public class ComfirmBox{
                 artistField.clear();
             }
         });
-        
+         
         doneButton.setOnMouseClicked(e->{        
             albumToReturn.setTitle(titleField.getText());
             albumToReturn.setGenre(genreField.getText());
             albumToReturn.setPublishDate(dateField.getText());
             titleField.clear();
             dateField.clear();
-            genreField.clear();            
+            genreField.clear();
+            dbComm.newAlbumRequest(albumToReturn);
         });
         
         closeButton.setOnAction(e ->{

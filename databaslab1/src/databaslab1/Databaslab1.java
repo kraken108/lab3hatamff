@@ -82,7 +82,7 @@ public class Databaslab1 extends Application{
         Button add = new Button();
         add.setText("Add CD");
         add.setOnAction(e -> {
-            m1=c.display();   
+            m1=c.display(dbComm);   
         });
 
         System.out.println(m1.getGenre());

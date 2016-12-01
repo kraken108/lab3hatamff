@@ -29,7 +29,6 @@ public class MusicAlbum {
         this.publishDate=null;
         this.genre=null;
         this.rating=0;
-        theArtists.add(artist);
     }
 
     
