@@ -62,7 +62,6 @@ public class DatabaseCommunicator implements sqlqueries{
             stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             if(!rs.next()){
-                System.out.println("lägger till ny");
                 addNewArtist(a);
             }
         }
@@ -80,12 +79,12 @@ public class DatabaseCommunicator implements sqlqueries{
     
     public ArrayList<MusicAlbum> searchRequest(String searchWord,String searchBy){
         
-        if(searchBy=="title" || searchBy=="genre" || searchBy=="rating"){
+        if(searchBy=="Title" || searchBy=="Genre" || searchBy=="Rating"){
             try{
                 return searchAlbums(searchAlbumQuery(searchWord,searchBy));
             }catch(Exception E){} 
         }
-        else if(searchBy=="artist"){
+        else if(searchBy=="Artist"){
             try{
                 return searchAlbums(searchAuthorQuery(searchWord,searchBy));
                 
@@ -124,26 +123,24 @@ public class DatabaseCommunicator implements sqlqueries{
             
             // Get the attribute values
             while (rs.next()) {
-                System.out.println("hittade ponny");
-                MusicAlbum m = new MusicAlbum();
-                
+                MusicAlbum m = new MusicAlbum();   
                 m.setAlbumId(rs.getInt("albumId"));
+                System.out.println(m.getAlbumId());
                 m.setTitle(rs.getString("title"));
+                System.out.println(m.getTitle());
                 m.setPublishDate(rs.getString("releaseDate"));
                 m.setGenre(rs.getString("genre"));
                 m.setRating(rs.getFloat("rating"));
-
                 tmpstmt = con.createStatement();
                 ResultSet tmp = tmpstmt.executeQuery("SELECT * FROM ArtistAlbum "
                         + "WHERE albumId LIKE '"+m.getAlbumId()+"';");
                 while(tmp.next()){
-                    Artist a = new Artist();
-                    
-                    a.setName(tmp.getString("name"));
+                    System.out.println(tmp.getString("name"));
                     //a.seteMail(tmp.getString("email"));
                     //a.setPhoneNumber(tmp.getString("phoneNo"));
-                    m.addArtist(a);
+                    m.addArtist(new Artist(tmp.getString("name")));
                 }
+                System.out.println(m.toString());
                 Boolean exists = false;
                 for(MusicAlbum temp : musicAlbums){
                     if(temp.getAlbumId() == m.getAlbumId())
@@ -161,6 +158,7 @@ public class DatabaseCommunicator implements sqlqueries{
                 tmpstmt.close();
             }
         } 
+        
         return musicAlbums; 
     }
     

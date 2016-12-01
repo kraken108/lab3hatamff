@@ -78,16 +78,15 @@ public class ComfirmBox{
         
         addButton.setOnAction(e ->{
             Artist tempArtist = new Artist(artistField.getText());
-            if(tempArtist.getName().isEmpty()){
+            if(tempArtist.getName().isEmpty() || tempArtist.getName().length()<2){
                 AlertBox.display("Error!", "You must specify a name.");
             }                
-            
-            if(tempArtist.getName() instanceof String){
-                albumToReturn.addArtist(tempArtist);  
-                artistField.clear();
+            if(!(tempArtist.getName() instanceof String)){
+                AlertBox.display("Error!", "Name must be a String.");
             }
             else{
-                AlertBox.display("Error!", "Name must be a String.");
+                albumToReturn.addArtist(tempArtist);  
+                artistField.clear();
             }
         });
         
@@ -106,14 +105,10 @@ public class ComfirmBox{
                 
         
         grid.getChildren().addAll(artistLabel, artistField, titleLabel, titleField, doneButton, dateField, dateLabel, genreLabel, genreField, addButton, closeButton);
-        
-  
+
         Scene scene = new Scene(grid, 300, 200);
         window.setScene(scene);
         window.show();         
         return albumToReturn;
     }  
-} 
-    
-    
-
+}

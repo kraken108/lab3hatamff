@@ -140,4 +140,8 @@ public class Databaslab1 extends Application{
                 listView.getItems().add(ma.toString());
         }
     }
+
 }
+
+
+
