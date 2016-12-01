@@ -76,13 +76,13 @@ public class ComfirmBox{
         GridPane.setConstraints(closeButton, 2, 5);
         
         
-        
         addButton.setOnAction(e ->{
             Artist tempArtist = new Artist(artistField.getText());
             if(tempArtist.getName().isEmpty()){
                 AlertBox.display("Error!", "You must specify a name.");
             }                
-            else if(tempArtist.getName() instanceof String){
+            
+            if(tempArtist.getName() instanceof String){
                 albumToReturn.addArtist(tempArtist);  
                 artistField.clear();
             }

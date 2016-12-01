@@ -40,31 +40,47 @@ import database.*;
 public class Databaslab1 extends Application{
     
     Stage window;
+
+    private DatabaseCommunicator dbComm;
+    private TextField txt;
+    private ListView listView;
+    private ChoiceBox<String> choiceBox;
+
     ComfirmBox c = new ComfirmBox();
     MusicAlbum m1 = new MusicAlbum();
+
     
     @Override
     public void start(Stage primaryStage) {
         
         Button btn = new Button();
         btn.setText("Search");
+        
         Button rate = new Button();
         rate.setText("Rate");
+        dbComm = null;
+        try{
+            dbComm = new DatabaseCommunicator();
+        }catch(Exception E){
+            System.out.println(E);
+        }
         
+        txt = new TextField("Enter search word");
+        listView = new ListView<>();
+        choiceBox = new ChoiceBox<>();
+        choiceBox.getItems().addAll("Artist", "Title", "Genre", "Rating");
+        choiceBox.setTooltip(new Tooltip("Search by"));
+        choiceBox.getSelectionModel().selectFirst();
         
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            
+        btn.setOnAction(new EventHandler<ActionEvent>() {  
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Hej");
+                sendSearch();
             }
         });
         
         Button add = new Button();
         add.setText("Add CD");
-        
-        
-        
         add.setOnAction(e -> {
             m1=c.display();   
         });
@@ -87,48 +103,19 @@ public class Databaslab1 extends Application{
         borderPane.setBottom(statusbar2);
         statusbar2.setPadding(new Insets(10, 0, 10, 10));
         
-        TextField txt = new TextField("Enter search word");
-        
-        ChoiceBox<String> choiceBox = new ChoiceBox<>();
-        choiceBox.getItems().addAll("Author", "Title", "Genre", "Rating");
-        choiceBox.setTooltip(new Tooltip("Search by"));
-        choiceBox.setAccessibleText("Hej");
-        
         
         //NYTT
-        
-        ListView listView = new ListView<>();
         
  
         borderPane.setCenter(listView);
         statusbar2.getChildren().addAll(add,rate);
         statusbar.getChildren().addAll(btn,txt,choiceBox);
         Scene scene = new Scene(borderPane, 768, 512);
-        DatabaseCommunicator dbComm = null;
-        try{
-            dbComm = new DatabaseCommunicator();
-        }catch(Exception E){
-            
-        }
+        
         
         Company theCompany = new Company();     
-        ArrayList<MusicAlbum> tempMusicAlbum = new ArrayList<>();
-        /*
-        MusicAlbum m = new MusicAlbum("Ponny och Janriket","28-02-16","K-Pop");
-        m.addArtist(new Artist("Henrik Lundström"));
-        m.addArtist(new Artist("Michael Hjälmö"));
-        
-        dbComm.newAlbumRequest(m);
-        
-        try{
-           tempMusicAlbum = dbComm.searchRequest("Ponny","title");
-           for(MusicAlbum ma : tempMusicAlbum){
-               theCompany.addMusicAlbum(ma);
-               listView.getItems().add(ma.toString());
-           }
-          
-        }catch(Exception E){}
-        */
+
+
         primaryStage.setTitle("Main Menu");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -137,8 +124,20 @@ public class Databaslab1 extends Application{
     /**
      * @param args the command line arguments
      */
-
     public static void main(String[] args) {
         launch(args);
+    }
+    
+    private void sendSearch(){
+        listView.getItems().clear();
+        ArrayList<MusicAlbum> tempMusicAlbum = new ArrayList<>();
+        System.out.println((String)choiceBox.getSelectionModel().getSelectedItem());
+        System.out.println(txt.getText());
+        tempMusicAlbum = dbComm.searchRequest(txt.getText(),(String)choiceBox.getSelectionModel().getSelectedItem());
+        if(tempMusicAlbum!=null)
+        for(MusicAlbum ma : tempMusicAlbum){
+            if(ma!=null)
+                listView.getItems().add(ma.toString());
+        }
     }
 }
