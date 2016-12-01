@@ -40,10 +40,15 @@ import database.*;
 public class Databaslab1 extends Application{
     
     Stage window;
+
     private DatabaseCommunicator dbComm;
     private TextField txt;
     private ListView listView;
     private ChoiceBox<String> choiceBox;
+
+    ComfirmBox c = new ComfirmBox();
+    MusicAlbum m1 = new MusicAlbum();
+
     
     @Override
     public void start(Stage primaryStage) {
@@ -76,12 +81,14 @@ public class Databaslab1 extends Application{
         
         Button add = new Button();
         add.setText("Add CD");
-        
-        
-        
         add.setOnAction(e -> {
-            ComfirmBox.display("Title of Window", "Add Section");               
+            m1=c.display();   
         });
+
+        System.out.println(m1.getGenre());
+        System.out.println(m1.getTitle());
+        System.out.println(m1.getPublishDate());
+        System.out.println(m1.getRating());
         
         BorderPane borderPane = new BorderPane();
   
@@ -97,10 +104,6 @@ public class Databaslab1 extends Application{
         statusbar2.setPadding(new Insets(10, 0, 10, 10));
         
         
-        
-        
-        
-        
         //NYTT
         
  
@@ -111,13 +114,8 @@ public class Databaslab1 extends Application{
         
         
         Company theCompany = new Company();     
-        
-       
-        
-        //MusicAlbum m = new MusicAlbum("Torgnys stora äventyr","30-01-12","Adventure");
-        //m.addArtist(new Artist("Jonas Fiskmås"));
-        //dbComm.newAlbumRequest(m);
-        
+
+
         primaryStage.setTitle("Main Menu");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -126,7 +124,6 @@ public class Databaslab1 extends Application{
     /**
      * @param args the command line arguments
      */
-
     public static void main(String[] args) {
         launch(args);
     }

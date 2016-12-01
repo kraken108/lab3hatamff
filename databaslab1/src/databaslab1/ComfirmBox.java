@@ -5,6 +5,7 @@
  */
 package databaslab1;
 
+import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -25,14 +26,13 @@ import model.MusicAlbum;
 public class ComfirmBox{
     
     private MusicAlbum albumToReturn;
-    boolean hej = true;
+   
     
     public ComfirmBox(){
         albumToReturn = new MusicAlbum();
-    }
+    }    
     
-    
-    public static void display(String title, String message){
+    public MusicAlbum display(){
         Stage window = new Stage();     
         
         GridPane grid = new GridPane();
@@ -74,35 +74,43 @@ public class ComfirmBox{
         
         Button closeButton = new Button("Close");
         GridPane.setConstraints(closeButton, 2, 5);
-        closeButton.setOnAction(e -> window.close());
+        
+        
         
         addButton.setOnAction(e ->{
-            Artist tempArtist=null;
-            tempArtist.setName(artistField.getText());
-           // albumToReturn.addArtist(tempArtist);            
-            artistField.clear();
+            Artist tempArtist = new Artist(artistField.getText());
+            if(tempArtist.getName().isEmpty()){
+                AlertBox.display("Error!", "You must specify a name.");
+            }                
+            
+            if(tempArtist.getName() instanceof String){
+                albumToReturn.addArtist(tempArtist);  
+                artistField.clear();
+            }
+            else{
+                AlertBox.display("Error!", "Name must be a String.");
+            }
         });
         
-        
-        
-        doneButton.setOnMouseClicked(e->{
-        titleField.clear();
-        dateField.clear();
-        genreField.clear();        
+        doneButton.setOnMouseClicked(e->{        
+            albumToReturn.setTitle(titleField.getText());
+            albumToReturn.setGenre(genreField.getText());
+            albumToReturn.setPublishDate(dateField.getText());
+            titleField.clear();
+            dateField.clear();
+            genreField.clear();            
         });
         
+        closeButton.setOnAction(e ->{
+            window.close();
+        });
                 
         
         grid.getChildren().addAll(artistLabel, artistField, titleLabel, titleField, doneButton, dateField, dateLabel, genreLabel, genreField, addButton, closeButton);
-        
-  
+
         Scene scene = new Scene(grid, 300, 200);
         window.setScene(scene);
-        window.show();
-        
-    }
-
-  
-    
-    
+        window.show();         
+        return albumToReturn;
+    }  
 }
