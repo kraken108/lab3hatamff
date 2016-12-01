@@ -32,7 +32,7 @@ public class ComfirmBox{
     }
     
     
-    public boolean display(String title, String message){
+    public static void display(String title, String message){
         Stage window = new Stage();     
         
         GridPane grid = new GridPane();
@@ -79,7 +79,7 @@ public class ComfirmBox{
         addButton.setOnAction(e ->{
             Artist tempArtist=null;
             tempArtist.setName(artistField.getText());
-            albumToReturn.addArtist(tempArtist);            
+           // albumToReturn.addArtist(tempArtist);            
             artistField.clear();
         });
         
@@ -99,8 +99,7 @@ public class ComfirmBox{
         Scene scene = new Scene(grid, 300, 200);
         window.setScene(scene);
         window.show();
-        return hej;
-         
+        
     }
 
   

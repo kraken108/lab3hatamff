@@ -40,7 +40,6 @@ public class MusicAlbum {
         this.publishDate=publishDate;
         this.genre=genre;
         this.rating=rating;
-        theArtists.add(artist);
         this.rating=0;
 
     }
@@ -131,8 +130,11 @@ public class MusicAlbum {
     
     
     public void addArtist(Artist a){
-        if(!theArtists.contains(a))
-            theArtists.add(a);
+        
+        if(!theArtists.contains(a)){
+            theArtists.add(a);     
+        }
+       
     }
     
     public ArrayList<Artist> getArtists(){
@@ -144,11 +146,12 @@ public class MusicAlbum {
     public String toString(){
         String artists = "";
         for(Artist a : getArtists()){
-            artists += a.getName() + ", ";
+            if(a!=null)
+                artists += a.getName() + ", ";
         }
-        String tmp = "Album: " + getTitle() + "\tRelease date: " 
-                    + getPublishDate() + "\tGenre: " + getGenre() 
-                + "\tRating: " + getRating() + "\tArtists: " + artists;
+        String tmp = "Album: " + getTitle() + "\t|\tRelease date: " 
+                    + getPublishDate() + "\t|\tGenre: " + getGenre() 
+                + "\t|\tRating: " + getRating() + "\t|\tArtists: " + artists;
         return tmp;
     }
 
