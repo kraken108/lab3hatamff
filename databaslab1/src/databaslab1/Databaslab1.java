@@ -109,8 +109,14 @@ public class Databaslab1 extends Application{
         Company theCompany = new Company();     
         ArrayList<MusicAlbum> tempMusicAlbum = new ArrayList<>();
         
+        MusicAlbum m = new MusicAlbum("Ponny och Janriket","28-02-16","K-Pop");
+        m.addArtist(new Artist("Henrik Lundström"));
+        m.addArtist(new Artist("Michael Hjälmö"));
+        
+        dbComm.newAlbumRequest(m);
+        
         try{
-           tempMusicAlbum = dbComm.searchAlbums("T","title");
+           tempMusicAlbum = dbComm.searchRequest("Ponny","title");
            for(MusicAlbum ma : tempMusicAlbum){
                theCompany.addMusicAlbum(ma);
                listView.getItems().add(ma.toString());

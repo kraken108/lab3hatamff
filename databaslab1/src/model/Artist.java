@@ -13,30 +13,34 @@ import java.util.ArrayList;
  */
 public class Artist extends Person{
     
-    private String nickName;
+    private String name;
     private ArrayList<MusicAlbum> theMusicAlbums;
     
     public Artist(){
         super();
-        nickName = null;
+        this.name = null;
+    }
+    public Artist(String name){
+        super();
+        this.name = name;
     }
     public Artist(String SSN, String firstName, String lastName, String eMail, String phoneNumber, String nickName) {
         super(SSN, firstName, lastName, eMail, phoneNumber);
-        this.nickName=nickName;
+        this.name=nickName;
     }
 
     /**
      * @return the nickName
      */
-    public String getNickName() {
-        return nickName;
+    public String getName() {
+        return name;
     }
 
     /**
      * @param nickName the nickName to set
      */
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setName(String name) {
+        this.name = name;
     }
 }
     

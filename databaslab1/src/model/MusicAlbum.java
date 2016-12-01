@@ -31,15 +31,18 @@ public class MusicAlbum {
         this.rating=0;
         theArtists.add(artist);
     }
+
     
-    public MusicAlbum(int albumId, String title, String publishDate, String genre, float rating, Artist artist){
+
+    public MusicAlbum(String title, String publishDate, String genre){
         theArtists = new ArrayList<>();
-        this.albumId=albumId;
         this.title=title;
         this.publishDate=publishDate;
         this.genre=genre;
         this.rating=rating;
         theArtists.add(artist);
+        this.rating=0;
+
     }
 
     /**
@@ -141,7 +144,7 @@ public class MusicAlbum {
     public String toString(){
         String artists = "";
         for(Artist a : getArtists()){
-            artists += a.getFirstName() + " " + a.getLastName() + ", ";
+            artists += a.getName() + ", ";
         }
         String tmp = "Album: " + getTitle() + "\tRelease date: " 
                     + getPublishDate() + "\tGenre: " + getGenre() 

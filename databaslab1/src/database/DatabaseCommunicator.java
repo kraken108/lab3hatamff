@@ -18,7 +18,7 @@ import model.*;
  *
  * @author Jakob
  */
-public class DatabaseCommunicator {
+public class DatabaseCommunicator implements sqlqueries{
     private String database;
     private String server;
     private String user, pwd;
@@ -41,64 +41,115 @@ public class DatabaseCommunicator {
         }
     }
     
-    private String createQuery(String searchWord,String searchBy){
+    private void addNewArtist(Artist a){
+        Statement stmt = null;
+        String query = "INSERT INTO Artist (name) VALUES('"+a.getName() +"');";
+        try{
+            stmt = con.createStatement();
+            int n = stmt.executeUpdate(query);
+            System.out.println("lagt till ny");
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+        
+        
+    }
+    private void checkNewArtists(ArrayList<Artist> theArtists) throws SQLException{
+        String query = null;
+        Statement stmt = null;
+        for(Artist a : theArtists){
+            query = "SELECT * FROM Artist WHERE name LIKE '" + a.getName() +"';";
+            stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            if(!rs.next()){
+                System.out.println("lägger till ny");
+                addNewArtist(a);
+            }
+        }
+    }
+    
+    public void newAlbumRequest(MusicAlbum album){
+        try{
+            checkNewArtists(album.getArtists());
+            addAlbum(album);
+        }catch(SQLException e){
+            
+        }
+        
+    }
+    
+    public ArrayList<MusicAlbum> searchRequest(String searchWord,String searchBy){
+        
+        if(searchBy=="title" || searchBy=="genre" || searchBy=="rating"){
+            try{
+                return searchAlbums(searchAlbumQuery(searchWord,searchBy));
+            }catch(Exception E){} 
+        }
+        else if(searchBy=="artist"){
+            try{
+                return searchAlbums(searchAuthorQuery(searchWord,searchBy));
+                
+            }catch(Exception E){}
+        }                      
+        return null;
+    }
+    
+    private String searchAlbumQuery(String searchWord,String searchBy){
         String query = "SELECT * FROM MusicAlbum WHERE " 
                         + searchBy + " LIKE '%" + searchWord +"%';";
         
         System.out.println(query);
         return query;
     }
-    
 
-    public ArrayList<MusicAlbum> searchAlbums(String searchWord,String searchBy) throws SQLException{
-        String query = createQuery(searchWord,searchBy);
+    private String searchAuthorQuery(String searchWord,String searchBy){
+        String query = "SELECT * FROM ArtistAlbum NATURAL JOIN MusicAlbum "
+                + "WHERE name IN (SELECT name "
+                + "FROM Artist WHERE name "
+                + "LIKE '%" + searchWord + "%');";
+        return query;
+    }
+    
+    @Override
+    public ArrayList<MusicAlbum> searchAlbums(String query) throws SQLException{
         Statement stmt = null;
+        Statement tmpstmt = null;
         ArrayList<MusicAlbum> musicAlbums = new ArrayList<>();
         try {
-            
             // Execute the SQL statement
             stmt = con.createStatement();
             
             ResultSet rs = stmt.executeQuery(query);
-            // Get the attribute names
-            ResultSetMetaData metaData = rs.getMetaData();
-            int ccount = metaData.getColumnCount();
-            for (int c = 1; c <= ccount; c++) {
-                System.out.print(metaData.getColumnName(c) + "\t");
-            }
-            System.out.println("");
             
             
             // Get the attribute values
             while (rs.next()) {
-                
-                for (int c = 1; c <= ccount; c++) {
-                    System.out.print(rs.getObject(c) + "\t");
-                }
+                System.out.println("hittade ponny");
                 MusicAlbum m = new MusicAlbum();
-                System.out.println("hej");
+                
                 m.setAlbumId(rs.getInt("albumId"));
-                System.out.println("album id: " + m.getAlbumId());
                 m.setTitle(rs.getString("title"));
                 m.setPublishDate(rs.getString("releaseDate"));
                 m.setGenre(rs.getString("genre"));
                 m.setRating(rs.getFloat("rating"));
-                System.out.println(m.toString());
-                
-                ResultSet tmp = stmt.executeQuery("SELECT * FROM ArtistAlbum NATURAL JOIN Artist "
+
+                tmpstmt = con.createStatement();
+                ResultSet tmp = tmpstmt.executeQuery("SELECT * FROM ArtistAlbum "
                         + "WHERE albumId LIKE '"+m.getAlbumId()+"';");
                 while(tmp.next()){
                     Artist a = new Artist();
-                    a.setFirstName(tmp.getString("firstName"));
-                    a.setLastName(tmp.getString("lastName"));
-                    a.setSSN(tmp.getString("ssn"));
-                    a.setNickName(tmp.getString("nickname"));
-                    a.seteMail(tmp.getString("email"));
-                    a.setPhoneNumber(tmp.getString("phoneNo"));
+                    
+                    a.setName(tmp.getString("name"));
+                    //a.seteMail(tmp.getString("email"));
+                    //a.setPhoneNumber(tmp.getString("phoneNo"));
                     m.addArtist(a);
                 }
-                musicAlbums.add(m);
-
+                Boolean exists = false;
+                for(MusicAlbum temp : musicAlbums){
+                    if(temp.getAlbumId() == m.getAlbumId())
+                        exists = true;
+                }
+                if(!exists)musicAlbums.add(m);
             }
 
         } catch(SQLException e){
@@ -107,8 +158,37 @@ public class DatabaseCommunicator {
         finally {
             if (stmt != null) {
                 stmt.close();
+                tmpstmt.close();
             }
         } 
         return musicAlbums; 
+    }
+    
+    public void addAlbum(MusicAlbum album) throws SQLException{
+        Statement stmt = null;
+        String query = "INSERT INTO MusicAlbum(title,releaseDate,genre) "
+                + "VALUES('" + album.getTitle() + "','" 
+                + album.getPublishDate() + "','"+album.getGenre() + "');";
+        try{
+            stmt = con.createStatement();
+            int n = stmt.executeUpdate(query);
+            
+            query = "SELECT LAST_INSERT_ID();";
+            ResultSet rs = stmt.executeQuery(query);
+            if(rs.next()){
+                album.setAlbumId(rs.getInt(1));
+            }
+            
+            
+            for(Artist a : album.getArtists()){
+                System.out.println(a.getName());
+                query = "INSERT INTO ArtistAlbum VALUES('"
+                        + a.getName() +"','" + album.getAlbumId() + "');";
+                stmt.executeUpdate(query);
+            }
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+       
     }
 }

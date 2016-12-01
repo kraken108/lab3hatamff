@@ -25,14 +25,14 @@ import model.MusicAlbum;
 public class ComfirmBox{
     
     private MusicAlbum albumToReturn;
-
+    boolean hej = true;
     
     public ComfirmBox(){
         albumToReturn = new MusicAlbum();
     }
     
     
-    public void display(String title, String message){
+    public boolean display(String title, String message){
         Stage window = new Stage();     
         
         GridPane grid = new GridPane();
@@ -78,7 +78,7 @@ public class ComfirmBox{
         
         addButton.setOnAction(e ->{
             Artist tempArtist=null;
-            tempArtist.setNickName(artistField.getText());
+            tempArtist.setName(artistField.getText());
             albumToReturn.addArtist(tempArtist);            
             artistField.clear();
         });
@@ -99,7 +99,7 @@ public class ComfirmBox{
         Scene scene = new Scene(grid, 300, 200);
         window.setScene(scene);
         window.show();
-        
+        return hej;
          
     }
 
