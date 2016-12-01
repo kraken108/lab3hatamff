@@ -19,21 +19,27 @@ public class MusicAlbum {
     private String genre;
     private ArrayList<Artist> theArtists;
     private float rating;
+    private Artist artist;
 
     
     public MusicAlbum(){
+        theArtists = new ArrayList<>();
         this.albumId=0;
         this.title=null;
         this.publishDate=null;
         this.genre=null;
         this.rating=0;
+        theArtists.add(artist);
     }
-    public MusicAlbum(int albumId, String title, String publishDate, String genre, float rating){
+    
+    public MusicAlbum(int albumId, String title, String publishDate, String genre, float rating, Artist artist){
+        theArtists = new ArrayList<>();
         this.albumId=albumId;
         this.title=title;
         this.publishDate=publishDate;
         this.genre=genre;
         this.rating=rating;
+        theArtists.add(artist);
     }
 
     /**
@@ -104,13 +110,45 @@ public class MusicAlbum {
      */
     public void setRating(float rating) {
         this.rating = rating;
-
     }   
    
+    /**
+    * @return the artist
+    */
+    public Artist getArtist() {
+        return artist;
+    }
+
+    /**
+    * @param artist the artist to set
+    */
+    public void setArtist(Artist artist) {
+        this.artist = artist;
+    }
+    
+    
+    public void addArtist(Artist a){
+        if(!theArtists.contains(a))
+            theArtists.add(a);
+    }
+    
+    public ArrayList<Artist> getArtists(){
+        return (ArrayList<Artist>) theArtists.clone();
+    }
+    
+
     @Override
     public String toString(){
-        String tmp = "Album: " + getTitle();
+        String artists = "";
+        for(Artist a : getArtists()){
+            artists += a.getFirstName() + " " + a.getLastName() + ", ";
+        }
+        String tmp = "Album: " + getTitle() + "\tRelease date: " 
+                    + getPublishDate() + "\tGenre: " + getGenre() 
+                + "\tRating: " + getRating() + "\tArtists: " + artists;
         return tmp;
     }
+
+
 
 }

@@ -17,6 +17,13 @@ abstract public class Person {
     private String eMail;
     private String phoneNumber;
     
+    public Person(){
+        SSN = null;
+        firstName = null;
+        lastName = null;
+        eMail = null;
+        phoneNumber = null;
+    }
     public Person(String SSN, String firstName, String lastName, String eMail, String phoneNumber){
         this.SSN=SSN;
         this.firstName=firstName;

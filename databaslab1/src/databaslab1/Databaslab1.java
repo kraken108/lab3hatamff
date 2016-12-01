@@ -61,6 +61,14 @@ public class Databaslab1 extends Application{
         
         Button add = new Button();
         add.setText("Add CD");
+        
+        
+        
+        add.setOnAction(e -> {
+            boolean result = ComfirmBox.display("Title of Window", "Add Section");               
+            System.out.println(result);
+        });
+        
         BorderPane borderPane = new BorderPane();
   
         
@@ -102,7 +110,7 @@ public class Databaslab1 extends Application{
         ArrayList<MusicAlbum> tempMusicAlbum = new ArrayList<>();
         
         try{
-           tempMusicAlbum = dbComm.searchAlbums("TestAlbum","title");
+           tempMusicAlbum = dbComm.searchAlbums("T","title");
            for(MusicAlbum ma : tempMusicAlbum){
                theCompany.addMusicAlbum(ma);
                listView.getItems().add(ma.toString());
