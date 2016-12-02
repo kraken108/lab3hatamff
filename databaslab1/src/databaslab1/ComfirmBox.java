@@ -137,7 +137,7 @@ public class ComfirmBox{
             System.out.println("date: " + date);
             titleField.clear();            
             genreField.clear();
-            dbComm.newAlbumRequest(albumToReturn);
+            sendAlbumRequest(dbComm); //SEND NEW ALBUM REQUEST
         });
         
         closeButton.setOnAction(e ->{
@@ -152,4 +152,24 @@ public class ComfirmBox{
         window.show();         
         return albumToReturn;
     }  
+    
+    private void sendAlbumRequest(DatabaseCommunicator dbComm){
+        
+        Thread thread = new Thread(){
+            public void run(){
+                int n = dbComm.newAlbumRequest(albumToReturn);
+                javafx.application.Platform.runLater(
+                        new Runnable(){
+                            public void run(){
+                                if(n==-1){
+                                    AlertBox.display("Error!", "Failed to add new album.");
+                                }
+                            }
+                        }
+                );
+            }
+        };
+        thread.start();
+        
+    }
 }

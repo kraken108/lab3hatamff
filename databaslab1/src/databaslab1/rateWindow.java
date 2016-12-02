@@ -59,15 +59,32 @@ public class rateWindow {
         submitButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event){
-                
-                dbComm.rateRequest(cb.getSelectionModel().getSelectedIndex()+1, textArea.getText(), m);
-
-                
+                sendRateRequest(cb.getSelectionModel().getSelectedIndex()+1,textArea.getText(),m,dbComm);
+                theStage.close();
             }
         });
         
         theGrid.getChildren().addAll(artistLabel,cb,commentLabel,textArea,submitButton);
         theStage.setScene(theScene);
-        theStage.show();  
+        theStage.show();
+    }
+    
+    private void sendRateRequest(int index, String text, MusicAlbum m,DatabaseCommunicator dbComm){
+        Thread thread = new Thread(){
+            public void run(){
+                int n = dbComm.rateRequest(index, text, m);
+                javafx.application.Platform.runLater(
+                        new Runnable(){
+                            public void run(){
+                                if(n==-1){
+                                    AlertBox.display("Error!", "Failed to rate album.");
+                                }
+                            }
+                        }
+                );
+            }
+        };
+        thread.start();
+        
     }
 }
