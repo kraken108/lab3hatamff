@@ -129,11 +129,9 @@ public class ComfirmBox{
                 albumToReturn.addArtist(tempArtist);  
                 artistField.clear();
             }           
-           
-            
+                       
             String date = datePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            albumToReturn.setPublishDate(date);
-            
+            albumToReturn.setPublishDate(date);            
             System.out.println("date: " + date);
             titleField.clear();            
             genreField.clear();
