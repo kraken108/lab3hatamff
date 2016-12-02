@@ -45,6 +45,8 @@ public class Databaslab1 extends Application{
     private TextField txt;
     private ListView listView;
     private ChoiceBox<String> choiceBox;
+    private ArrayList<MusicAlbum> listItems;
+    private rateWindow rw;
 
     ComfirmBox c = new ComfirmBox();
     MusicAlbum m1 = new MusicAlbum();
@@ -53,11 +55,14 @@ public class Databaslab1 extends Application{
     @Override
     public void start(Stage primaryStage) {
         
+        listItems = new ArrayList<>();
+        rw = new rateWindow();
+        
         Button btn = new Button();
         btn.setText("Search");
-        
         Button rate = new Button();
         rate.setText("Rate");
+        
         dbComm = null;
         try{
             dbComm = new DatabaseCommunicator();
@@ -71,6 +76,17 @@ public class Databaslab1 extends Application{
         choiceBox.getItems().addAll("Artist", "Title", "Genre", "Rating");
         choiceBox.setTooltip(new Tooltip("Search by"));
         choiceBox.getSelectionModel().selectFirst();
+        
+        
+        rate.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event){
+                MusicAlbum m = getSelectedAlbum();
+                if(m!=null){
+                    rw.rateAlbum(dbComm,m);
+                }
+            }
+        });
         
         btn.setOnAction(new EventHandler<ActionEvent>() {  
             @Override
@@ -130,15 +146,26 @@ public class Databaslab1 extends Application{
     
     private void sendSearch(){
         listView.getItems().clear();
+        listItems.clear();
         ArrayList<MusicAlbum> tempMusicAlbum = new ArrayList<>();
         System.out.println((String)choiceBox.getSelectionModel().getSelectedItem());
         System.out.println(txt.getText());
         tempMusicAlbum = dbComm.searchRequest(txt.getText(),(String)choiceBox.getSelectionModel().getSelectedItem());
         if(tempMusicAlbum!=null)
         for(MusicAlbum ma : tempMusicAlbum){
-            if(ma!=null)
+            if(ma!=null){
                 listView.getItems().add(ma.toString());
+                listItems.add(ma);
+            }
         }
+    }
+    
+    private MusicAlbum getSelectedAlbum(){
+        int n = listView.getSelectionModel().getSelectedIndex();
+        if(n == -1){
+            return null;
+        }
+        return listItems.get(n);
     }
 
 }

@@ -30,7 +30,6 @@ import model.MusicAlbum;
 public class ComfirmBox{
     
     private MusicAlbum albumToReturn;
-    private final String pattern = "yyyy-MM-dd";
     
     public ComfirmBox(){
         albumToReturn = new MusicAlbum();
@@ -81,7 +80,7 @@ public class ComfirmBox{
         
         addButton.setOnMouseClicked(e ->{
             Artist tempArtist = new Artist(artistField.getText());
-            if(tempArtist.getName().isEmpty() || tempArtist.getName().length()<2){
+            if(tempArtist.getName().length()<2){
                 AlertBox.display("Error!", "You must specify a name.");
             }                
 
@@ -118,7 +117,7 @@ public class ComfirmBox{
             else{
                 albumToReturn.setGenre(genreField.getText());
             }
-            if(tempArtist.getName().isEmpty() || tempArtist.getName().length()<2){
+            if(tempArtist.getName().length()<2){
                 AlertBox.display("Error!", "You must specify a name.");
             }                
 
@@ -145,7 +144,7 @@ public class ComfirmBox{
         
         grid.getChildren().addAll(artistLabel, artistField, titleLabel, titleField, doneButton, dateLabel, genreLabel, genreField, addButton, closeButton);
 
-        Scene scene = new Scene(grid, 500, 300);
+        Scene scene = new Scene(grid, 350, 200);
         window.setScene(scene);
         window.show();         
         return albumToReturn;
