@@ -36,7 +36,7 @@ public class Databaslab1 extends Application{
     private DatabaseCommunicator dbComm;
     private TextField txt;
     private ChoiceBox<String> choiceBox;
-    private ArrayList<MusicAlbum> listItems;
+    private ArrayList<Media> listItems;
     private rateWindow rw;
     private TableView table = new TableView();
     
@@ -44,7 +44,7 @@ public class Databaslab1 extends Application{
     
     
     ComfirmBox c = new ComfirmBox();
-    MusicAlbum m1 = new MusicAlbum();
+    Media m1 = new Media();
 
     
     @Override
@@ -89,7 +89,7 @@ public class Databaslab1 extends Application{
         rate.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event){
-                MusicAlbum m = getSelectedAlbum();
+                Media m = getSelectedAlbum();
                 if(m!=null){
                     rw.rateAlbum(dbComm,m);
                 }
@@ -160,14 +160,14 @@ public class Databaslab1 extends Application{
         
         Thread thread = new Thread(){
             public void run(){
-                ArrayList<MusicAlbum> tempMusicAlbum = 
+                ArrayList<Media> tempMusicAlbum = 
                         dbComm.searchRequest(txt.getText(),(String)
                                 choiceBox.getSelectionModel().getSelectedItem());
                 javafx.application.Platform.runLater(
                         new Runnable(){
                             public void run(){
                                 if(tempMusicAlbum!=null){
-                                    for(MusicAlbum ma : tempMusicAlbum){
+                                    for(Media ma : tempMusicAlbum){
                                         if(ma!=null){
                                             table.getItems().add(ma.toString());
                                             listItems.add(ma);
@@ -183,7 +183,7 @@ public class Databaslab1 extends Application{
         thread.start();
     }
     
-    private MusicAlbum getSelectedAlbum(){
+    private Media getSelectedAlbum(){
         int n = table.getSelectionModel().getSelectedIndex();
         if(n == -1){
             return null;

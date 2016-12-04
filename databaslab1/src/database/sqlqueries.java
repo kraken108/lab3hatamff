@@ -8,7 +8,7 @@ package database;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import model.MusicAlbum;
+import model.Media;
 
 
 /**
@@ -16,8 +16,8 @@ import model.MusicAlbum;
  * @author Jakob
  */
 public interface sqlqueries {
-    public ArrayList<MusicAlbum> searchAlbums(String query) throws SQLException;
-    public void submitReview(float rating,String comment,MusicAlbum album) throws SQLException;
-    public void addAlbum(MusicAlbum album) throws SQLException;
+    public ArrayList<Media> searchAlbums(String query) throws SQLException;
+    public void submitReview(float rating,String comment,Media album) throws SQLException;
+    public void addAlbum(Media album) throws SQLException;
     
 }

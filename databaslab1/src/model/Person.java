@@ -5,103 +5,99 @@
  */
 package model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author micke1
  */
-abstract public class Person {
+public class Person {
     
-    private String SSN;
-    private String firstName;
-    private String lastName;
-    private String eMail;
-    private String phoneNumber;
+    private String name;
+    private Profession profession;
+    private String country;
+    private int age;
+    
+    public Person(String name){
+        this.name=name;
+        age = 0;
+        country = null;
+        profession = Profession.UNKNOWN;
+    }
     
     public Person(){
-        SSN = null;
-        firstName = null;
-        lastName = null;
-        eMail = null;
-        phoneNumber = null;
+        this.name=null;
+        this.age = 0;
+        this.country = null;
+        this.profession = Profession.UNKNOWN;
     }
-    public Person(String SSN, String firstName, String lastName, String eMail, String phoneNumber){
-        this.SSN=SSN;
-        this.firstName=firstName;
-        this.lastName=lastName;
-        this.eMail=eMail;
-        this.phoneNumber=phoneNumber;
-    }
+   
 
-    /**
-     * @return the SSN
-     */
-    public String getSSN() {
-        return SSN;
-    }
-
-    /**
-     * @param SSN the SSN to set
-     */
-    public void setSSN(String SSN) {
-        this.SSN = SSN;
-    }
 
     /**
      * @return the firstName
      */
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
     /**
-     * @param firstName the firstName to set
+     * @param name the name to set
      */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirstName(String name) {
+        this.setName(name);
+    }
+
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
-     * @return the lastName
+     * @return the profession
      */
-    public String getLastName() {
-        return lastName;
+    public Profession getProfession() {
+        return profession;
     }
 
     /**
-     * @param lastName the lastName to set
+     * @param profession the profession to set
      */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setProfession(Profession profession) {
+        this.profession = profession;
+    }    
+
+    /**
+     * @return the country
+     */
+    public String getCountry() {
+        return country;
     }
 
     /**
-     * @return the eMail
+     * @param country the country to set
      */
-    public String geteMail() {
-        return eMail;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     /**
-     * @param eMail the eMail to set
+     * @return the age
      */
-    public void seteMail(String eMail) {
-        this.eMail = eMail;
+    public int getAge() {
+        return age;
     }
 
     /**
-     * @return the phoneNumber
+     * @param age the age to set
      */
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public void setAge(int age) {
+        this.age = age;
     }
 
-    /**
-     * @param phoneNumber the phoneNumber to set
-     */
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-    
     
     
 }

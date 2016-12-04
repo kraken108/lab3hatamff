@@ -16,36 +16,37 @@ import static oracle.jrockit.jfr.events.Bits.floatValue;
  *
  * @author Jakob
  */
-public class MusicAlbum {
+public class Media {
     
     private int albumId;
     private String title;
     private String publishDate;
     private String genre;
-    private ArrayList<Artist> theArtists;
+    private ArrayList<Person> thePersons;
     private float rating;
-    private Artist artist;
-
+    private Person person;
+    private MediaType mediaType;
     
-    public MusicAlbum(){
-        theArtists = new ArrayList<>();
+    public Media(){
+        thePersons = new ArrayList<>();
         this.albumId=0;
         this.title=null;
         this.publishDate=null;
         this.genre=null;
         this.rating=0;
+        mediaType=MediaType.UNKNOWN;
     }
 
     
 
-    public MusicAlbum(String title, String publishDate, String genre){
-        theArtists = new ArrayList<>();
+    public Media(String title, String publishDate, String genre, MediaType mediaType){
+        thePersons = new ArrayList<>();
         this.title=title;
         this.publishDate=publishDate;
         this.genre=genre;
         this.rating=rating;
         this.rating=0;
-
+        this.mediaType=mediaType;
     }
 
     /**
@@ -123,41 +124,40 @@ public class MusicAlbum {
     this.rating=rating;
     }   
     
-   
     /**
-    * @return the artist
-    */
-    public Artist getArtist() {
-        return artist;
+     * @return the person
+     */
+    public Person getPerson() {
+        return person;
     }
 
     /**
-    * @param artist the artist to set
-    */
-    public void setArtist(Artist artist) {
-        this.artist = artist;
+     * @param person the person to set
+     */
+    public void setPerson(Person person) {
+        this.person = person;
     }
-    
-    
-    public void addArtist(Artist a){
-        
-        if(!theArtists.contains(a)){
-            theArtists.add(a);     
-        }
-       
+
+    /**
+     * @return the mediaType
+     */
+    public MediaType getMediaType() {
+        return mediaType;
     }
-    
-    public ArrayList<Artist> getArtists(){
-        return (ArrayList<Artist>) theArtists.clone();
-    }
-    
+
+    /**
+     * @param mediaType the mediaType to set
+     */
+    public void setMediaType(MediaType mediaType) {
+        this.mediaType = mediaType;
+    }    
 
     @Override
     public String toString(){
         String artists = "";
-        for(Artist a : getArtists()){
-            if(a!=null)
-                artists += a.getName() + ", ";
+        for(Person p : getThePersons()){
+            if(p!=null)
+                artists += p.getName() + ", ";
         }
         String tmp = "Album: " + getTitle() + "\t|\tRelease date: " 
                     + getPublishDate() + "\t|\tGenre: " + getGenre() 
@@ -165,6 +165,18 @@ public class MusicAlbum {
         return tmp;
     }
 
+    /**
+     * @return the thePersons
+     */
+    public ArrayList<Person> getThePersons() {
+        return (ArrayList<Person>) thePersons.clone();
+    }
 
-
+    /**
+     * @param thePersons the thePersons to set
+     */
+    public void addPerson(Person p) {
+        if(!thePersons.contains(p))
+            thePersons.add(p);
+    }
 }
