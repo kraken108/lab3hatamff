@@ -184,8 +184,8 @@ public class DatabaseCommunicator implements sqlqueries{
                         + reviewId + "','" + album.getAlbumId() + "');";
                 stmt.executeUpdate(query);
             }
-            query = "SELECT albumId, AVG(rating) FROM ReviewedAlbum,review "
-                    + "GROUP BY albumId HAVING albumId LIKE '" 
+            query = "SELECT albumId, AVG(rating) FROM ReviewedAlbum NATURAL JOIN review "
+                    + "GROUP BY albumId HAVING albumId = '" 
                     + album.getAlbumId() + "';";
             rs = stmt.executeQuery(query);
             if(rs.next()){

@@ -5,7 +5,11 @@
  */
 package model;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  *
@@ -20,6 +24,7 @@ public class MusicAlbum {
     private ArrayList<Artist> theArtists;
     private float rating;
     private Artist artist;
+    private String theArtistsString;
 
     
     public MusicAlbum(){
@@ -29,6 +34,7 @@ public class MusicAlbum {
         this.publishDate=null;
         this.genre=null;
         this.rating=0;
+        theArtistsString = "";
     }
 
     
@@ -40,7 +46,6 @@ public class MusicAlbum {
         this.genre=genre;
         this.rating=rating;
         this.rating=0;
-
     }
 
     /**
@@ -110,7 +115,12 @@ public class MusicAlbum {
      * @param rating the rating to set
      */
     public void setRating(float rating) {
-        this.rating = rating;
+        NumberFormat formatter = NumberFormat.getInstance(Locale.US);
+        formatter.setMaximumFractionDigits(1);
+        formatter.setMinimumFractionDigits(1);
+        formatter.setRoundingMode(RoundingMode.HALF_UP); 
+        Float formatedFloat = new Float(formatter.format(rating));
+        this.rating=formatedFloat;
     }   
    
     /**
@@ -130,10 +140,15 @@ public class MusicAlbum {
     
     public void addArtist(Artist a){
         
-        if(!theArtists.contains(a)){
-            theArtists.add(a);     
+        if(!theArtists.contains(a) && a!= null){
+            theArtists.add(a); 
+            theArtistsString += a.getName() + ", ";
         }
        
+    }
+    
+    public String getTheArtistsString(){
+        return theArtistsString;
     }
     
     public ArrayList<Artist> getArtists(){

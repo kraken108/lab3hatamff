@@ -23,6 +23,11 @@ import javafx.stage.Stage;
 import model.*;
 import database.*;
 import java.sql.SQLException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
  *
@@ -34,9 +39,11 @@ public class Databaslab1 extends Application{
     private DatabaseCommunicator dbComm;
     private TextField txt;
     private ListView listView;
+    private TableView tableView;
     private ChoiceBox<String> choiceBox;
     private ArrayList<MusicAlbum> listItems;
     private rateWindow rw;
+    private ObservableList data;
 
     ComfirmBox c = new ComfirmBox();
     MusicAlbum m1 = new MusicAlbum();
@@ -45,6 +52,29 @@ public class Databaslab1 extends Application{
     @Override
     public void start(Stage primaryStage){
         
+        tableView = new TableView();
+        data = FXCollections.observableList(new ArrayList());
+        tableView.setItems(data);
+        
+        TableColumn titleColumn = new TableColumn("Title");
+        titleColumn.setCellValueFactory(new PropertyValueFactory("title"));
+        titleColumn.setMinWidth(150);
+        TableColumn artistsColumn = new TableColumn("Artists");
+        artistsColumn.setCellValueFactory(new PropertyValueFactory("theArtistsString"));
+        artistsColumn.setMinWidth(200);
+        TableColumn genreColumn = new TableColumn("Genre");
+        genreColumn.setMinWidth(50);
+        genreColumn.setCellValueFactory(new PropertyValueFactory("genre"));
+        TableColumn ratingColumn = new TableColumn("Rating");
+        ratingColumn.setCellValueFactory(new PropertyValueFactory("rating"));
+        ratingColumn.setMinWidth(50);
+        ratingColumn.setMaxWidth(50);
+        TableColumn releaseDateColumn = new TableColumn("Release Date");
+        releaseDateColumn.setCellValueFactory(new PropertyValueFactory("publishDate"));
+        releaseDateColumn.setMinWidth(100);
+        releaseDateColumn.setMaxWidth(100);
+
+        tableView.getColumns().addAll(titleColumn,artistsColumn,genreColumn,ratingColumn,releaseDateColumn);
         listItems = new ArrayList<>();
         rw = new rateWindow();
         Boolean exit = false;
@@ -117,7 +147,7 @@ public class Databaslab1 extends Application{
         //NYTT
         
  
-        borderPane.setCenter(listView);
+        borderPane.setCenter(tableView);
         statusbar2.getChildren().addAll(add,rate);
         statusbar.getChildren().addAll(btn,txt,choiceBox);
         Scene scene = new Scene(borderPane, 768, 512);
@@ -153,14 +183,21 @@ public class Databaslab1 extends Application{
                         new Runnable(){
                             public void run(){
                                 if(tempMusicAlbum!=null){
-                                    for(MusicAlbum ma : tempMusicAlbum){
-                                        if(ma!=null){
-                                            listView.getItems().add(ma.toString());
-                                            listItems.add(ma);
+                                    if(!tempMusicAlbum.isEmpty())
+                                        for(MusicAlbum ma : tempMusicAlbum){
+                                            if(ma!=null){
+                                                changeData(tempMusicAlbum);
+                                                listView.getItems().add(ma.toString());
+                                                listItems.add(ma);
+                                            }
                                         }
-                                    }
+                                    else
+                                        changeData(tempMusicAlbum);
                                 }
-                                else AlertBox.display("Error!", "Search failed.");   
+                                else{
+                                    AlertBox.display("Error!", "Search failed.");
+                                    tableView.setItems(null);
+                                }   
                             }
                         }
                 );
@@ -170,13 +207,17 @@ public class Databaslab1 extends Application{
     }
     
     private MusicAlbum getSelectedAlbum(){
-        int n = listView.getSelectionModel().getSelectedIndex();
+        int n = tableView.getSelectionModel().getSelectedIndex();
         if(n == -1){
             return null;
         }
         return listItems.get(n);
     }
 
+    private void changeData(ArrayList<MusicAlbum> theAlbums){
+        data = FXCollections.observableList(theAlbums);
+        tableView.setItems(data);
+    }
 }
 
 
