@@ -5,7 +5,12 @@
  */
 package model;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
+import static oracle.jrockit.jfr.events.Bits.floatValue;
 
 /**
  *
@@ -110,8 +115,14 @@ public class MusicAlbum {
      * @param rating the rating to set
      */
     public void setRating(float rating) {
-        this.rating = rating;
+    NumberFormat formatter = NumberFormat.getInstance(Locale.US);
+    formatter.setMaximumFractionDigits(2);
+    formatter.setMinimumFractionDigits(2);
+    formatter.setRoundingMode(RoundingMode.HALF_UP); 
+    Float formatedFloat = new Float(formatter.format(rating));
+    this.rating=rating;
     }   
+    
    
     /**
     * @return the artist

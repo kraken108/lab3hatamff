@@ -7,11 +7,13 @@ package database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.*;
 
 /**
@@ -23,8 +25,9 @@ public class DatabaseCommunicator implements sqlqueries{
     private String server;
     private String user, pwd;
     private Connection con;
+    private PreparedStatement searchByArtist,searchByOther;
     
-    public DatabaseCommunicator() throws Exception{
+    public DatabaseCommunicator() throws SQLException,Exception{
         database = "Company";
         server = "jdbc:mysql://localhost:3306/" + database + 
                 "?UseClientEnc=UTF8";
@@ -33,81 +36,100 @@ public class DatabaseCommunicator implements sqlqueries{
         con = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            //java.sql.Driver d=new com.mysql.jdbc.Driver();
             con = DriverManager.getConnection(server, user, pwd);
+            createPreparedStatements();
             System.out.println("Connected!");
-        } catch(Exception e){
+        } catch(SQLException e){
+            if(con!=null) con.close();
             throw(e);
         }
     }
     
-    public void newAlbumRequest(MusicAlbum album){
+    public void closeConnection(){
+        try{
+            con.close();
+        }catch(SQLException e){}
+    }
+    
+    public int newAlbumRequest(MusicAlbum album){
         try{
             addAlbum(album);
+            return 1;
         }catch(SQLException e){
-            System.out.println(e);
+            return -1;
         }
-        
     }
 
-    public void rateRequest(float rating,String comment,MusicAlbum album){
+    public int rateRequest(float rating,String comment,MusicAlbum album){
         try{
             submitReview(rating,comment,album);
+            return 1;
         }catch(SQLException e){
-            System.out.println(e);
+            return -1;
         }
     }
     
     public ArrayList<MusicAlbum> searchRequest(String searchWord,String searchBy){
         ArrayList<MusicAlbum> theAlbums = null;
-        if(searchBy=="Title" || searchBy=="Genre" || searchBy=="Rating"){
+        if(searchBy.equals("Artist")){
             try{
-                theAlbums = searchAlbums(searchAlbumQuery(searchWord,searchBy));
+                searchArtistQuery(searchWord);
+                theAlbums = searchAlbums(searchBy);
+            }finally{
+                return theAlbums;
+            }
+        } 
+        else{
+            try{
+                searchAlbumQuery(searchWord,searchBy);
+                theAlbums = searchAlbums(searchBy);
             }finally{
                 return theAlbums;
             }
         }
-        else{
-            try{
-                 theAlbums = searchAlbums(searchArtistQuery(searchWord,searchBy));
-            }finally{
-                return theAlbums;
-            }
-        }                      
+                             
     }
     
-    private String searchAlbumQuery(String searchWord,String searchBy){
-        String query = "SELECT * FROM MusicAlbum WHERE " 
-                        + searchBy + " LIKE '%" + searchWord +"%';";
-        System.out.println(query);
-        return query;
+    private void searchAlbumQuery(String searchWord,String searchBy) throws SQLException{
+        try {
+            searchByOther.setString(1, searchBy);
+            searchByOther.setString(2, "%"+searchWord+"%");
+        } catch (SQLException ex) {
+            throw(ex);
+        }
     }
 
-    private String searchArtistQuery(String searchWord,String searchBy){
-        String query = "SELECT * FROM ArtistAlbum NATURAL JOIN MusicAlbum "
-                + "WHERE name IN (SELECT name "
-                + "FROM Artist WHERE name "
-                + "LIKE '%" + searchWord + "%');";
-        return query;
+    private void searchArtistQuery(String searchWord) throws SQLException{
+        try {
+            searchByArtist.setString(1,"%"+searchWord+"%");
+        } catch (SQLException ex) {
+            throw(ex);
+        }
     }
     
     @Override
-    public ArrayList<MusicAlbum> searchAlbums(String query) throws SQLException{
+    public ArrayList<MusicAlbum> searchAlbums(String searchBy) throws SQLException{
         Statement stmt = null;
         Statement tmpstmt = null;
+        ResultSet rs = null;
         ArrayList<MusicAlbum> musicAlbums = new ArrayList<>();
         try {
             con.setAutoCommit(false);
-            // Execute the SQL statement
             stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            // Get the attribute values
+            if(searchBy.equals("Artist")){
+                rs = searchByArtist.executeQuery();
+            }
+            else{
+                rs = searchByOther.executeQuery();
+                System.out.println("hej");
+            }
+           
+                
             while (rs.next()) {
+                System.out.println("resultat!");
                 MusicAlbum m = new MusicAlbum();   
                 m.setAlbumId(rs.getInt("albumId"));
-                System.out.println(m.getAlbumId());
                 m.setTitle(rs.getString("title"));
-                System.out.println(m.getTitle());
                 m.setPublishDate(rs.getString("releaseDate"));
                 m.setGenre(rs.getString("genre"));
                 m.setRating(rs.getFloat("rating"));
@@ -115,12 +137,8 @@ public class DatabaseCommunicator implements sqlqueries{
                 ResultSet tmp = tmpstmt.executeQuery("SELECT * FROM ArtistAlbum "
                         + "WHERE albumId LIKE '"+m.getAlbumId()+"';");
                 while(tmp.next()){
-                    System.out.println(tmp.getString("name"));
-                    //a.seteMail(tmp.getString("email"));
-                    //a.setPhoneNumber(tmp.getString("phoneNo"));
                     m.addArtist(new Artist(tmp.getString("name")));
                 }
-                System.out.println(m.toString());
                 Boolean exists = false;
                 for(MusicAlbum temp : musicAlbums){
                     if(temp.getAlbumId() == m.getAlbumId())
@@ -137,8 +155,11 @@ public class DatabaseCommunicator implements sqlqueries{
         finally {
             if (stmt != null) {
                 stmt.close();
-                tmpstmt.close();
             }
+            if(tmpstmt != null)
+                tmpstmt.close();
+            if(rs != null)
+                rs.close();
             con.setAutoCommit(true);
         }  
     }
@@ -149,12 +170,13 @@ public class DatabaseCommunicator implements sqlqueries{
         String query = "INSERT INTO review(rating,reviewText) VALUES('" 
                 + rating + "','" + comment + "');";
         Statement stmt = null;
+        ResultSet rs = null;
         try{
             con.setAutoCommit(false);
             stmt = con.createStatement();
             int n = stmt.executeUpdate(query);
             query = "SELECT LAST_INSERT_ID();";
-            ResultSet rs = stmt.executeQuery(query);
+            rs = stmt.executeQuery(query);
             int reviewId;
             if(rs.next()){
                 reviewId = rs.getInt(1);
@@ -180,6 +202,9 @@ public class DatabaseCommunicator implements sqlqueries{
             if(stmt!=null){
                 stmt.close();
             }
+            if(rs!=null){
+                rs.close();
+            }
             con.setAutoCommit(true);
         }
     }
@@ -189,6 +214,7 @@ public class DatabaseCommunicator implements sqlqueries{
     public void addAlbum(MusicAlbum album) throws SQLException{
         String query = null;
         Statement stmt = null;
+        ResultSet rs = null;
         ArrayList<Artist> theArtists = album.getArtists();
         try{
             con.setAutoCommit(false);
@@ -196,7 +222,7 @@ public class DatabaseCommunicator implements sqlqueries{
                 query = "SELECT * FROM Artist WHERE name LIKE '" 
                         + a.getName() +"';";
                 stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery(query);
+                rs = stmt.executeQuery(query);
                 if(!rs.next()){
                     query = "INSERT INTO Artist (name) VALUES('"+a.getName() +"');";
                     stmt.executeUpdate(query);
@@ -210,7 +236,7 @@ public class DatabaseCommunicator implements sqlqueries{
             int n = stmt.executeUpdate(query);
             
             query = "SELECT LAST_INSERT_ID();";
-            ResultSet rs = stmt.executeQuery(query);
+            rs = stmt.executeQuery(query);
             if(rs.next()){
                 album.setAlbumId(rs.getInt(1));
             }
@@ -230,8 +256,31 @@ public class DatabaseCommunicator implements sqlqueries{
             if(stmt!=null){
                 stmt.close();
             }
+            if(rs != null){
+                rs.close();
+            }
             con.setAutoCommit(true);
         }
         
     }
+    
+    private void createPreparedStatements() throws SQLException{
+        try{
+            String query = "SELECT * FROM ArtistAlbum NATURAL JOIN MusicAlbum "
+                + "WHERE name IN (SELECT name "
+                + "FROM Artist WHERE name "
+                + "LIKE ?);";
+            searchByArtist = con.prepareStatement(query);
+        
+            query = "SELECT * FROM MusicAlbum WHERE ? LIKE ?;";
+            searchByOther = con.prepareStatement(query);
+            
+            
+        }catch(SQLException e){
+            throw(e);
+        }
+            
+        
+    }
+
 }

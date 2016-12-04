@@ -11,27 +11,20 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToolBar;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.*;
 import database.*;
+import java.sql.SQLException;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 
 /**
  *
@@ -39,25 +32,27 @@ import database.*;
  */
 public class Databaslab1 extends Application{
     
-    Stage window;
 
     private DatabaseCommunicator dbComm;
     private TextField txt;
-    private ListView listView;
     private ChoiceBox<String> choiceBox;
     private ArrayList<MusicAlbum> listItems;
     private rateWindow rw;
-
+    private TableView table = new TableView();
+    
+    
+    
+    
     ComfirmBox c = new ComfirmBox();
     MusicAlbum m1 = new MusicAlbum();
 
     
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage){
         
         listItems = new ArrayList<>();
         rw = new rateWindow();
-        
+        Boolean exit = false;
         Button btn = new Button();
         btn.setText("Search");
         Button rate = new Button();
@@ -66,16 +61,29 @@ public class Databaslab1 extends Application{
         dbComm = null;
         try{
             dbComm = new DatabaseCommunicator();
-        }catch(Exception E){
-            System.out.println(E);
+        }catch(SQLException e){
+            AlertBox.display("Error!", "Failed to connect to database: " + e);
+            exit = true;
+        }catch(Exception ex){
+            AlertBox.display("Error!", "Failed to connect to database: " + ex);
+            exit = true;
         }
         
         txt = new TextField("Enter search word");
-        listView = new ListView<>();
         choiceBox = new ChoiceBox<>();
         choiceBox.getItems().addAll("Artist", "Title", "Genre", "Rating");
         choiceBox.setTooltip(new Tooltip("Search by"));
         choiceBox.getSelectionModel().selectFirst();
+        
+        
+        TableColumn firstCol = new TableColumn("Title");
+        TableColumn secondCol = new TableColumn("Artist");
+        TableColumn thirdCol = new TableColumn("Genre");
+        TableColumn fourthCol = new TableColumn("Rating");
+        TableColumn fifthCol = new TableColumn("Date");
+        
+        table.getColumns().addAll(firstCol, secondCol, thirdCol, fourthCol, fifthCol);
+        table.setEditable(true);
         
         
         rate.setOnAction(new EventHandler<ActionEvent>(){
@@ -123,18 +131,20 @@ public class Databaslab1 extends Application{
         //NYTT
         
  
-        borderPane.setCenter(listView);
+        borderPane.setCenter(table);
         statusbar2.getChildren().addAll(add,rate);
         statusbar.getChildren().addAll(btn,txt,choiceBox);
         Scene scene = new Scene(borderPane, 768, 512);
-        
-        
-        Company theCompany = new Company();     
 
-
+        primaryStage.setOnCloseRequest(event->{
+            dbComm.closeConnection();
+        });
         primaryStage.setTitle("Main Menu");
         primaryStage.setScene(scene);
         primaryStage.show();
+        if(exit){
+            primaryStage.close();
+        }
     }
 
     /**
@@ -145,23 +155,36 @@ public class Databaslab1 extends Application{
     }
     
     private void sendSearch(){
-        listView.getItems().clear();
+        //table.getItems().clear();
         listItems.clear();
-        ArrayList<MusicAlbum> tempMusicAlbum = new ArrayList<>();
-        System.out.println((String)choiceBox.getSelectionModel().getSelectedItem());
-        System.out.println(txt.getText());
-        tempMusicAlbum = dbComm.searchRequest(txt.getText(),(String)choiceBox.getSelectionModel().getSelectedItem());
-        if(tempMusicAlbum!=null)
-        for(MusicAlbum ma : tempMusicAlbum){
-            if(ma!=null){
-                listView.getItems().add(ma.toString());
-                listItems.add(ma);
+        
+        Thread thread = new Thread(){
+            public void run(){
+                ArrayList<MusicAlbum> tempMusicAlbum = 
+                        dbComm.searchRequest(txt.getText(),(String)
+                                choiceBox.getSelectionModel().getSelectedItem());
+                javafx.application.Platform.runLater(
+                        new Runnable(){
+                            public void run(){
+                                if(tempMusicAlbum!=null){
+                                    for(MusicAlbum ma : tempMusicAlbum){
+                                        if(ma!=null){
+                                            table.getItems().add(ma.toString());
+                                            listItems.add(ma);
+                                        }
+                                    }
+                                }
+                                else AlertBox.display("Error!", "Search failed.");   
+                            }
+                        }
+                );
             }
-        }
+        };
+        thread.start();
     }
     
     private MusicAlbum getSelectedAlbum(){
-        int n = listView.getSelectionModel().getSelectedIndex();
+        int n = table.getSelectionModel().getSelectedIndex();
         if(n == -1){
             return null;
         }
