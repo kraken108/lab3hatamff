@@ -23,11 +23,16 @@ import javafx.stage.Stage;
 import model.*;
 import database.*;
 import java.sql.SQLException;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+
 
 /**
  *
@@ -41,12 +46,13 @@ public class Databaslab1 extends Application{
     private ListView listView;
     private TableView tableView;
     private ChoiceBox<String> choiceBox;
-    private ArrayList<MusicAlbum> listItems;
+    private ArrayList<Media> listItems;
     private rateWindow rw;
     private ObservableList data;
+    private TableView table = new TableView();
 
     ComfirmBox c = new ComfirmBox();
-    MusicAlbum m1 = new MusicAlbum();
+    Media m1 = new Media();
 
     
     @Override
@@ -95,17 +101,26 @@ public class Databaslab1 extends Application{
         }
         
         txt = new TextField("Enter search word");
-        listView = new ListView<>();
         choiceBox = new ChoiceBox<>();
         choiceBox.getItems().addAll("Artist", "Title", "Genre", "Rating");
         choiceBox.setTooltip(new Tooltip("Search by"));
         choiceBox.getSelectionModel().selectFirst();
         
         
+        TableColumn firstCol = new TableColumn("Title");
+        TableColumn secondCol = new TableColumn("Artist");
+        TableColumn thirdCol = new TableColumn("Genre");
+        TableColumn fourthCol = new TableColumn("Rating");
+        TableColumn fifthCol = new TableColumn("Date");
+        
+        table.getColumns().addAll(firstCol, secondCol, thirdCol, fourthCol, fifthCol);
+        table.setEditable(true);
+        
+        
         rate.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event){
-                MusicAlbum m = getSelectedAlbum();
+                Media m = getSelectedAlbum();
                 if(m!=null){
                     rw.rateAlbum(dbComm,m);
                 }
@@ -147,7 +162,11 @@ public class Databaslab1 extends Application{
         //NYTT
         
  
+
         borderPane.setCenter(tableView);
+
+        borderPane.setCenter(table);
+
         statusbar2.getChildren().addAll(add,rate);
         statusbar.getChildren().addAll(btn,txt,choiceBox);
         Scene scene = new Scene(borderPane, 768, 512);
@@ -171,12 +190,12 @@ public class Databaslab1 extends Application{
     }
     
     private void sendSearch(){
-        listView.getItems().clear();
+        //table.getItems().clear();
         listItems.clear();
         
         Thread thread = new Thread(){
             public void run(){
-                ArrayList<MusicAlbum> tempMusicAlbum = 
+                ArrayList<Media> tempMusicAlbum = 
                         dbComm.searchRequest(txt.getText(),(String)
                                 choiceBox.getSelectionModel().getSelectedItem());
                 javafx.application.Platform.runLater(
@@ -184,38 +203,39 @@ public class Databaslab1 extends Application{
                             public void run(){
                                 if(tempMusicAlbum!=null){
                                     if(!tempMusicAlbum.isEmpty())
-                                        for(MusicAlbum ma : tempMusicAlbum){
+                                        for(Media ma : tempMusicAlbum)
                                             if(ma!=null){
                                                 changeData(tempMusicAlbum);
                                                 listView.getItems().add(ma.toString());
                                                 listItems.add(ma);
                                             }
-                                        }
                                     else
                                         changeData(tempMusicAlbum);
-                                }
+                                        
                                 else{
                                     AlertBox.display("Error!", "Search failed.");
                                     tableView.setItems(null);
-                                }   
+                                    }   
+                                }
+
                             }
-                        }
-                );
+                        });
+        
             }
-        };
-        thread.start();
+        };thread.start();
     }
     
-    private MusicAlbum getSelectedAlbum(){
-        int n = tableView.getSelectionModel().getSelectedIndex();
+
+    private Media getSelectedAlbum(){
+        int n = table.getSelectionModel().getSelectedIndex();
         if(n == -1){
             return null;
         }
         return listItems.get(n);
     }
 
-    private void changeData(ArrayList<MusicAlbum> theAlbums){
-        data = FXCollections.observableList(theAlbums);
+    private void changeData(ArrayList<Media> theMedia){
+        data = FXCollections.observableList(theMedia);
         tableView.setItems(data);
     }
 }

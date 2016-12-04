@@ -17,7 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import model.MusicAlbum;
+import model.Media;
 
 /**
  *
@@ -34,7 +34,7 @@ public class rateWindow {
         theScene = new Scene(theGrid, 300, 200);
     }
     
-    public void rateAlbum(DatabaseCommunicator dbComm,MusicAlbum m){
+    public void rateAlbum(DatabaseCommunicator dbComm,Media m){
         theGrid.setPadding(new Insets(5,5,5,5));
         theGrid.setVgap(3);
         theGrid.setHgap(5);
@@ -69,7 +69,7 @@ public class rateWindow {
         theStage.show();
     }
     
-    private void sendRateRequest(int index, String text, MusicAlbum m,DatabaseCommunicator dbComm){
+    private void sendRateRequest(int index, String text, Media m,DatabaseCommunicator dbComm){
         Thread thread = new Thread(){
             public void run(){
                 int n = dbComm.rateRequest(index, text, m);

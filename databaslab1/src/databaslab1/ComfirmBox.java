@@ -22,21 +22,20 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.Artist;
-import model.MusicAlbum;
+import model.Media;
+import model.Person;
 
 
 
 public class ComfirmBox{
     
-    private MusicAlbum albumToReturn;
-    private final String pattern = "yyyy-MM-dd";
+    private Media albumToReturn;
     
     public ComfirmBox(){
-        albumToReturn = new MusicAlbum();
+        albumToReturn = new Media();
     }    
     
-    public MusicAlbum display(DatabaseCommunicator dbComm){
+    public Media display(DatabaseCommunicator dbComm){
         Stage window = new Stage();     
         
         GridPane grid = new GridPane();
@@ -44,14 +43,14 @@ public class ComfirmBox{
         grid.setVgap(3);
         grid.setHgap(5);
         
-        Label artistLabel = new Label("Artist name: ");
+        Label artistLabel = new Label("Person name: ");
         GridPane.setConstraints(artistLabel, 0, 0);
         
-        TextField artistField = new TextField();
-        artistField.setPromptText("Artist");         
-        GridPane.setConstraints(artistField, 1, 0);        
+        TextField personField = new TextField();
+        personField.setPromptText("Person");         
+        GridPane.setConstraints(personField, 1, 0);        
         
-        Button addButton = new Button("Add another artist");
+        Button addButton = new Button("Add another Person");
         GridPane.setConstraints(addButton, 1, 1);
         
         Label titleLabel = new Label("Title: ");
@@ -80,17 +79,17 @@ public class ComfirmBox{
         
         
         addButton.setOnMouseClicked(e ->{
-            Artist tempArtist = new Artist(artistField.getText());
-            if(tempArtist.getName().isEmpty() || tempArtist.getName().length()<2){
+            Person tempPerson = new Person(personField.getText());
+            if(tempPerson.getName().length()<2){
                 AlertBox.display("Error!", "You must specify a name.");
             }                
 
-            if(!(tempArtist.getName() instanceof String)){
+            if(!(tempPerson.getName() instanceof String)){
                 AlertBox.display("Error!", "Name must be a String.");
             }
             else{
-                albumToReturn.addArtist(tempArtist);  
-                artistField.clear();
+                albumToReturn.addPerson(tempPerson);  
+                personField.clear();
             }
         });
          
@@ -104,36 +103,34 @@ public class ComfirmBox{
         
         doneButton.setOnMouseClicked(e->{
             
-            Artist tempArtist = new Artist(artistField.getText());
+            Person tempPerson = new Person(personField.getText());
             if(titleField.getText().length()<2){
                 AlertBox.display("Error!", "You must specify a title.");
             }
             else{
                 albumToReturn.setTitle(titleField.getText());
             }
-            
+             
             if(genreField.getText().length()<2){
                 AlertBox.display("Error!", "You must specify a genre.");
             }
             else{
                 albumToReturn.setGenre(genreField.getText());
             }
-            if(tempArtist.getName().isEmpty() || tempArtist.getName().length()<2){
+            if(tempPerson.getName().length()<2){
                 AlertBox.display("Error!", "You must specify a name.");
             }                
 
-            if(!(tempArtist.getName() instanceof String)){
+            if(!(tempPerson.getName() instanceof String)){
                 AlertBox.display("Error!", "Name must be a String.");
             }
             else{
-                albumToReturn.addArtist(tempArtist);  
-                artistField.clear();
+                albumToReturn.addPerson(tempPerson);  
+                personField.clear();
             }           
-           
-            
+                       
             String date = datePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            albumToReturn.setPublishDate(date);
-            
+            albumToReturn.setPublishDate(date);            
             System.out.println("date: " + date);
             titleField.clear();            
             genreField.clear();
@@ -145,9 +142,9 @@ public class ComfirmBox{
         });
                 
         
-        grid.getChildren().addAll(artistLabel, artistField, titleLabel, titleField, doneButton, dateLabel, genreLabel, genreField, addButton, closeButton);
+        grid.getChildren().addAll(artistLabel, personField, titleLabel, titleField, doneButton, dateLabel, genreLabel, genreField, addButton, closeButton);
 
-        Scene scene = new Scene(grid, 500, 300);
+        Scene scene = new Scene(grid, 350, 200);
         window.setScene(scene);
         window.show();         
         return albumToReturn;
