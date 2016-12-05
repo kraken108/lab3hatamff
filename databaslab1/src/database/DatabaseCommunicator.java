@@ -58,23 +58,7 @@ public class DatabaseCommunicator implements sqlqueries{
         }
     }
     
-    public ArrayList<Person> getAllArtists() throws SQLException{
-        String query = "SELECT * FROM Person WHERE profession LIKE 'Artist';";
-        ArrayList<Person> theArtists = new ArrayList<>();
-        Statement stmt = null;
-        ResultSet rs = null;
-        try{
-            stmt = con.createStatement();
-            rs = stmt.executeQuery(query);
-            while(rs.next()){
-                Person p = new Person(rs.getInt("personId"),rs.getString("name"),rs.getString("country"),Profession.ARTIST,rs.getInt("age"));
-                theArtists.add(p);
-            }
-        }catch(SQLException e){
-            throw(e);
-        }
-        return theArtists;
-    }
+    
     
     public int newAlbumRequest(Media album){
         try{
@@ -149,6 +133,25 @@ public class DatabaseCommunicator implements sqlqueries{
     }
     
     @Override
+    public ArrayList<Person> getAllArtists() throws SQLException{
+        String query = "SELECT * FROM Person WHERE profession LIKE 'Artist';";
+        ArrayList<Person> theArtists = new ArrayList<>();
+        Statement stmt = null;
+        ResultSet rs = null;
+        try{
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(query);
+            while(rs.next()){
+                Person p = new Person(rs.getInt("personId"),rs.getString("name"),rs.getString("country"),Profession.ARTIST,rs.getInt("age"));
+                theArtists.add(p);
+            }
+        }catch(SQLException e){
+            throw(e);
+        }
+        return theArtists;
+    }
+    
+    @Override
     public ArrayList<Media> searchAlbums(String query) throws SQLException{
         Statement stmt = null;
         Statement tmpstmt = null;
@@ -202,7 +205,7 @@ public class DatabaseCommunicator implements sqlqueries{
     
     @Override
     public void submitReview(float rating,String comment,Media media) throws SQLException{
-        String query = "INSERT INTO review(rating,comment) VALUES('" 
+        String query = "INSERT INTO review(rating,reviewText) VALUES('" 
                 + rating + "','" + comment + "');";
         System.out.println(rating);
         Statement stmt = null;
@@ -236,7 +239,7 @@ public class DatabaseCommunicator implements sqlqueries{
         }
     }
     
-    //@Override
+    @Override
     public void addArtist(Person artist) throws SQLException{
         String query = null;
         Statement stmt = null;

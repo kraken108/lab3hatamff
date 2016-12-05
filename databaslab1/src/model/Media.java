@@ -198,8 +198,12 @@ public class Media {
      */
     public void addPerson(Person p) {
         if(!thePersons.contains(p)){
+            if(thePersons.size()>0){
+                thePersonsString += ", " + p.getName();
+            }
+            else
+                thePersonsString += p.getName();
             thePersons.add(p);
-            thePersonsString += p.getName() + ", ";
         }
     }
     
