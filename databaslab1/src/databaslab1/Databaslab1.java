@@ -26,12 +26,15 @@ import java.sql.SQLException;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 
 
 /**
@@ -43,13 +46,11 @@ public class Databaslab1 extends Application{
 
     private DatabaseCommunicator dbComm;
     private TextField txt;
-    private ListView listView;
     private TableView tableView;
     private ChoiceBox<String> choiceBox;
     private ArrayList<Media> listItems;
     private rateWindow rw;
     private ObservableList data;
-    private TableView table = new TableView();
 
     ComfirmBox c = new ComfirmBox();
     Media m1 = new Media();
@@ -62,11 +63,13 @@ public class Databaslab1 extends Application{
         data = FXCollections.observableList(new ArrayList());
         tableView.setItems(data);
         
+        
+        
         TableColumn titleColumn = new TableColumn("Title");
         titleColumn.setCellValueFactory(new PropertyValueFactory("title"));
         titleColumn.setMinWidth(150);
         TableColumn artistsColumn = new TableColumn("Artists");
-        artistsColumn.setCellValueFactory(new PropertyValueFactory("theArtistsString"));
+        artistsColumn.setCellValueFactory(new PropertyValueFactory("thePersonsString"));
         artistsColumn.setMinWidth(200);
         TableColumn genreColumn = new TableColumn("Genre");
         genreColumn.setMinWidth(50);
@@ -106,16 +109,10 @@ public class Databaslab1 extends Application{
         choiceBox.setTooltip(new Tooltip("Search by"));
         choiceBox.getSelectionModel().selectFirst();
         
+        Button addNewArtist = new Button();
+        addNewArtist.setText("Add new Artist");
         
-        TableColumn firstCol = new TableColumn("Title");
-        TableColumn secondCol = new TableColumn("Artist");
-        TableColumn thirdCol = new TableColumn("Genre");
-        TableColumn fourthCol = new TableColumn("Rating");
-        TableColumn fifthCol = new TableColumn("Date");
-        
-        table.getColumns().addAll(firstCol, secondCol, thirdCol, fourthCol, fifthCol);
-        table.setEditable(true);
-        
+        addNewArtist.setOnAction(e -> addNewArtist());
         
         rate.setOnAction(new EventHandler<ActionEvent>(){
             @Override
@@ -137,7 +134,8 @@ public class Databaslab1 extends Application{
         Button add = new Button();
         add.setText("Add CD");
         add.setOnAction(e -> {
-            m1=c.display(dbComm);   
+            ArrayList<Person> theArtists = dbComm.allArtistsRequest();
+            m1=c.display(dbComm,theArtists);   
         });
 
         System.out.println(m1.getGenre());
@@ -152,25 +150,24 @@ public class Databaslab1 extends Application{
         borderPane.setTop(statusbar);
         statusbar.setSpacing(10);
         statusbar.setPadding(new Insets(10, 0, 10, 10));
-        
         HBox statusbar2 = new HBox();  
         statusbar2.setSpacing(10);
         borderPane.setBottom(statusbar2);
         statusbar2.setPadding(new Insets(10, 0, 10, 10));
         
-        
+        statusbar.setStyle("-fx-background-color: #029aff;");
+        statusbar2.setStyle("-fx-background-color: #029aff;");
         //NYTT
         
  
 
         borderPane.setCenter(tableView);
 
-        borderPane.setCenter(table);
+        borderPane.setCenter(tableView);
 
-        statusbar2.getChildren().addAll(add,rate);
+        statusbar2.getChildren().addAll(add,addNewArtist,rate);
         statusbar.getChildren().addAll(btn,txt,choiceBox);
         Scene scene = new Scene(borderPane, 768, 512);
-
         primaryStage.setOnCloseRequest(event->{
             dbComm.closeConnection();
         });
@@ -205,18 +202,18 @@ public class Databaslab1 extends Application{
                                     if(!tempMusicAlbum.isEmpty())
                                         for(Media ma : tempMusicAlbum)
                                             if(ma!=null){
+                                                System.out.println(ma.toString());
                                                 changeData(tempMusicAlbum);
-                                                listView.getItems().add(ma.toString());
                                                 listItems.add(ma);
                                             }
                                     else
                                         changeData(tempMusicAlbum);
+                                }
                                         
                                 else{
                                     AlertBox.display("Error!", "Search failed.");
-                                    tableView.setItems(null);
-                                    }   
-                                }
+                                    changeData(new ArrayList<Media>());
+                                }   
 
                             }
                         });
@@ -227,7 +224,7 @@ public class Databaslab1 extends Application{
     
 
     private Media getSelectedAlbum(){
-        int n = table.getSelectionModel().getSelectedIndex();
+        int n = tableView.getSelectionModel().getSelectedIndex();
         if(n == -1){
             return null;
         }
@@ -237,6 +234,78 @@ public class Databaslab1 extends Application{
     private void changeData(ArrayList<Media> theMedia){
         data = FXCollections.observableList(theMedia);
         tableView.setItems(data);
+    }
+    
+    public void addNewArtist(){
+        
+        Stage stage = new Stage();
+        
+        Button closeButton = new Button("Close");
+        Button submitButton = new Button("Submit");
+        
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(5,5,5,5));
+        grid.setVgap(3);
+        grid.setHgap(5);
+        
+        Label infoLabel = new Label("Enter values: ");        
+        Label nameLabel = new Label("Name: ");
+        Label ageLabel = new Label("Age: ");
+        Label nationalityLabel = new Label("Nationality: ");
+        
+        TextField nameField = new TextField();
+        TextField ageField = new TextField();
+        TextField nationalityField = new TextField();
+        nameField.setPromptText("Name");
+        ageField.setPromptText("Age");
+        nationalityField.setPromptText("Nationality");
+            
+        GridPane.setConstraints(infoLabel, 4, 0);
+        GridPane.setConstraints(nameLabel, 2, 3);
+        GridPane.setConstraints(ageLabel, 2, 5);
+        GridPane.setConstraints(nationalityLabel, 2, 7);
+        GridPane.setConstraints(nameField, 4, 3);
+        GridPane.setConstraints(ageField, 4, 5);
+        GridPane.setConstraints(nationalityField, 4, 7);
+        GridPane.setConstraints(closeButton, 6, 8);
+        GridPane.setConstraints(submitButton, 4, 8);
+        
+        
+                
+        closeButton.setOnAction(e -> stage.close());
+        submitButton.setOnAction(e -> {
+        if(!(nameField.getText().length() >2 || ageField.getText().length() > 0 || nationalityField.getText().length() > 2)){
+            AlertBox.display("Error!", "You must enter correct data!");
+        }
+        else{
+            int tempAge = Integer.parseInt(ageField.getText());
+            Person p = new Person(nameField.getText(), tempAge, nationalityField.getText());
+            sendNewArtist(p);
+        }
+        });
+        
+        grid.getChildren().addAll(nameLabel, ageLabel, nationalityLabel, nameField, ageField, nationalityField, closeButton, submitButton, infoLabel);
+        Scene scene = new Scene(grid,350,200);
+        stage.setScene(scene);
+        stage.show();   
+    }
+    
+    private void sendNewArtist(Person artist){
+        Thread thread = new Thread(){
+            public void run(){
+                int n = dbComm.addArtistRequest(artist);
+                javafx.application.Platform.runLater(
+                        new Runnable(){
+                            public void run(){
+                                if(n==-1){
+                                    AlertBox.display("Error!", "Failed to add new album.");
+                                }
+                            }
+                        }
+                );
+            }
+        };
+        thread.start();
     }
 }
 

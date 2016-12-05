@@ -12,8 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.*;
 
 /**
@@ -25,7 +23,7 @@ public class DatabaseCommunicator implements sqlqueries{
     private String server;
     private String user, pwd;
     private Connection con;
-    private PreparedStatement searchByArtist,searchByOther;
+    private PreparedStatement searchByArtist,searchByRating,searchByTitle,searchByGenre;
     
     public DatabaseCommunicator() throws SQLException,Exception{
         database = "Company";
@@ -51,20 +49,59 @@ public class DatabaseCommunicator implements sqlqueries{
         }catch(SQLException e){}
     }
     
+    public ArrayList<Person> allArtistsRequest(){
+        try{
+            return getAllArtists();
+        }catch(SQLException e){
+            System.out.println(e);
+            return null;
+        }
+    }
+    
+    public ArrayList<Person> getAllArtists() throws SQLException{
+        String query = "SELECT * FROM Person WHERE profession LIKE 'Artist';";
+        ArrayList<Person> theArtists = new ArrayList<>();
+        Statement stmt = null;
+        ResultSet rs = null;
+        try{
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(query);
+            while(rs.next()){
+                Person p = new Person(rs.getInt("personId"),rs.getString("name"),rs.getString("country"),Profession.ARTIST,rs.getInt("age"));
+                theArtists.add(p);
+            }
+        }catch(SQLException e){
+            throw(e);
+        }
+        return theArtists;
+    }
+    
     public int newAlbumRequest(Media album){
         try{
             addAlbum(album);
             return 1;
         }catch(SQLException e){
+            System.out.println(e);
             return -1;
         }
     }
 
+    public int addArtistRequest(Person artist){
+        try{
+            addArtist(artist);
+            return 1;
+        }catch(SQLException e){
+            System.out.println(e);
+            return -1;
+        }
+    }
+    
     public int rateRequest(float rating,String comment,Media album){
         try{
             submitReview(rating,comment,album);
             return 1;
         }catch(SQLException e){
+            System.out.println(e);
             return -1;
         }
     }
@@ -73,16 +110,18 @@ public class DatabaseCommunicator implements sqlqueries{
         ArrayList<Media> theAlbums = null;
         if(searchBy.equals("Artist")){
             try{
-                searchArtistQuery(searchWord);
-                theAlbums = searchAlbums(searchBy);
+                theAlbums = searchAlbums(searchArtistQuery(searchWord));
+            }catch(SQLException e){
+                System.out.println(e);
             }finally{
                 return theAlbums;
             }
         } 
         else{
             try{
-                searchAlbumQuery(searchWord,searchBy);
-                theAlbums = searchAlbums(searchBy);
+                theAlbums = searchAlbums(searchAlbumQuery(searchWord,searchBy));
+            }catch(SQLException e){
+                System.out.println(e);
             }finally{
                 return theAlbums;
             }
@@ -90,25 +129,27 @@ public class DatabaseCommunicator implements sqlqueries{
                              
     }
     
-    private void searchAlbumQuery(String searchWord,String searchBy) throws SQLException{
-        try {
-            searchByOther.setString(1, searchBy);
-            searchByOther.setString(2, "%"+searchWord+"%");
-        } catch (SQLException ex) {
-            throw(ex);
+    private String searchAlbumQuery(String searchWord,String searchBy) throws SQLException{
+
+        switch(searchBy){ 
+            case "Rating": return "SELECT * FROM Media WHERE avgRating LIKE '%"+searchWord+"%';"; 
+            case "Title": return "SELECT * FROM Media WHERE Title LIKE '%"+searchWord+"%';";
+            case "Genre": return "SELECT * FROM Media WHERE Genre LIKE '%"+searchWord+"%';";
         }
+        return null;
     }
 
-    private void searchArtistQuery(String searchWord) throws SQLException{
-        try {
-            searchByArtist.setString(1,"%"+searchWord+"%");
-        } catch (SQLException ex) {
-            throw(ex);
-        }
+    private String searchArtistQuery(String searchWord) throws SQLException{
+
+            return "SELECT * FROM MediaPerson NATURAL JOIN Media "
+                + "WHERE personId IN (SELECT personId "
+                + "FROM Person WHERE name "
+                + "LIKE '%"+searchWord+"%');";
+            
     }
     
     @Override
-    public ArrayList<Media> searchAlbums(String searchBy) throws SQLException{
+    public ArrayList<Media> searchAlbums(String query) throws SQLException{
         Statement stmt = null;
         Statement tmpstmt = null;
         ResultSet rs = null;
@@ -116,32 +157,26 @@ public class DatabaseCommunicator implements sqlqueries{
         try {
             con.setAutoCommit(false);
             stmt = con.createStatement();
-            if(searchBy.equals("Artist")){
-                rs = searchByArtist.executeQuery();
-            }
-            else{
-                rs = searchByOther.executeQuery();
-                System.out.println("hej");
-            }
+            rs = stmt.executeQuery(query);
            
-                
+           
             while (rs.next()) {
                 System.out.println("resultat!");
                 Media m = new Media();   
-                m.setAlbumId(rs.getInt("albumId"));
+                m.setMediaId(rs.getInt("mediaId"));
                 m.setTitle(rs.getString("title"));
                 m.setPublishDate(rs.getString("releaseDate"));
                 m.setGenre(rs.getString("genre"));
-                m.setRating(rs.getFloat("rating"));
+                m.setRating(rs.getFloat("avgRating"));
                 tmpstmt = con.createStatement();
-                ResultSet tmp = tmpstmt.executeQuery("SELECT * FROM ArtistAlbum "
-                        + "WHERE albumId LIKE '"+m.getAlbumId()+"';");
+                ResultSet tmp = tmpstmt.executeQuery("SELECT * FROM MediaPerson NATURAL JOIN Person "
+                        + "WHERE mediaId LIKE '"+m.getMediaId()+"';");
                 while(tmp.next()){
                     m.addPerson(new Person(tmp.getString("name")));
                 }
                 Boolean exists = false;
                 for(Media temp : musicAlbums){
-                    if(temp.getAlbumId() == m.getAlbumId())
+                    if(temp.getMediaId() == m.getMediaId())
                         exists = true;
                 }
                 if(!exists)musicAlbums.add(m);
@@ -166,9 +201,10 @@ public class DatabaseCommunicator implements sqlqueries{
     
     
     @Override
-    public void submitReview(float rating,String comment,Media album) throws SQLException{
-        String query = "INSERT INTO review(rating,reviewText) VALUES('" 
+    public void submitReview(float rating,String comment,Media media) throws SQLException{
+        String query = "INSERT INTO review(rating,comment) VALUES('" 
                 + rating + "','" + comment + "');";
+        System.out.println(rating);
         Statement stmt = null;
         ResultSet rs = null;
         try{
@@ -180,17 +216,8 @@ public class DatabaseCommunicator implements sqlqueries{
             int reviewId;
             if(rs.next()){
                 reviewId = rs.getInt(1);
-                query = "INSERT INTO ReviewedAlbum VALUES('" 
-                        + reviewId + "','" + album.getAlbumId() + "');";
-                stmt.executeUpdate(query);
-            }
-            query = "SELECT albumId, AVG(rating) FROM ReviewedAlbum NATURAL JOIN review "
-                    + "GROUP BY albumId HAVING albumId = '" 
-                    + album.getAlbumId() + "';";
-            rs = stmt.executeQuery(query);
-            if(rs.next()){
-                float newRating = rs.getFloat(2);
-                query = "UPDATE MusicAlbum SET rating = '" + newRating + "' WHERE albumId = '" + album.getAlbumId() + "';";
+                query = "INSERT INTO ReviewedMedia VALUES('" 
+                        + reviewId + "','" + media.getMediaId() + "');";
                 stmt.executeUpdate(query);
             }
             con.commit();
@@ -209,28 +236,44 @@ public class DatabaseCommunicator implements sqlqueries{
         }
     }
     
-    
-    @Override
-    public void addAlbum(Media album) throws SQLException{
+    //@Override
+    public void addArtist(Person artist) throws SQLException{
         String query = null;
         Statement stmt = null;
         ResultSet rs = null;
-        ArrayList<Person> theArtists = album.getThePersons();
+        
+        try{
+            stmt = con.createStatement();
+            con.setAutoCommit(false);
+            query = "INSERT INTO Person(name,country,age,profession) VALUES ('"
+                    + artist.getName() + "','" + artist.getCountry() 
+                    + "','" + artist.getAge() + "','Artist');";
+            stmt.executeUpdate(query);
+            con.commit();
+        }catch(SQLException e){
+            con.rollback();
+            throw(e);
+        }finally{
+            if(stmt!=null){
+                stmt.close();
+            }
+            if(rs != null){
+                rs.close();
+            }
+            con.setAutoCommit(true);
+        }
+    }
+    
+    @Override
+    public void addAlbum(Media media) throws SQLException{
+        String query = null;
+        Statement stmt = null;
+        ResultSet rs = null;
         try{
             con.setAutoCommit(false);
-            for(Person p : theArtists){
-                query = "SELECT * FROM Artist WHERE name LIKE '" 
-                        + p.getName() +"';";
-                stmt = con.createStatement();
-                rs = stmt.executeQuery(query);
-                if(!rs.next()){
-                    query = "INSERT INTO Artist (name) VALUES('"+p.getName() +"');";
-                    stmt.executeUpdate(query);
-                }
-            }
-            query = "INSERT INTO MusicAlbum(title,releaseDate,genre) "
-                + "VALUES('" + album.getTitle() + "','" 
-                + album.getPublishDate() + "','"+album.getGenre() + "');";
+            query = "INSERT INTO Media(title,releaseDate,genre,mediaType) "
+                + "VALUES('" + media.getTitle() + "','" 
+                + media.getPublishDate() + "','"+media.getGenre() + "','Album');";
             
             stmt = con.createStatement();
             int n = stmt.executeUpdate(query);
@@ -238,13 +281,15 @@ public class DatabaseCommunicator implements sqlqueries{
             query = "SELECT LAST_INSERT_ID();";
             rs = stmt.executeQuery(query);
             if(rs.next()){
-                album.setAlbumId(rs.getInt(1));
+                System.out.println("next: "+rs.getInt(1));
+                media.setMediaId(rs.getInt(1));
             }
  
-            for(Person p : album.getThePersons()){
+            for(Person p : media.getThePersons()){
+                System.out.println("persons: " + media.getMediaId());
                 System.out.println(p.getName());
-                query = "INSERT INTO ArtistAlbum VALUES('"
-                        + p.getName() +"','" + album.getAlbumId() + "');";
+                query = "INSERT INTO MediaPerson VALUES('"
+                        + p.getPersonId() +"','" + media.getMediaId() + "');";
                 stmt.executeUpdate(query);
             }
             
@@ -266,16 +311,21 @@ public class DatabaseCommunicator implements sqlqueries{
     
     private void createPreparedStatements() throws SQLException{
         try{
-            String query = "SELECT * FROM ArtistAlbum NATURAL JOIN MusicAlbum "
-                + "WHERE name IN (SELECT name "
-                + "FROM Artist WHERE name "
+            String query = "SELECT * FROM MediaPerson NATURAL JOIN Media "
+                + "WHERE personId IN (SELECT personId "
+                + "FROM Person WHERE name "
                 + "LIKE ?);";
             searchByArtist = con.prepareStatement(query);
         
-            query = "SELECT * FROM MusicAlbum WHERE ? LIKE ?;";
-            searchByOther = con.prepareStatement(query);
+            query = "SELECT * FROM Media WHERE avgRating LIKE ?;";
+            searchByRating = con.prepareStatement(query);
             
+            query = "SELECT * FROM Media WHERE Title LIKE ?;";
+            searchByTitle = con.prepareStatement(query);
             
+            query = "SELECT * FROM Media WHERE Genre LIKE ?;";
+            searchByGenre = con.prepareStatement(query);
+
         }catch(SQLException e){
             throw(e);
         }

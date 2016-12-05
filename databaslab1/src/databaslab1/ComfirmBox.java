@@ -15,6 +15,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -30,14 +32,16 @@ import model.Person;
 public class ComfirmBox{
     
     private Media albumToReturn;
+    private Stage window;
     
     public ComfirmBox(){
         albumToReturn = new Media();
     }    
     
-    public Media display(DatabaseCommunicator dbComm){
-        Stage window = new Stage();     
-        
+    public Media display(DatabaseCommunicator dbComm,ArrayList<Person> theArtists){
+        albumToReturn = new Media();
+        window = new Stage();     
+
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(5,5,5,5));
         grid.setVgap(3);
@@ -45,6 +49,14 @@ public class ComfirmBox{
         
         Label artistLabel = new Label("Person name: ");
         GridPane.setConstraints(artistLabel, 0, 0);
+        
+        ComboBox comboBox = new ComboBox();
+        for(Person p : theArtists){
+            comboBox.getItems().add(p.getName()+", "+p.getCountry()+", "+p.getAge());
+        }
+
+        GridPane.setConstraints(comboBox,1,0);
+        comboBox.setPromptText("Select artist");
         
         TextField personField = new TextField();
         personField.setPromptText("Person");         
@@ -71,7 +83,7 @@ public class ComfirmBox{
         Label genreLabel = new Label("Genre: ");
         GridPane.setConstraints(genreLabel, 0, 3);
         
-        Button doneButton = new Button("Done, next album");
+        Button doneButton = new Button("Submit");
         GridPane.setConstraints(doneButton, 1, 5);
         
         Button closeButton = new Button("Close");
@@ -79,17 +91,18 @@ public class ComfirmBox{
         
         
         addButton.setOnMouseClicked(e ->{
-            Person tempPerson = new Person(personField.getText());
-            if(tempPerson.getName().length()<2){
-                AlertBox.display("Error!", "You must specify a name.");
-            }                
-
-            if(!(tempPerson.getName() instanceof String)){
-                AlertBox.display("Error!", "Name must be a String.");
-            }
-            else{
-                albumToReturn.addPerson(tempPerson);  
-                personField.clear();
+            int n = comboBox.getSelectionModel().getSelectedIndex();
+            System.out.println(n);
+            if(n!=-1){
+                System.out.println(n);
+                System.out.println(theArtists.get(n).getPersonId());
+                albumToReturn.addPerson(theArtists.get(n));
+                theArtists.remove(n);
+                comboBox.getItems().clear();
+                for(Person p : theArtists){
+                    comboBox.getItems().add(p.getName()+", "+p.getCountry()+", "+p.getAge());
+                }
+                
             }
         });
          
@@ -103,38 +116,37 @@ public class ComfirmBox{
         
         doneButton.setOnMouseClicked(e->{
             
-            Person tempPerson = new Person(personField.getText());
+            
             if(titleField.getText().length()<2){
                 AlertBox.display("Error!", "You must specify a title.");
             }
             else{
                 albumToReturn.setTitle(titleField.getText());
+                if(genreField.getText().length()<2){
+                    AlertBox.display("Error!", "You must specify a genre.");
+                }
+                else{
+                    albumToReturn.setGenre(genreField.getText());
+                    int n = comboBox.getSelectionModel().getSelectedIndex();
+                    if(n!=-1 || !albumToReturn.getThePersons().isEmpty()){
+                        if(n!=-1){
+                            albumToReturn.addPerson(theArtists.get(n));
+                            theArtists.remove(n);
+                        }
+                        
+                        comboBox.getItems().clear();
+                        for(Person p : theArtists){
+                            comboBox.getItems().add(p.getName()+", "+p.getCountry()+", "+p.getAge());
+                        }
+                        String date = datePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                        albumToReturn.setPublishDate(date);
+                        sendAlbumRequest(dbComm);
+                        
+                    }
+                    else
+                        AlertBox.display("Error!", "You must pick an artist");
+                }
             }
-             
-            if(genreField.getText().length()<2){
-                AlertBox.display("Error!", "You must specify a genre.");
-            }
-            else{
-                albumToReturn.setGenre(genreField.getText());
-            }
-            if(tempPerson.getName().length()<2){
-                AlertBox.display("Error!", "You must specify a name.");
-            }                
-
-            if(!(tempPerson.getName() instanceof String)){
-                AlertBox.display("Error!", "Name must be a String.");
-            }
-            else{
-                albumToReturn.addPerson(tempPerson);  
-                personField.clear();
-            }           
-                       
-            String date = datePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            albumToReturn.setPublishDate(date);            
-            System.out.println("date: " + date);
-            titleField.clear();            
-            genreField.clear();
-            sendAlbumRequest(dbComm); //SEND NEW ALBUM REQUEST
         });
         
         closeButton.setOnAction(e ->{
@@ -142,7 +154,7 @@ public class ComfirmBox{
         });
                 
         
-        grid.getChildren().addAll(artistLabel, personField, titleLabel, titleField, doneButton, dateLabel, genreLabel, genreField, addButton, closeButton);
+        grid.getChildren().addAll(artistLabel, comboBox, titleLabel, titleField, doneButton, dateLabel, genreLabel, genreField, addButton, closeButton);
 
         Scene scene = new Scene(grid, 350, 200);
         window.setScene(scene);
@@ -161,6 +173,10 @@ public class ComfirmBox{
                                 if(n==-1){
                                     AlertBox.display("Error!", "Failed to add new album.");
                                 }
+                                else{
+                                    window.close();
+                                }
+                                    
                             }
                         }
                 );

@@ -20,13 +20,13 @@ import static oracle.jrockit.jfr.events.Bits.floatValue;
  */
 public class Media {
     
-    private int albumId;
+    private int mediaId;
     private String title;
     private String publishDate;
     private String genre;
     private ArrayList<Person> thePersons;
     private float rating;
-    private String theArtistsString;
+    private String thePersonsString;
 
 
     private Person person;
@@ -35,13 +35,13 @@ public class Media {
     
     public Media(){
         thePersons = new ArrayList<>();
-        this.albumId=0;
+        this.mediaId=0;
         this.title=null;
         this.publishDate=null;
         this.genre=null;
         this.rating=0;
 
-        theArtistsString = "";
+        thePersonsString = "";
 
         mediaType=MediaType.UNKNOWN;
 
@@ -54,7 +54,7 @@ public class Media {
         this.title=title;
         this.publishDate=publishDate;
         this.genre=genre;
-        this.rating=rating;
+        this.rating=0;
         this.rating=0;
 
 
@@ -65,15 +65,15 @@ public class Media {
     /**
      * @return the albumId
      */
-    public int getAlbumId() {
-        return albumId;
+    public int getMediaId() {
+        return mediaId;
     }
 
     /**
      * @param albumId the albumId to set
      */
-    public void setAlbumId(int albumId) {
-        this.albumId = albumId;
+    public void setMediaId(int mediaId) {
+        this.mediaId = mediaId;
     }
 
     /**
@@ -150,8 +150,8 @@ public class Media {
     */
 
     
-    public String getTheArtistsString(){
-        return theArtistsString;
+    public String getThePersonsString(){
+        return thePersonsString;
     }
     
 
@@ -197,7 +197,10 @@ public class Media {
      * @param thePersons the thePersons to set
      */
     public void addPerson(Person p) {
-        if(!thePersons.contains(p))
+        if(!thePersons.contains(p)){
             thePersons.add(p);
+            thePersonsString += p.getName() + ", ";
+        }
     }
+    
 }

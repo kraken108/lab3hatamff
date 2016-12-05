@@ -13,6 +13,7 @@ import java.util.ArrayList;
  */
 public class Person {
     
+    private int personId;
     private String name;
     private Profession profession;
     private String country;
@@ -23,6 +24,7 @@ public class Person {
         age = 0;
         country = null;
         profession = Profession.UNKNOWN;
+        personId = 0;
     }
     
     public Person(){
@@ -30,8 +32,22 @@ public class Person {
         this.age = 0;
         this.country = null;
         this.profession = Profession.UNKNOWN;
+        personId = 0;
     }
-   
+    
+    public Person(String name, int age, String country){
+        this.name=name;
+        this.age=age;
+        this.country=country;
+    }
+    
+    public Person(int personId, String name,String country,Profession profession,int age){
+        this.personId = personId;
+        this.name = name;
+        this.country = country;
+        this.profession = profession;
+        this.age = age;
+    }
 
 
     /**
@@ -41,6 +57,15 @@ public class Person {
         return name;
     }
 
+  
+    
+    public void setPersonId(int personId){
+        this.personId = personId;
+    }
+    
+    public int getPersonId(){
+        return this.personId;
+    }
     /**
      * @param name the name to set
      */
