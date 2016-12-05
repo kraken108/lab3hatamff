@@ -17,12 +17,20 @@ public class Person {
     private Profession profession;
     private String country;
     private int age;
+    private String personId;
     
     public Person(String name){
         this.name=name;
         age = 0;
         country = null;
         profession = Profession.UNKNOWN;
+        this.personId=null;
+    }
+    
+    public Person(String name, int age, String country){
+        this.name=name;
+        this.age=age;
+        this.country=country;
     }
     
     public Person(){
@@ -30,9 +38,8 @@ public class Person {
         this.age = 0;
         this.country = null;
         this.profession = Profession.UNKNOWN;
+        this.personId=null;
     }
-   
-
 
     /**
      * @return the firstName
@@ -40,15 +47,7 @@ public class Person {
     public String getName() {
         return name;
     }
-
-    /**
-     * @param name the name to set
-     */
-    public void setFirstName(String name) {
-        this.setName(name);
-    }
-
-
+    
     /**
      * @param name the name to set
      */
@@ -98,6 +97,17 @@ public class Person {
         this.age = age;
     }
 
-    
-    
+    /**
+     * @return the personId
+     */
+    public String getPersonId() {
+        return personId;
+    }
+
+    /**
+     * @param personId the personId to set
+     */
+    public void setPersonId(String personId) {
+        this.personId = personId;
+    }    
 }

@@ -27,16 +27,17 @@ import model.Person;
 
 
 
-public class ComfirmBox{
+public class ConfirmBox{
     
     private Media albumToReturn;
     
-    public ComfirmBox(){
+    public ConfirmBox(){
         albumToReturn = new Media();
     }    
     
     public Media display(DatabaseCommunicator dbComm){
         Stage window = new Stage();     
+        window.setTitle("Add CD");
         
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(5,5,5,5));
@@ -77,6 +78,7 @@ public class ComfirmBox{
         Button closeButton = new Button("Close");
         GridPane.setConstraints(closeButton, 2, 5);
         
+
         
         addButton.setOnMouseClicked(e ->{
             Person tempPerson = new Person(personField.getText());
