@@ -16,20 +16,21 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Media;
 
 /**
  *
- * @author Jakob
+* @author Jakob Danielsson & Michael Hjälmö
  */
-public class rateWindow {
-    private Stage theStage;       
+public class rateWindow extends Stage{      
     private GridPane theGrid; 
     private Scene theScene;
 
     public rateWindow(){
-        theStage = new Stage();
+        super();
+        this.initModality(Modality.WINDOW_MODAL);
         theGrid = new GridPane();
         theScene = new Scene(theGrid, 300, 200);
     }
@@ -52,21 +53,29 @@ public class rateWindow {
         
         TextArea textArea = new TextArea();
         GridPane.setConstraints(textArea, 0, 3);
-        
+        textArea.setPromptText("Max 120 characters");
         Button submitButton = new Button();
         submitButton.setText("Submit");
         GridPane.setConstraints(submitButton, 0, 4);
         submitButton.setOnAction(new EventHandler<ActionEvent>(){
+            
             @Override
             public void handle(ActionEvent event){
-                sendRateRequest(cb.getSelectionModel().getSelectedIndex()+1,textArea.getText(),m,dbComm);
-                theStage.close();
+                if(textArea.getText().length() <= 120){
+                    sendRateRequest(cb.getSelectionModel().getSelectedIndex()+1,textArea.getText(),m,dbComm);
+                    rateWindow.this.hide();
+                }
+                else{
+                    AlertBox.display("Error!", "Too many characters.");
+                }
+                
             }
         });
         
         theGrid.getChildren().addAll(artistLabel,cb,commentLabel,textArea,submitButton);
-        theStage.setScene(theScene);
-        theStage.show();
+        this.setTitle("Rate album");
+        this.setScene(theScene);
+        this.show();
     }
     
     private void sendRateRequest(int index, String text, Media m,DatabaseCommunicator dbComm){

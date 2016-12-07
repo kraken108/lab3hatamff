@@ -9,15 +9,18 @@ package database;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import model.Media;
+import model.Person;
 
 
 /**
  *
- * @author Jakob
+* @author Jakob Danielsson & Michael Hjälmö
  */
 public interface sqlqueries {
     public ArrayList<Media> searchAlbums(String query) throws SQLException;
     public void submitReview(float rating,String comment,Media album) throws SQLException;
     public void addAlbum(Media album) throws SQLException;
+    public void addArtist(Person artist) throws SQLException;
+    public ArrayList<Person> getAllArtists() throws SQLException;
     
 }

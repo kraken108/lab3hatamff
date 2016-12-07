@@ -5,49 +5,81 @@
  */
 package model;
 
-import java.util.ArrayList;
-
 /**
- *
- * @author micke1
- */
+*
+* @author Jakob Danielsson & Michael Hjälmö
+*/
+
+/*
+*Person is an object that holds information about an Artist or Director etc
+*
+*/
 public class Person {
     
+    private int personId;
     private String name;
     private Profession profession;
     private String country;
     private int age;
-    private String personId;
     
+    /*
+    *@param name the name to set
+    *
+    */
     public Person(String name){
         this.name=name;
         age = 0;
         country = null;
         profession = Profession.UNKNOWN;
-        this.personId=null;
+        personId = 0;
+    }
+    /*
+    *
+    * Constructor for persons with unknown fields.
+    */
+    public Person(){
+        this.name=null;
+        this.age = 0;
+        this.country = null;
+        this.profession = Profession.UNKNOWN;
+        personId = 0;
     }
     
+    /*
+    *
+    *@param name the name to set
+    *@param age the age to set
+    *@param country the country to set
+    */
     public Person(String name, int age, String country){
         this.name=name;
         this.age=age;
         this.country=country;
     }
     
-    public Person(){
-        this.name=null;
-        this.age = 0;
-        this.country = null;
-        this.profession = Profession.UNKNOWN;
-        this.personId=null;
+    /*
+    *@param personId the personId to set
+    *@param name the name to set
+    *@param country the country to set
+    *@param profession the profession to set
+    **@param age the age to set
+    */
+    public Person(int personId, String name,String country,Profession profession,int age){
+        this.personId = personId;
+        this.name = name;
+        this.country = country;
+        this.profession = profession;
+        this.age = age;
     }
 
     /**
-     * @return the firstName
+     * @param name the name to set
      */
-    public String getName() {
-        return name;
+    public void setFirstName(String name) {
+        this.setName(name);
     }
-    
+
+
     /**
      * @param name the name to set
      */
@@ -100,14 +132,21 @@ public class Person {
     /**
      * @return the personId
      */
-    public String getPersonId() {
+    public int getPersonId() {
         return personId;
     }
 
     /**
      * @param personId the personId to set
      */
-    public void setPersonId(String personId) {
+    public void setPersonId(int personId) {
         this.personId = personId;
-    }    
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }   
 }

@@ -1,66 +1,73 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
-import static oracle.jrockit.jfr.events.Bits.floatValue;
+
 
 /**
- *
- * @author Jakob
+ * Media is an object that holds information about an Album, Movie, etc. 
+ * @author Jakob Danielsson & Michael Hjälmö
  */
 public class Media {
     
-    private int albumId;
+    private int mediaId;
     private String title;
     private String publishDate;
     private String genre;
     private ArrayList<Person> thePersons;
     private float rating;
-    private Person person;
+    private String thePersonsString;
     private MediaType mediaType;
+
     
+    /**
+    * Empty constructor
+    */
     public Media(){
         thePersons = new ArrayList<>();
-        this.albumId=0;
+        this.mediaId=0;
         this.title=null;
         this.publishDate=null;
         this.genre=null;
         this.rating=0;
+
+        thePersonsString = "";
+
         mediaType=MediaType.UNKNOWN;
+
     }
 
-    
-
+    /**
+     * Constructor
+     * @param title The title of the media
+     * @param publishDate The date the media was published
+     * @param genre The genre of the media
+     * @param mediaType The type of the media
+     */
     public Media(String title, String publishDate, String genre, MediaType mediaType){
         thePersons = new ArrayList<>();
         this.title=title;
         this.publishDate=publishDate;
         this.genre=genre;
-        this.rating=rating;
+        this.rating=0;
         this.rating=0;
         this.mediaType=mediaType;
     }
 
     /**
-     * @return the albumId
+     * @return the mediaId
      */
-    public int getAlbumId() {
-        return albumId;
+    public int getMediaId() {
+        return mediaId;
     }
 
     /**
-     * @param albumId the albumId to set
+     * @param mediaId the mediaId to set
      */
-    public void setAlbumId(int albumId) {
-        this.albumId = albumId;
+    public void setMediaId(int mediaId) {
+        this.mediaId = mediaId;
     }
 
     /**
@@ -116,27 +123,24 @@ public class Media {
      * @param rating the rating to set
      */
     public void setRating(float rating) {
-    NumberFormat formatter = NumberFormat.getInstance(Locale.US);
-    formatter.setMaximumFractionDigits(2);
-    formatter.setMinimumFractionDigits(2);
-    formatter.setRoundingMode(RoundingMode.HALF_UP); 
-    Float formatedFloat = new Float(formatter.format(rating));
-    this.rating=rating;
+
+        NumberFormat formatter = NumberFormat.getInstance(Locale.US);
+        formatter.setMaximumFractionDigits(1);
+        formatter.setMinimumFractionDigits(1);
+        formatter.setRoundingMode(RoundingMode.HALF_UP); 
+        Float formatedFloat = new Float(formatter.format(rating));
+        this.rating=formatedFloat;
     }   
     
-    /**
-     * @return the person
-     */
-    public Person getPerson() {
-        return person;
-    }
 
     /**
-     * @param person the person to set
+     * Returns a string of all creators
+     * @return the thePersonsString
      */
-    public void setPerson(Person person) {
-        this.person = person;
+    public String getThePersonsString(){
+        return thePersonsString;
     }
+    
 
     /**
      * @return the mediaType
@@ -173,10 +177,17 @@ public class Media {
     }
 
     /**
+     * Adds a person to the media and fixes thePersonsString with commas.
      * @param thePersons the thePersons to set
      */
     public void addPerson(Person p) {
-        if(!thePersons.contains(p))
+        if(!thePersons.contains(p)){
+            if(thePersons.size()>0){
+                thePersonsString += ", " + p.getName();
+            }
+            else
+                thePersonsString += p.getName();
             thePersons.add(p);
-    }
+        }
+    }    
 }

@@ -7,7 +7,7 @@ package model;
 
 /**
  *
- * @author micke1
+* @author Jakob Danielsson & Michael Hjälmö
  */
 public enum MediaType {
     MUSIC, FILM, UNKNOWN;
