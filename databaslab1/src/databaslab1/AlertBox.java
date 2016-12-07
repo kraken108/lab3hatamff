@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author micke1
+ * @author Jakob Danielsson & Michael Hjälmö
  */
 public class AlertBox {
     

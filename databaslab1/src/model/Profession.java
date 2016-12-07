@@ -7,7 +7,7 @@ package model;
 
 /**
  *
- * @author micke1
+ * @author Jakob Danielsson & Michael Hjälmö
  */
 public enum Profession {
     DIRECTOR, ARTIST, UNKNOWN;

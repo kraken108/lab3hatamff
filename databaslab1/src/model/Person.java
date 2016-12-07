@@ -1,15 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
-import java.util.ArrayList;
-
 /**
- *
- * @author micke1
+ * Person is an object that holds information about an Artist or Director etc
+ * @author Jakob Danielsson & Michael Hjälmö
  */
 public class Person {
     
@@ -19,6 +12,10 @@ public class Person {
     private String country;
     private int age;
     
+    /*
+    *@param name the name to set
+    *
+    */
     public Person(String name){
         this.name=name;
         age = 0;
@@ -26,7 +23,10 @@ public class Person {
         profession = Profession.UNKNOWN;
         personId = 0;
     }
-    
+    /*
+    *
+    * Constructor for persons with unknown fields.
+    */
     public Person(){
         this.name=null;
         this.age = 0;
@@ -35,12 +35,25 @@ public class Person {
         personId = 0;
     }
     
+    /*
+    *
+    *@param name the name to set
+    *@param age the age to set
+    *@param country the country to set
+    */
     public Person(String name, int age, String country){
         this.name=name;
         this.age=age;
         this.country=country;
     }
     
+    /*
+    *@param personId the personId to set
+    *@param name the name to set
+    *@param country the country to set
+    *@param profession the profession to set
+    **@param age the age to set
+    */
     public Person(int personId, String name,String country,Profession profession,int age){
         this.personId = personId;
         this.name = name;
@@ -49,23 +62,6 @@ public class Person {
         this.age = age;
     }
 
-
-    /**
-     * @return the firstName
-     */
-    public String getName() {
-        return name;
-    }
-
-  
-    
-    public void setPersonId(int personId){
-        this.personId = personId;
-    }
-    
-    public int getPersonId(){
-        return this.personId;
-    }
     /**
      * @param name the name to set
      */
@@ -121,6 +117,27 @@ public class Person {
      */
     public void setAge(int age) {
         this.age = age;
+    }
+
+    /**
+     * @return the personId
+     */
+    public int getPersonId() {
+        return personId;
+    }
+
+    /**
+     * @param personId the personId to set
+     */
+    public void setPersonId(int personId) {
+        this.personId = personId;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
     }
 
     

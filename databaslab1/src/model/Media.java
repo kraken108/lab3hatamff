@@ -1,22 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import static oracle.jrockit.jfr.events.Bits.floatValue;
-
 
 /**
- *
- * @author Jakob
+ * Media is an object that holds information about an Album, Movie, etc. 
+ * @author Jakob Danielsson & Michael Hjälmö
  */
 public class Media {
     
@@ -27,12 +19,12 @@ public class Media {
     private ArrayList<Person> thePersons;
     private float rating;
     private String thePersonsString;
-
-
-    private Person person;
     private MediaType mediaType;
 
     
+    /**
+    * Empty constructor
+    */
     public Media(){
         thePersons = new ArrayList<>();
         this.mediaId=0;
@@ -47,8 +39,13 @@ public class Media {
 
     }
 
-    
-
+    /**
+     * Constructor
+     * @param title The title of the media
+     * @param publishDate The date the media was published
+     * @param genre The genre of the media
+     * @param mediaType The type of the media
+     */
     public Media(String title, String publishDate, String genre, MediaType mediaType){
         thePersons = new ArrayList<>();
         this.title=title;
@@ -56,21 +53,18 @@ public class Media {
         this.genre=genre;
         this.rating=0;
         this.rating=0;
-
-
         this.mediaType=mediaType;
-
     }
 
     /**
-     * @return the albumId
+     * @return the mediaId
      */
     public int getMediaId() {
         return mediaId;
     }
 
     /**
-     * @param albumId the albumId to set
+     * @param mediaId the mediaId to set
      */
     public void setMediaId(int mediaId) {
         this.mediaId = mediaId;
@@ -138,26 +132,15 @@ public class Media {
         this.rating=formatedFloat;
     }   
     
+
     /**
-     * @return the person
+     * Returns a string of all creators
+     * @return the thePersonsString
      */
-    public Person getPerson() {
-        return person;
-    }
-
-    /**
-    * @param artist the artist to set
-    */
-
-    
     public String getThePersonsString(){
         return thePersonsString;
     }
     
-
-    public void setPerson(Person person) {
-        this.person = person;
-    }
 
     /**
      * @return the mediaType
@@ -194,6 +177,7 @@ public class Media {
     }
 
     /**
+     * Adds a person to the media and fixes thePersonsString with commas.
      * @param thePersons the thePersons to set
      */
     public void addPerson(Person p) {
