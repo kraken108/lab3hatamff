@@ -10,8 +10,13 @@ import java.util.ArrayList;
 import model.*;
 
 /**
+<<<<<<< HEAD
+ *
+* @author Jakob Danielsson & Michael Hjälmö
+=======
  * DatabaseCommunicator is an object for communicating with a SQL database
  * @author Jakob Danielsson & Michael Hjälmö
+>>>>>>> 8c1acd9aabb1b0de6387e57a5e51cc8858d26309
  */
 public class DatabaseCommunicator implements Queries{
     private String database;
@@ -65,8 +70,8 @@ public class DatabaseCommunicator implements Queries{
             stmt = con.createStatement();
             rs = stmt.executeQuery(query);
             while(rs.next()){
-                Person p = new Person(rs.getInt("personId"),rs.getString("name"),rs.getString("country"),Profession.ARTIST,rs.getInt("age"));
-                theArtists.add(p);
+                //Person p = new Person(rs.getInt("personId"),rs.getString("name"),rs.getString("country"),Profession.ARTIST,rs.getInt("age"));
+                //theArtists.add(p);
             }
         }catch(SQLException e){
             return null;
@@ -286,6 +291,28 @@ public class DatabaseCommunicator implements Queries{
         }
         
     }
-    
 
+    private void createPreparedStatements() throws SQLException{
+        try{
+            String query = "SELECT * FROM MediaPerson NATURAL JOIN Media "
+                + "WHERE personId IN (SELECT personId "
+                + "FROM Person WHERE name "
+                + "LIKE ?);";
+            searchByArtist = con.prepareStatement(query);
+        
+            query = "SELECT * FROM Media WHERE avgRating LIKE ?;";
+            searchByRating = con.prepareStatement(query);
+            
+            query = "SELECT * FROM Media WHERE Title LIKE ?;";
+            searchByTitle = con.prepareStatement(query);
+            
+            query = "SELECT * FROM Media WHERE Genre LIKE ?;";
+            searchByGenre = con.prepareStatement(query);
+
+        }catch(SQLException e){
+            throw(e);
+        }
+            
+        
+    }
 }

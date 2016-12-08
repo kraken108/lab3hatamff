@@ -34,7 +34,11 @@ import javafx.stage.Modality;
 
 /**
  *
+<<<<<<< HEAD
+* @author Jakob Danielsson & Michael Hjälmö
+=======
  * @author Jakob Danielsson & Michael Hjälmö
+>>>>>>> 8c1acd9aabb1b0de6387e57a5e51cc8858d26309
  */
 public class Databaslab1 extends Application{
     
@@ -389,7 +393,7 @@ public class Databaslab1 extends Application{
         datePicker.setEditable(false);
         grid.add(datePicker, 1, 4);
         
-        
+         
         
         doneButton.setOnMouseClicked(e->{
             
@@ -465,6 +469,3 @@ public class Databaslab1 extends Application{
         
     }
 }
-
-
-

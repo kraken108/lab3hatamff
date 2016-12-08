@@ -1,12 +1,23 @@
 package model;
 
 /**
+<<<<<<< HEAD
+*
+* @author Jakob Danielsson & Michael Hjälmö
+*/
+
+/*
+*Person is an object that holds information about an Artist or Director etc
+*
+*/
+/*
  * Person is an object that holds information about an Artist or Director etc
  * @author Jakob Danielsson & Michael Hjälmö
  */
+
 public class Person {
     
-    private int personId;
+    private String personId;
     private String name;
     private Profession profession;
     private String country;
@@ -21,7 +32,7 @@ public class Person {
         age = 0;
         country = null;
         profession = Profession.UNKNOWN;
-        personId = 0;
+        personId = "0";
     }
     /*
     *
@@ -32,7 +43,7 @@ public class Person {
         this.age = 0;
         this.country = null;
         this.profession = Profession.UNKNOWN;
-        personId = 0;
+        personId = "0";
     }
     
     /*
@@ -54,7 +65,7 @@ public class Person {
     *@param profession the profession to set
     **@param age the age to set
     */
-    public Person(int personId, String name,String country,Profession profession,int age){
+    public Person(String personId, String name,String country,Profession profession,int age){
         this.personId = personId;
         this.name = name;
         this.country = country;
@@ -122,14 +133,14 @@ public class Person {
     /**
      * @return the personId
      */
-    public int getPersonId() {
+    public String getPersonId() {
         return personId;
     }
 
     /**
      * @param personId the personId to set
      */
-    public void setPersonId(int personId) {
+    public void setPersonId(String personId) {
         this.personId = personId;
     }
 
@@ -138,8 +149,10 @@ public class Person {
      */
     public String getName() {
         return name;
-    }
+
+    }   
+}
 
     
     
-}
+

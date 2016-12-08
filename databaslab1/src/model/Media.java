@@ -189,6 +189,5 @@ public class Media {
                 thePersonsString += p.getName();
             thePersons.add(p);
         }
-    }
-    
+    }    
 }
