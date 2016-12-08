@@ -46,9 +46,23 @@ public class MongoDB implements Queries{
          
          //table.drop();
     }
+    
     @Override
     public void addAlbum(Media media) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        BasicDBObject document = new BasicDBObject();
+        ArrayList<Person> theArtists = media.getThePersons();
+        
+        document.put("Title",media.getTitle());
+        document.put("genre",media.getGenre());
+        document.put("release_date",media.getPublishDate());
+
+        System.out.println(media.toString());
+        try{
+            mediaTable.insert(document);
+            System.out.println("lyckades");
+        }catch(Exception e){
+            throw(e);
+        }
     }
 
     @Override
@@ -68,8 +82,25 @@ public class MongoDB implements Queries{
 
     @Override
     public ArrayList<Media> searchAlbums(String searchWord, String searchBy) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Media> theMedia = new ArrayList<>();
+        
+        BasicDBObject fields = new BasicDBObject();
+        
+        fields.put(searchBy,searchWord);
+        
+        DBCursor cursor = mediaTable.find(fields);
+        
+        while(cursor.hasNext()){
+            Media media = new Media();
+            BasicDBObject obj = (BasicDBObject) cursor.next();
+            media.setTitle(obj.getString("Title"));
+            media.setGenre(obj.getString("genre"));
+            media.setPublishDate(obj.getString("release_date"));
+            theMedia.add(media);
+        }
+        return theMedia;
     }
+    
 
      @Override
     public ArrayList<Person> getAllArtists() {

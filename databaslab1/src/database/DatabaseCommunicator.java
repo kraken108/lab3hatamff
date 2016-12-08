@@ -70,8 +70,8 @@ public class DatabaseCommunicator implements Queries{
             stmt = con.createStatement();
             rs = stmt.executeQuery(query);
             while(rs.next()){
-                Person p = new Person(rs.getInt("personId"),rs.getString("name"),rs.getString("country"),Profession.ARTIST,rs.getInt("age"));
-                theArtists.add(p);
+                //Person p = new Person(rs.getInt("personId"),rs.getString("name"),rs.getString("country"),Profession.ARTIST,rs.getInt("age"));
+                //theArtists.add(p);
             }
         }catch(SQLException e){
             return null;
