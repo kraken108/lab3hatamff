@@ -59,7 +59,7 @@ public class Databaslab1 extends Application{
         Boolean exit = false;
         
         try{
-            queries = new DatabaseCommunicator();
+            queries = new MongoDB();
         }catch(Exception e){
             AlertBox.display("Error!", "Failed to connect to database.: "+e);
             exit = true;
@@ -101,7 +101,7 @@ public class Databaslab1 extends Application{
         txt = new TextField();
         txt.setPromptText("Enter search word");
         choiceBox = new ChoiceBox<>();
-        choiceBox.getItems().addAll("Artist", "Title", "Genre", "Rating");
+        choiceBox.getItems().addAll("Artist", "title", "genre", "Rating");
         choiceBox.setTooltip(new Tooltip("Search by"));
         choiceBox.getSelectionModel().selectFirst();
         
@@ -151,7 +151,7 @@ public class Databaslab1 extends Application{
         
         statusbar.setStyle("-fx-background-color: #00143a;");
         
- 
+        
 
         borderPane.setCenter(tableView);
 
@@ -161,7 +161,7 @@ public class Databaslab1 extends Application{
         statusbar.getChildren().addAll(btn,txt,choiceBox);
         Scene scene = new Scene(borderPane, 768, 512);
         primaryStage.setOnCloseRequest(event->{
-            queries.closeConnection();
+            //queries.closeConnection();
         });
         primaryStage.setTitle("Album collection");
         primaryStage.setScene(scene);
