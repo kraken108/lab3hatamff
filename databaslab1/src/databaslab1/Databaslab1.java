@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package databaslab1;
 
 
@@ -14,7 +9,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
@@ -22,7 +16,6 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.*;
 import database.*;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -31,20 +24,21 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 
 
 /**
  *
+<<<<<<< HEAD
 * @author Jakob Danielsson & Michael Hjälmö
+=======
+ * @author Jakob Danielsson & Michael Hjälmö
+>>>>>>> 8c1acd9aabb1b0de6387e57a5e51cc8858d26309
  */
 public class Databaslab1 extends Application{
     
@@ -56,7 +50,9 @@ public class Databaslab1 extends Application{
     private ArrayList<Media> listItems;
     private rateWindow rw;
     private ObservableList data;
+    private Queries queries;
 
+    
     
     @Override
     public void start(Stage primaryStage){
@@ -64,6 +60,15 @@ public class Databaslab1 extends Application{
         tableView = new TableView();
         data = FXCollections.observableList(new ArrayList());
         tableView.setItems(data);
+        Boolean exit = false;
+        
+        try{
+            queries = new DatabaseCommunicator();
+        }catch(Exception e){
+            AlertBox.display("Error!", "Failed to connect to database.: "+e);
+            exit = true;
+        }
+        
         
         TableColumn titleColumn = new TableColumn("Title");
         titleColumn.setCellValueFactory(new PropertyValueFactory("title"));
@@ -86,22 +91,16 @@ public class Databaslab1 extends Application{
         tableView.getColumns().addAll(titleColumn,artistsColumn,genreColumn,ratingColumn,releaseDateColumn);
         listItems = new ArrayList<>();
         rw = new rateWindow();
-        Boolean exit = false;
+        
         Button btn = new Button();
         btn.setText("Search");
         Button rate = new Button();
         rate.setText("Rate");
         
         dbComm = null;
-        try{
-            dbComm = new DatabaseCommunicator();
-        }catch(SQLException e){
-            AlertBox.display("Error!", "Failed to connect to database: " + e);
-            exit = true;
-        }catch(Exception ex){
-            AlertBox.display("Error!", "Failed to connect to database: " + ex);
-            exit = true;
-        }
+
+
+
         
         txt = new TextField();
         txt.setPromptText("Enter search word");
@@ -120,7 +119,7 @@ public class Databaslab1 extends Application{
             public void handle(ActionEvent event){
                 Media m = getSelectedAlbum();
                 if(m!=null){
-                    rw.rateAlbum(dbComm,m);
+                    rw.rateAlbum(queries,m);
                 }
             }
         });
@@ -134,9 +133,11 @@ public class Databaslab1 extends Application{
         
         Button addCD = new Button();
         addCD.setText("Add CD");
-        
         addCD.setOnAction(e -> {
-            ArrayList<Person> theArtists = dbComm.allArtistsRequest();
+
+            ArrayList<Person> theArtists = queries.getAllArtists();
+
+            
             addCD(theArtists);   
         });
         
@@ -153,7 +154,6 @@ public class Databaslab1 extends Application{
         statusbar2.setPadding(new Insets(10, 0, 10, 10));
         
         statusbar.setStyle("-fx-background-color: #00143a;");
-        //NYTT
         
  
 
@@ -165,7 +165,7 @@ public class Databaslab1 extends Application{
         statusbar.getChildren().addAll(btn,txt,choiceBox);
         Scene scene = new Scene(borderPane, 768, 512);
         primaryStage.setOnCloseRequest(event->{
-            dbComm.closeConnection();
+            queries.closeConnection();
         });
         primaryStage.setTitle("Album collection");
         primaryStage.setScene(scene);
@@ -188,8 +188,9 @@ public class Databaslab1 extends Application{
         
         Thread thread = new Thread(){
             public void run(){
+                
                 ArrayList<Media> tempMusicAlbum = 
-                        dbComm.searchRequest(txt.getText(),(String)
+                        queries.searchAlbums(txt.getText(),(String)
                                 choiceBox.getSelectionModel().getSelectedItem());
                 javafx.application.Platform.runLater(
                         new Runnable(){
@@ -198,7 +199,6 @@ public class Databaslab1 extends Application{
                                     if(!tempMusicAlbum.isEmpty())
                                         for(Media ma : tempMusicAlbum){
                                            if(ma!=null){
-                                                System.out.println(ma.toString());
                                                 changeData(tempMusicAlbum);
                                                 listItems.add(ma);
                                             } 
@@ -285,7 +285,6 @@ public class Databaslab1 extends Application{
         }
         else{
             Person p = new Person(nameField.getText(), comboBox.getSelectionModel().getSelectedIndex()+10, nationalityField.getText());
-            System.out.println(p.getAge());
             sendNewArtist(p);
             stage.close();
         }
@@ -298,9 +297,14 @@ public class Databaslab1 extends Application{
     }
     
     private void sendNewArtist(Person artist){
+        int n = 1;
         Thread thread = new Thread(){
             public void run(){
-                int n = dbComm.addArtistRequest(artist);
+                try{
+                    queries.addArtist(artist);
+                }catch(Exception e){
+                    
+                }
                 javafx.application.Platform.runLater(
                         new Runnable(){
                             public void run(){
@@ -372,10 +376,7 @@ public class Databaslab1 extends Application{
         
         addButton.setOnMouseClicked(e ->{
             int n = comboBox.getSelectionModel().getSelectedIndex();
-            System.out.println(n);
             if(n!=-1){
-                System.out.println(n);
-                System.out.println(theArtists.get(n).getPersonId());
                 albumToReturn.addPerson(theArtists.get(n));
                 theArtists.remove(n);
                 comboBox.getItems().clear();
@@ -445,10 +446,14 @@ public class Databaslab1 extends Application{
     
     
     private void sendAlbumRequest(Media albumToReturn){
-        
+        int n = 1;
         Thread thread = new Thread(){
             public void run(){
-                int n = dbComm.newAlbumRequest(albumToReturn);
+                
+                try{
+                    queries.addAlbum(albumToReturn);
+                }catch(Exception e){
+                }
                 javafx.application.Platform.runLater(
                         new Runnable(){
                             public void run(){

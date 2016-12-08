@@ -15,7 +15,11 @@ import javafx.stage.Stage;
 
 /**
  *
+<<<<<<< HEAD
 * @author Jakob Danielsson & Michael Hjälmö
+=======
+ * @author Jakob Danielsson & Michael Hjälmö
+>>>>>>> 8c1acd9aabb1b0de6387e57a5e51cc8858d26309
  */
 public class AlertBox {
     

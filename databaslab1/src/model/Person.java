@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 /**
+<<<<<<< HEAD
 *
 * @author Jakob Danielsson & Michael Hjälmö
 */
@@ -14,6 +10,11 @@ package model;
 *Person is an object that holds information about an Artist or Director etc
 *
 */
+/*
+ * Person is an object that holds information about an Artist or Director etc
+ * @author Jakob Danielsson & Michael Hjälmö
+ */
+
 public class Person {
     
     private int personId;
@@ -148,5 +149,10 @@ public class Person {
      */
     public String getName() {
         return name;
+
     }   
 }
+
+    
+    
+

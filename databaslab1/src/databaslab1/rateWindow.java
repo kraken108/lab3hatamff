@@ -6,6 +6,7 @@
 package databaslab1;
 
 import database.DatabaseCommunicator;
+import database.Queries;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,7 +23,11 @@ import model.Media;
 
 /**
  *
+<<<<<<< HEAD
 * @author Jakob Danielsson & Michael Hjälmö
+=======
+ * @author Jakob Danielsson & Michael Hjälmö
+>>>>>>> 8c1acd9aabb1b0de6387e57a5e51cc8858d26309
  */
 public class rateWindow extends Stage{      
     private GridPane theGrid; 
@@ -35,7 +40,7 @@ public class rateWindow extends Stage{
         theScene = new Scene(theGrid, 300, 200);
     }
     
-    public void rateAlbum(DatabaseCommunicator dbComm,Media m){
+    public void rateAlbum(Queries queries,Media m){
         theGrid.setPadding(new Insets(5,5,5,5));
         theGrid.setVgap(3);
         theGrid.setHgap(5);
@@ -62,7 +67,7 @@ public class rateWindow extends Stage{
             @Override
             public void handle(ActionEvent event){
                 if(textArea.getText().length() <= 120){
-                    sendRateRequest(cb.getSelectionModel().getSelectedIndex()+1,textArea.getText(),m,dbComm);
+                    sendRateRequest(cb.getSelectionModel().getSelectedIndex()+1,textArea.getText(),m,queries);
                     rateWindow.this.hide();
                 }
                 else{
@@ -78,10 +83,16 @@ public class rateWindow extends Stage{
         this.show();
     }
     
-    private void sendRateRequest(int index, String text, Media m,DatabaseCommunicator dbComm){
+    private void sendRateRequest(int index, String text, Media m,Queries queries){
+        int n = 1;
         Thread thread = new Thread(){
             public void run(){
-                int n = dbComm.rateRequest(index, text, m);
+                
+                try{
+                    queries.submitReview(index, text, m);
+                }catch(Exception e){
+                    
+                }
                 javafx.application.Platform.runLater(
                         new Runnable(){
                             public void run(){
