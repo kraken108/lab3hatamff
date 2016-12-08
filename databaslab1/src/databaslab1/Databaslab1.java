@@ -105,7 +105,9 @@ public class Databaslab1 extends Application{
         txt = new TextField();
         txt.setPromptText("Enter search word");
         choiceBox = new ChoiceBox<>();
+
         choiceBox.getItems().addAll("Artist", "Title", "genre", "Rating");
+        choiceBox.getItems().addAll("Artist", "Title", "Genre", "Rating");
         choiceBox.setTooltip(new Tooltip("Search by"));
         choiceBox.getSelectionModel().selectFirst();
         
