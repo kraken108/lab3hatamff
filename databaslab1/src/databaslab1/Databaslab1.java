@@ -63,7 +63,7 @@ public class Databaslab1 extends Application{
         Boolean exit = false;
         
         try{
-            queries = new DatabaseCommunicator();
+            queries = new MongoDB();
         }catch(Exception e){
             AlertBox.display("Error!", "Failed to connect to database.: "+e);
             exit = true;
@@ -165,7 +165,7 @@ public class Databaslab1 extends Application{
         statusbar.getChildren().addAll(btn,txt,choiceBox);
         Scene scene = new Scene(borderPane, 768, 512);
         primaryStage.setOnCloseRequest(event->{
-            queries.closeConnection();
+            //queries.closeConnection();
         });
         primaryStage.setTitle("Album collection");
         primaryStage.setScene(scene);
