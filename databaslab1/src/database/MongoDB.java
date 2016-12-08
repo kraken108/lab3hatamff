@@ -1,4 +1,5 @@
 package database;
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -51,12 +52,24 @@ public class MongoDB implements Queries{
     public void addAlbum(Media media) throws Exception {
         BasicDBObject document = new BasicDBObject();
         ArrayList<Person> theArtists = media.getThePersons();
+        List<BasicDBObject> objList = new ArrayList<>();
         
         document.put("Title",media.getTitle());
-        document.put("genre",media.getGenre());
+        document.put("Genre",media.getGenre());
         document.put("release_date",media.getPublishDate());
-
         System.out.println(media.toString());
+        
+        
+        for(Person p : theArtists){
+            BasicDBObject tempDocument = new BasicDBObject();
+            tempDocument.put("name",p.getName());
+            tempDocument.put("nationality",p.getCountry());
+            tempDocument.put("age",p.getAge());
+            tempDocument.put("profession","artist");
+            objList.add(tempDocument);
+        }
+        document.put("theArtists",objList);
+        
         try{
             mediaTable.insert(document);
             System.out.println("lyckades");
@@ -80,22 +93,40 @@ public class MongoDB implements Queries{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    
     @Override
     public ArrayList<Media> searchAlbums(String searchWord, String searchBy) {
+        if(searchBy.equals("Artist")){
+            searchBy = "name";
+        }
+        DBCursor cursor = null;
         ArrayList<Media> theMedia = new ArrayList<>();
-        
         BasicDBObject fields = new BasicDBObject();
         
-        fields.put(searchBy,searchWord);
-        
-        DBCursor cursor = mediaTable.find(fields);
+        if(!searchBy.equals("name")){
+            fields.put(searchBy,searchWord);
+            cursor = mediaTable.find(fields);
+        }
+        else{
+            fields.put("theArtists.name",searchWord);
+            cursor = mediaTable.find(fields);
+        }
         
         while(cursor.hasNext()){
+            //System.out.println(cursor.next());
             Media media = new Media();
             BasicDBObject obj = (BasicDBObject) cursor.next();
-            media.setTitle(obj.getString("title"));
-            media.setGenre(obj.getString("genre"));
+            media.setTitle(obj.getString("Title"));
+            media.setGenre(obj.getString("Genre"));
             media.setPublishDate(obj.getString("release_date"));
+            BasicDBList list = (BasicDBList) obj.get("theArtists");
+            BasicDBObject[] listArray = list.toArray(new BasicDBObject[0]);
+            for(BasicDBObject bdo : listArray){
+                Person tempArtist = new Person();
+                tempArtist.setName(bdo.getString("name"));
+                media.addPerson(tempArtist);
+            }
+            
             theMedia.add(media);
         }
         return theMedia;
