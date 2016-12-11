@@ -20,7 +20,7 @@ public class Media {
     private float rating;
     private String thePersonsString;
     private MediaType mediaType;
-
+   
     
     /**
     * Empty constructor

@@ -77,7 +77,7 @@ public class MongoDB implements Queries{
             throw(e);
         }
     }
-
+    
     @Override
     public void addArtist(Person artist) throws Exception {
         BasicDBObject document = new BasicDBObject();
@@ -157,7 +157,12 @@ public class MongoDB implements Queries{
 
     @Override
     public void closeConnection() {
-        
+        try{
+            mongo.close();
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
     }
     
 }
