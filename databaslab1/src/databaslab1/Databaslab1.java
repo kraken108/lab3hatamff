@@ -165,7 +165,7 @@ public class Databaslab1 extends Application{
         statusbar.getChildren().addAll(btn,txt,choiceBox);
         Scene scene = new Scene(borderPane, 768, 512);
         primaryStage.setOnCloseRequest(event->{
-            //queries.closeConnection();
+            queries.closeConnection();
         });
         primaryStage.setTitle("Album collection");
         primaryStage.setScene(scene);
@@ -208,7 +208,6 @@ public class Databaslab1 extends Application{
                                         changeData(tempMusicAlbum);
                                     }
                                 }
-                                        
                                 else{
                                     AlertBox.display("Error!", "Search failed.");
                                     changeData(new ArrayList<Media>());

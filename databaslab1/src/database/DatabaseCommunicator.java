@@ -111,7 +111,7 @@ public class DatabaseCommunicator implements Queries{
            
             while (rs.next()) {
                 Media m = new Media();   
-                m.setMediaId(rs.getInt("mediaId"));
+                //m.setMediaId(rs.getInt("mediaId"));
                 m.setTitle(rs.getString("title"));
                 m.setPublishDate(rs.getString("releaseDate"));
                 m.setGenre(rs.getString("genre"));
@@ -267,7 +267,7 @@ public class DatabaseCommunicator implements Queries{
             query = "SELECT LAST_INSERT_ID();";
             rs = stmt.executeQuery(query);
             if(rs.next()){
-                media.setMediaId(rs.getInt(1));
+                //media.setMediaId(rs.getInt(1));
             }
  
             for(Person p : media.getThePersons()){

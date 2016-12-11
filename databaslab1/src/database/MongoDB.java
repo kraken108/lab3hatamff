@@ -7,9 +7,12 @@ import com.mongodb.DBCursor;
 import com.mongodb.Mongo;
 import static com.mongodb.client.model.Projections.fields;
 import static java.lang.Integer.parseInt;
+import java.math.RoundingMode;
 import java.net.UnknownHostException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import model.Media;
 import model.Person;
 import model.Profession;
@@ -45,7 +48,6 @@ public class MongoDB implements Queries{
          mediaTable = db.getCollection("theMedia");
          artistTable = db.getCollection("theArtists");
          
-         //table.drop();
     }
     
     @Override
@@ -53,10 +55,12 @@ public class MongoDB implements Queries{
         BasicDBObject document = new BasicDBObject();
         ArrayList<Person> theArtists = media.getThePersons();
         List<BasicDBObject> objList = new ArrayList<>();
+        List<BasicDBObject> ratingList = new ArrayList<>();
         
         document.put("Title",media.getTitle());
         document.put("Genre",media.getGenre());
         document.put("release_date",media.getPublishDate());
+        document.put("avgRating","0");
         System.out.println(media.toString());
         
         
@@ -69,7 +73,7 @@ public class MongoDB implements Queries{
             objList.add(tempDocument);
         }
         document.put("theArtists",objList);
-        
+        document.put("ratings",ratingList);
         try{
             mediaTable.insert(document);
             System.out.println("lyckades");
@@ -90,27 +94,62 @@ public class MongoDB implements Queries{
 
     @Override
     public void submitReview(float rating, String comment, Media media) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ObjectId id = new ObjectId(media.getMediaId());
+        System.out.println(id);
+        BasicDBObject findQuery = new BasicDBObject("_id",id);
+        BasicDBObject listItem = new BasicDBObject("ratings",new BasicDBObject("rating",rating).append("comment",comment));
+        BasicDBObject updateQuery = new BasicDBObject ("$push",listItem);
+        mediaTable.update(findQuery, updateQuery);
+        DBCursor cursor = mediaTable.find(findQuery);
+        while(cursor.hasNext()){
+            int counter = 0;
+            float total = 0;
+            BasicDBObject obj = (BasicDBObject) cursor.next();
+            BasicDBList list = (BasicDBList) obj.get("ratings");
+            BasicDBObject[] listArray = list.toArray(new BasicDBObject[0]);
+            for(BasicDBObject bdo : listArray){
+                counter++;
+                total+=bdo.getDouble("rating");
+            }
+            
+            
+            NumberFormat formatter = NumberFormat.getInstance(Locale.US);
+            formatter.setMaximumFractionDigits(1);
+            formatter.setMinimumFractionDigits(1);
+            formatter.setRoundingMode(RoundingMode.HALF_UP); 
+            Float formatedFloat = new Float(formatter.format(total/counter));
+            String s = formatedFloat.toString();
+            System.out.println(total/counter);
+            BasicDBObject doc = new BasicDBObject();
+            System.out.println(formatedFloat);
+            doc.put("avgRating",s);
+            
+            mediaTable.update(findQuery, new BasicDBObject("$set",doc));
+        }
+        
+        
+        
     }
 
     
     @Override
     public ArrayList<Media> searchAlbums(String searchWord, String searchBy) {
-        if(searchBy.equals("Artist")){
-            searchBy = "name";
-        }
+
         DBCursor cursor = null;
         ArrayList<Media> theMedia = new ArrayList<>();
         BasicDBObject fields = new BasicDBObject();
         
-        if(!searchBy.equals("name")){
+        if(searchBy.equals("Title") || searchBy.equals("Genre")){
             fields.put(searchBy,searchWord);
-            cursor = mediaTable.find(fields);
         }
-        else{
-            fields.put("theArtists.name",searchWord);
-            cursor = mediaTable.find(fields);
+        else if(searchBy.equals("Artist")){
+            fields.put("theArtists.name",java.util.regex.Pattern.compile(searchWord));
         }
+        else{ 
+            fields.put("avgRating",java.util.regex.Pattern.compile(searchWord));
+        }
+        
+        cursor = mediaTable.find(fields);
         
         while(cursor.hasNext()){
             //System.out.println(cursor.next());
@@ -119,6 +158,9 @@ public class MongoDB implements Queries{
             media.setTitle(obj.getString("Title"));
             media.setGenre(obj.getString("Genre"));
             media.setPublishDate(obj.getString("release_date"));
+            
+            media.setRating(Float.parseFloat(obj.getString("avgRating")));
+
             BasicDBList list = (BasicDBList) obj.get("theArtists");
             BasicDBObject[] listArray = list.toArray(new BasicDBObject[0]);
             for(BasicDBObject bdo : listArray){
@@ -126,7 +168,8 @@ public class MongoDB implements Queries{
                 tempArtist.setName(bdo.getString("name"));
                 media.addPerson(tempArtist);
             }
-            
+            String theString = obj.getObjectId("_id").toHexString();
+            media.setMediaId(theString);
             theMedia.add(media);
         }
         return theMedia;
@@ -155,7 +198,11 @@ public class MongoDB implements Queries{
 
     @Override
     public void closeConnection() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try{
+            mongo.close();
+        }catch(Exception e){
+            throw(e);
+        }
     }
     
 }

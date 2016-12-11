@@ -12,7 +12,7 @@ import java.util.Locale;
  */
 public class Media {
     
-    private int mediaId;
+    private String mediaId;
     private String title;
     private String publishDate;
     private String genre;
@@ -27,7 +27,7 @@ public class Media {
     */
     public Media(){
         thePersons = new ArrayList<>();
-        this.mediaId=0;
+        this.mediaId="";
         this.title=null;
         this.publishDate=null;
         this.genre=null;
@@ -59,14 +59,14 @@ public class Media {
     /**
      * @return the mediaId
      */
-    public int getMediaId() {
+    public String getMediaId() {
         return mediaId;
     }
 
     /**
      * @param mediaId the mediaId to set
      */
-    public void setMediaId(int mediaId) {
+    public void setMediaId(String mediaId) {
         this.mediaId = mediaId;
     }
 
@@ -123,7 +123,6 @@ public class Media {
      * @param rating the rating to set
      */
     public void setRating(float rating) {
-
         NumberFormat formatter = NumberFormat.getInstance(Locale.US);
         formatter.setMaximumFractionDigits(1);
         formatter.setMinimumFractionDigits(1);
