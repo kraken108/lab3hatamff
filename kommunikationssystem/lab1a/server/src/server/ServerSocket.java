@@ -24,25 +24,28 @@ public class ServerSocket {
     private Client currentClient;
 
     public ServerSocket(String word) throws SocketException {
-        socket = new DatagramSocket(1234);
+        try {
+            socket = new DatagramSocket(1234);
+        } catch (SocketException se) {
+            throw (se);
+        }
         running = false;
         this.word = word;
         maxAttempts = word.length() * 3;
         setupWordStatus();
     }
 
-    public void startServer() {
+    public void startServer() throws IOException {
         running = true;
         acceptNewConnection();
     }
 
-    private void acceptNewConnection() {
+    private void acceptNewConnection() throws IOException {
         byte[] data = new byte[1024];
 
-        while (running) {
-            System.out.println("Waiting for new client");
-            DatagramPacket packet = new DatagramPacket(data, data.length);
-            try {
+        try {
+            while (running) {
+                DatagramPacket packet = new DatagramPacket(data, data.length);
                 socket.receive(packet);
                 String message = new String(packet.getData());
                 if (removeZeros(message).equals("HELLO")) {
@@ -50,57 +53,61 @@ public class ServerSocket {
                 } else {
                     sendMessage("ERROR", packet);
                 }
-            } catch (IOException ex) {
-                //System.out.println(ex);
-                Logger.getLogger(ServerSocket.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } catch (IOException ex) {
+            System.out.println(ex);
+        } finally {
+            socket.close();
         }
     }
 
-    private void initiateNewSession(DatagramPacket packet) {
+    private void initiateNewSession(DatagramPacket packet) throws IOException {
         sendMessage("OK", packet);
         System.out.println("New session!");
         currentClient = new Client(packet.getAddress(), packet.getPort());
         long connectionTime = System.currentTimeMillis();
 
+        int timeout = 10000;
         while (true) {
-            try {
-                socket.receive(packet);
-                if (correctClient(packet)) { //if correct client
-                    if (System.currentTimeMillis() < connectionTime + 20000) {
-                        connectionTime = System.currentTimeMillis(); //reset timeout
-                        if (isStartMessage(packet)) {
-                            startNewGame();
-                            return;
-                        } else {
-                            sendMessage("ERROR", packet);
-                        }
+
+            socket.receive(packet);
+
+            if (correctClient(packet)) { //if correct client
+                if (System.currentTimeMillis() < connectionTime + timeout) {
+                    // connectionTime = System.currentTimeMillis(); //reset timeout
+                    if (isStartMessage(packet)) {
+                        startNewGame();
+                        return;
                     } else {
-                        sendTimeout();
+                        sendMessage("ERROR! Disconnected", packet);
                         terminateSession();
                         return;
                     }
+                } else {
+                    sendTimeout();
+                    terminateSession();
+                    return;
+                }
 
-                } else //if other client
-                 if (isHelloMessage(packet)) {
-                        if (System.currentTimeMillis() < connectionTime + 50000) {
-                            sendMessage("BUSY", packet);
-                        } else { //timeout, initiate new session
-                            sendTimeout();
-                            terminateSession();
-                            initiateNewSession(packet);
-                            return;
-                        }
-                    } else {
-                        sendMessage("ERROR", packet);
+            } else //if other client
+            {
+                if (isHelloMessage(packet)) {
+                    if (System.currentTimeMillis() < connectionTime + timeout) {
+                        sendMessage("BUSY", packet);
+                    } else { //timeout, initiate new session
+                        sendTimeout();
+                        terminateSession();
+                        initiateNewSession(packet);
+                        return;
                     }
-            } catch (IOException ex) {
-                Logger.getLogger(ServerSocket.class.getName()).log(Level.SEVERE, null, ex);
+                } else {
+                    sendMessage("ERROR", packet);
+                }
             }
         }
     }
 
-    private void startNewGame() {
+    private void startNewGame() throws IOException {
         String s = "READY " + word.length();
         byte[] data = s.getBytes();
         DatagramPacket response = new DatagramPacket(data, data.length);
@@ -111,79 +118,79 @@ public class ServerSocket {
             gameLoop();
         } catch (IOException ex) {
             Logger.getLogger(ServerSocket.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Something happened");
             terminateSession();
+            throw(ex);
         }
     }
 
-   
-    private String getWordStatus(){
+    private String getWordStatus() {
         String s = "";
-        for(int i = 0; i < word.length(); i++){
+        for (int i = 0; i < word.length(); i++) {
             s += wordStatus[i];
         }
         return s;
     }
-    private void gameLoop() {
+
+    private void gameLoop() throws IOException {
         long lastMessageTime = System.currentTimeMillis();
 
+        int timeout = 20000;
         //** GAME LOOP **//
-        while (true) {//30 seconds timeout value
+        while (true) {
             byte[] data = new byte[1024];
             DatagramPacket packet = new DatagramPacket(data, data.length);
             try {
-                System.out.println("trying...");
-
                 socket.receive(packet);
-
-                if (correctClient(packet)) { //if correct client
-                    if (System.currentTimeMillis() < lastMessageTime + 50000) {
-                        lastMessageTime = System.currentTimeMillis();
-                        String message = new String(packet.getData());
-                        message = removeZeros(message);
-                        if (messageFormCorrect(message)) { //if "GUESS 'x'"
-                            currentClient.setNrAttempts(currentClient.getNrAttempts() + 1);
-                            compareWithWord(getLetter(message));
-                            sendMessage(getWordStatus(), packet);
-
-                            if (checkComplete()) {
-                                sendMessage("Thank you for playing!", packet);
-                                terminateSession();
-                                return;
-                            } else if (outOfAttempts()) {
-                                sendMessage("No more tries, thank you for playing!", packet);
-                                terminateSession();
-                                return;
-                            }
-
-                        } else {
-
-                            System.out.println("feel meddelande");
-                            System.out.println(message);
-                            sendMessage("ERROR", packet);
-                        }
-                    } else { //TIMEOUT
-                        sendMessage("TIMEOUT", packet);
-                        terminateSession();
-                    }
-
-                } else//if another client
-                 if (isHelloMessage(packet)) {
-                        if (System.currentTimeMillis() < lastMessageTime + 20000) {
-                            sendMessage("BUSY", packet);
-                        } else { //timeout!
-                            sendTimeout();
-                            terminateSession();
-                            initiateNewSession(packet);
-                            return;
-                        }
-                    } else {
-                        System.out.println("wtf");
-                        sendMessage("ERROR", packet);
-                    }
-
             } catch (IOException ex) {
-                Logger.getLogger(ServerSocket.class.getName()).log(Level.SEVERE, null, ex);
+                throw (ex);
+            }
+
+            if (correctClient(packet)) { //if correct client
+                if (System.currentTimeMillis() < lastMessageTime + timeout) {
+                    lastMessageTime = System.currentTimeMillis();
+                    String message = new String(packet.getData());
+                    message = removeZeros(message);
+                    if (messageFormCorrect(message)) { //if "GUESS 'x'"
+                        currentClient.setNrAttempts(currentClient.getNrAttempts() + 1);
+                        compareWithWord(getLetter(message));
+
+                        if (checkComplete()) {
+                            sendMessage(getWordStatus() + "\nYou win! Thank you for playing.", packet);
+                            terminateSession();
+                            return;
+                        } else if (outOfAttempts()) {
+                            sendMessage(getWordStatus() + "\nNo more tries :( thank you for playing!", packet);
+                            terminateSession();
+                            return;
+                        } else {
+                            sendMessage(getWordStatus(), packet);
+                        }
+
+                    } else {
+                        sendMessage("ERROR! Disconnected", packet);
+                        terminateSession();
+                        return;
+                    }
+                } else { //TIMEOUT
+                    sendTimeout();
+                    terminateSession();
+                    return;
+                }
+
+            } else//if another client
+            {
+                if (isHelloMessage(packet)) {
+                    if (System.currentTimeMillis() < lastMessageTime + timeout) {
+                        sendMessage("BUSY", packet);
+                    } else { //timeout!
+                        sendTimeout();
+                        terminateSession();
+                        initiateNewSession(packet);
+                        return;
+                    }
+                } else {
+                    sendMessage("ERROR", packet);
+                }
             }
         }
     }
@@ -206,22 +213,10 @@ public class ServerSocket {
         }
     }
 
-    private void loop() {
-        byte[] data = new byte[1024];
-        DatagramPacket packet = new DatagramPacket(data, data.length);
-        while (true) {
-            try {
-                socket.receive(packet);
-            } catch (IOException ex) {
-                Logger.getLogger(ServerSocket.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
-
     private void setupWordStatus() {
         wordStatus = new char[word.length()];
-        
-        for(int i = 0; i < word.length(); i++){
+
+        for (int i = 0; i < word.length(); i++) {
             wordStatus[i] = '*';
         }
     }
@@ -234,8 +229,8 @@ public class ServerSocket {
     }
 
     private Boolean checkComplete() {
-        for(int i = 0; i<word.length(); i++){
-            if(wordStatus[i] == '*'){
+        for (int i = 0; i < word.length(); i++) {
+            if (wordStatus[i] == '*') {
                 return false;
             }
         }
@@ -260,7 +255,7 @@ public class ServerSocket {
         }
     }
 
-    private void sendMessage(String message, DatagramPacket packet) {
+    private void sendMessage(String message, DatagramPacket packet) throws IOException {
 
         byte[] data = message.getBytes();
         DatagramPacket response = new DatagramPacket(data, data.length);
@@ -269,13 +264,13 @@ public class ServerSocket {
         try {
             socket.send(response);
         } catch (IOException ex) {
-            Logger.getLogger(ServerSocket.class.getName()).log(Level.SEVERE, null, ex);
+            throw(ex);
         }
     }
 
     private void compareWithWord(String letter) {
-        for(int i = 0; i<word.length(); i++){
-            if(word.charAt(i) == letter.charAt(0)){
+        for (int i = 0; i < word.length(); i++) {
+            if (word.charAt(i) == letter.charAt(0)) {
                 wordStatus[i] = letter.charAt(0);
             }
         }
@@ -308,7 +303,7 @@ public class ServerSocket {
 
     private void terminateSession() {
         currentClient = null;
-        for(int i= 0; i < word.length(); i++){
+        for (int i = 0; i < word.length(); i++) {
             wordStatus[i] = '*';
         }
         setupWordStatus();
@@ -329,9 +324,9 @@ public class ServerSocket {
         for (int i = 0; i < message.length(); i++) {
             if (message.charAt(i) == '\0') {
                 break;
-            } else if(message.charAt(i) == '\n'){
-                break;  
-            }else{
+            } else if (message.charAt(i) == '\n') {
+                break;
+            } else {
                 s += message.charAt(i);
             }
         }

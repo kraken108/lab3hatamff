@@ -9,7 +9,6 @@ import java.io.BufferedReader;
 import java.io.*;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import static java.lang.System.exit;
 import java.net.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,13 +28,13 @@ public class Client implements Runnable {
     private int id;
     private String clientName;
 
-    public Client(Socket socket, Client[] clients, int id) {
+    private Boolean running;
+
+    public Client(Socket socket, Client[] clients, int id) throws IOException {
 
         this.id = id;
         this.clients = clients;
-
         this.clientName = "Client " + id;
-
         this.threadName = socket.getInetAddress().toString();
         this.socket = socket;
         thread = null;
@@ -48,6 +47,7 @@ public class Client implements Runnable {
             out.println("Enjoy!");
         } catch (IOException ie) {
             terminateSession();
+            throw (ie);
         }
     }
 
@@ -57,10 +57,6 @@ public class Client implements Runnable {
         out.println("/who - list all connected clients");
         out.println("/nick <nickname> - give yourself a nickname");
         out.println("/help - list all available commands");
-    }
-
-    private void changeName(String name) {
-        this.clientName = name;
     }
 
     private void sendToOtherClients(String message) {
@@ -79,6 +75,20 @@ public class Client implements Runnable {
         String s = "Connected clients: ";
         for (int i = 0; i < clients.length; i++) {
             if (clients[i] != null && i != id) {
+                s += clients[i].getClientName();
+                if (!(i == clients.length - 1)) {
+                    s += ", ";
+                }
+            }
+
+        }
+        return s;
+    }
+
+    private String getAllClients() {
+        String s = "Connected clients: ";
+        for (int i = 0; i < clients.length; i++) {
+            if (clients[i] != null) {
                 s += clients[i].getClientName();
                 if (!(i == clients.length - 1)) {
                     s += ", ";
@@ -108,17 +118,21 @@ public class Client implements Runnable {
         return s;
     }
 
-    private int handleMessage(String message) {
+    private void handleMessage(String message) {
+        if (message.length() <= 0) {
+            return;
+        }
         if (message.equals("/quit")) {
             out.println("Goodbye!");
             terminateSession();
-            return -1;
         } else if (message.equals("/who")) {
-            out.println(getOtherClientsString());
+            out.println(getAllClients());
         } else if (message.startsWith("/nick ")) {
             if (!nameAlreadyExists(getTheName(message))) {
                 clientName = getTheName(message);
                 out.println("Hello " + clientName + "!");
+            } else {
+                out.println("Name already exists!");
             }
         } else if (message.equals("/help")) {
             sendAvailableCommands();
@@ -127,24 +141,20 @@ public class Client implements Runnable {
         } else {
             sendToOtherClients(clientName + ": " + message);
         }
-        return 0;
     }
 
     @Override
     public void run() {
         //do stuff
 
-        while (true) {
+        while (running) {
             try {
                 String incoming = in.readLine();
                 if (incoming == null) {
                     terminateSession();
-                    return;
+                } else {
+                    handleMessage(incoming);
                 }
-                if(handleMessage(incoming) == -1){
-                    return;
-                }
-
             } catch (IOException ex) {
                 terminateSession();
                 return;
@@ -155,7 +165,7 @@ public class Client implements Runnable {
     private void terminateSession() {
 
         sendToOtherClients(clientName + " has disconnected from the chat.");
-        
+
         try {
             socket.close();
             out.close();
@@ -164,22 +174,19 @@ public class Client implements Runnable {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             clients[id] = null;
+            running = false;
         }
     }
 
     private synchronized void send(String message) {
-        try {
-            out.println(message);
-            System.out.println("sending message to " + id);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+        out.println(message);
     }
 
     public void start() {
         if (thread == null) {
             thread = new Thread(this, threadName);
             System.out.println("Starting new client thread");
+            running = true;
             thread.start();
         }
     }

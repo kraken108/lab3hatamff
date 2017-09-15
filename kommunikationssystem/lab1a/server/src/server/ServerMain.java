@@ -5,6 +5,7 @@
  */
 package server;
 
+import java.io.IOException;
 import static java.lang.System.exit;
 import java.net.SocketException;
 import java.util.logging.Level;
@@ -37,6 +38,9 @@ public class ServerMain {
         } catch (SocketException ex) {
             Logger.getLogger(ServerMain.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println(ex);
+            exit(1);
+        } catch (IOException ex) {
+            Logger.getLogger(ServerMain.class.getName()).log(Level.SEVERE, null, ex);
             exit(1);
         }finally{
             exit(0);

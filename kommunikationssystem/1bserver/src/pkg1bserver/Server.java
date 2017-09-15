@@ -29,22 +29,27 @@ public class Server {
             clients[i] = null;
         }
         
-        running = false;
-
         try {
             serverSocket = new ServerSocket(port);
         } catch (IOException ex) {
             throw(ex);           
+        }finally{
+            running = true;
         }
     }
     
-    public void startServer(){
-        running = true;
-        acceptNewConnections();
+    public void startServer() throws IOException{
+        try{
+            acceptNewConnections();
+        }catch(IOException ex){
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            serverSocket.close();
+        }
     }
     
-    private void acceptNewConnections(){
-        System.out.println("Waiting for new connection");
+    private void acceptNewConnections() throws IOException{
+        System.out.println("Server started successfully!");
     
         while(running){
             try {
@@ -52,33 +57,36 @@ public class Server {
                 System.out.println("New connection!");
                 initiateNewClient(clientSocket);
             } catch (IOException ex){
-                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+                throw(ex);
             }
         }
     }
     
     private void initiateNewClient(Socket clientSocket){
-        
+        PrintWriter pw;
         for(int i = 0; i < maxClients; i++){
             if(clients[i] == null){
-                clients[i] = new Client(clientSocket,clients,i);
-                clients[i].start();
-                break;
+                try{
+                    clients[i] = new Client(clientSocket,clients,i);
+                    clients[i].start();
+                }catch(IOException ex){
+                    clients[i] = null;
+                }finally{
+                    break;
+                }
             }
             if(i == maxClients-1){
                 try {
-                    PrintWriter pw = new PrintWriter(clientSocket.getOutputStream(), true);
+                    pw = new PrintWriter(clientSocket.getOutputStream(), true);
                     pw.println("Server is full. Please try again later!");
                 } catch (IOException ex) {
                     Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+                }finally{
+                    pw = null;
                 }
             }
         }
         
     }
-    
-    private void welcomeMessage(Socket clientSocket){
-
-    }
-    
+       
 }
