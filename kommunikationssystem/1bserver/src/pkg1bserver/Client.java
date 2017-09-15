@@ -18,68 +18,170 @@ import java.util.logging.Logger;
  *
  * @author Jakob
  */
-public class Client implements Runnable{
+public class Client implements Runnable {
+
     private Socket socket;
     private Thread thread;
     private BufferedReader in;
     private PrintWriter out;
     private String threadName;
+    private Client[] clients;
+    private int id;
     private String clientName;
-    
-    public Client(Socket socket,String clientName){
+
+    public Client(Socket socket, Client[] clients, int id) {
+
+        this.id = id;
+        this.clients = clients;
+
+        this.clientName = "Client " + id;
 
         this.threadName = socket.getInetAddress().toString();
         this.socket = socket;
         thread = null;
 
-
         try {
             this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.out = new PrintWriter(socket.getOutputStream(), true);
+            out.println("Welcome to the chat, Client " + id + "!");
+            sendAvailableCommands();
+            out.println("Enjoy!");
         } catch (IOException ie) {
-            System.out.println(ie);
+            terminateSession();
         }
+    }
+
+    private void sendAvailableCommands() {
+        out.println("The following commands are supported:");
+        out.println("/quit - disconnect from the chat");
+        out.println("/who - list all connected clients");
+        out.println("/nick <nickname> - give yourself a nickname");
+        out.println("/help - list all available commands");
+    }
+
+    private void changeName(String name) {
+        this.clientName = name;
+    }
+
+    private void sendToOtherClients(String message) {
+        for (int i = 0; i < clients.length; i++) {
+            if (clients[i] != null && i != id) {
+                clients[i].send(message);
+            }
+        }
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    private String getOtherClientsString() {
+        String s = "Connected clients: ";
+        for (int i = 0; i < clients.length; i++) {
+            if (clients[i] != null && i != id) {
+                s += clients[i].getClientName();
+                if (!(i == clients.length - 1)) {
+                    s += ", ";
+                }
+            }
+
+        }
+        return s;
+    }
+
+    private Boolean nameAlreadyExists(String name) {
+        for (int i = 0; i < clients.length; i++) {
+            if (clients[i] != null && i != id) {
+                if (clients[i].getClientName().equals(name)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private String getTheName(String message) {
+        String s = "";
+        for (int i = 6; i < message.length(); i++) {
+            s += message.charAt(i);
+        }
+        return s;
+    }
+
+    private int handleMessage(String message) {
+        if (message.equals("/quit")) {
+            out.println("Goodbye!");
+            terminateSession();
+            return -1;
+        } else if (message.equals("/who")) {
+            out.println(getOtherClientsString());
+        } else if (message.startsWith("/nick ")) {
+            if (!nameAlreadyExists(getTheName(message))) {
+                clientName = getTheName(message);
+                out.println("Hello " + clientName + "!");
+            }
+        } else if (message.equals("/help")) {
+            sendAvailableCommands();
+        } else if (message.charAt(0) == '/') {
+            out.println("Error: unknown command");
+        } else {
+            sendToOtherClients(clientName + ": " + message);
+        }
+        return 0;
     }
 
     @Override
     public void run() {
         //do stuff
-        
-        while(true){
+
+        while (true) {
             try {
                 String incoming = in.readLine();
-                if(incoming == null){
+                if (incoming == null) {
                     terminateSession();
-                    System.out.println("Terminating");
                     return;
                 }
-                System.out.println(incoming);
+                if(handleMessage(incoming) == -1){
+                    return;
+                }
+
             } catch (IOException ex) {
-                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
                 terminateSession();
                 return;
             }
         }
     }
-    
-    private void terminateSession(){
-       // exit(1);
+
+    private void terminateSession() {
+
+        sendToOtherClients(clientName + " has disconnected from the chat.");
+        
+        try {
+            socket.close();
+            out.close();
+            in.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            clients[id] = null;
+        }
     }
-    
-    
-    public void start(){
+
+    private synchronized void send(String message) {
+        try {
+            out.println(message);
+            System.out.println("sending message to " + id);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public void start() {
         if (thread == null) {
             thread = new Thread(this, threadName);
             System.out.println("Starting new client thread");
-            try{
-                out.println("WELCOME");
-            }catch(Exception e){
-                terminateSession();
-                return;
-            }
             thread.start();
         }
     }
-    
-    
+
 }
