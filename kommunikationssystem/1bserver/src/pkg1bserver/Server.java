@@ -6,6 +6,7 @@
 package pkg1bserver;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -17,11 +18,17 @@ import java.util.logging.Logger;
  */
 public class Server {
     private ServerSocket serverSocket;
-    private ArrayList<Client> clients;
+    private Client[] clients;
     private Boolean running;
+    private int maxClients;
     
     public Server(int port) throws IOException{
-        clients = new ArrayList<>();
+        maxClients = 10;
+        clients = new Client[maxClients];
+        for(int i = 0; i<maxClients; i++){
+            clients[i] = null;
+        }
+        
         running = false;
 
         try {
@@ -51,9 +58,27 @@ public class Server {
     }
     
     private void initiateNewClient(Socket clientSocket){
-        Client c = new Client(clientSocket,"Hasse");
-        clients.add(c);
-        c.start();
+        
+        for(int i = 0; i < maxClients; i++){
+            if(clients[i] == null){
+                clients[i] = new Client(clientSocket,clients,i);
+                clients[i].start();
+                break;
+            }
+            if(i == maxClients-1){
+                try {
+                    PrintWriter pw = new PrintWriter(clientSocket.getOutputStream(), true);
+                    pw.println("Server is full. Please try again later!");
+                } catch (IOException ex) {
+                    Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+    }
+    
+    private void welcomeMessage(Socket clientSocket){
+
     }
     
 }
