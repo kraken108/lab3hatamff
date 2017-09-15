@@ -41,16 +41,20 @@ public class ServerSocket {
     }
 
     private void acceptNewConnection() throws IOException {
-        byte[] data = new byte[1024];
+        
 
         try {
             while (running) {
+                byte[] data = new byte[1024];
                 DatagramPacket packet = new DatagramPacket(data, data.length);
                 socket.receive(packet);
                 String message = new String(packet.getData());
+                System.out.println(removeZeros(message));
                 if (removeZeros(message).equals("HELLO")) {
+                    System.out.println("ny session");
                     initiateNewSession(packet);
                 } else {
+                    System.out.println("skickar error");
                     sendMessage("ERROR", packet);
                 }
             }
@@ -67,7 +71,7 @@ public class ServerSocket {
         currentClient = new Client(packet.getAddress(), packet.getPort());
         long connectionTime = System.currentTimeMillis();
 
-        int timeout = 10000;
+        int timeout = 20000;
         while (true) {
 
             socket.receive(packet);
@@ -76,14 +80,17 @@ public class ServerSocket {
                 if (System.currentTimeMillis() < connectionTime + timeout) {
                     // connectionTime = System.currentTimeMillis(); //reset timeout
                     if (isStartMessage(packet)) {
+                        System.out.println("Mm det var rätt");
                         startNewGame();
                         return;
                     } else {
+                        System.out.println("Ej start, skickar error");
                         sendMessage("ERROR! Disconnected", packet);
                         terminateSession();
                         return;
                     }
                 } else {
+                    System.out.println("???");
                     sendTimeout();
                     terminateSession();
                     return;
@@ -91,6 +98,7 @@ public class ServerSocket {
 
             } else //if other client
             {
+                System.out.println("hallå");
                 if (isHelloMessage(packet)) {
                     if (System.currentTimeMillis() < connectionTime + timeout) {
                         sendMessage("BUSY", packet);
@@ -155,11 +163,11 @@ public class ServerSocket {
                         compareWithWord(getLetter(message));
 
                         if (checkComplete()) {
-                            sendMessage(getWordStatus() + "\nYou win! Thank you for playing.", packet);
+                            sendMessage(getWordStatus() + "\nYOU WIN! Thank you for playing.", packet);
                             terminateSession();
                             return;
                         } else if (outOfAttempts()) {
-                            sendMessage(getWordStatus() + "\nNo more tries :( thank you for playing!", packet);
+                            sendMessage(getWordStatus() + "\nNO MORE TRIES :( thank you for playing!", packet);
                             terminateSession();
                             return;
                         } else {
@@ -198,6 +206,7 @@ public class ServerSocket {
     private String getLetter(String message) {
         message = removeZeros(message);
         String[] result = message.split(" ");
+        String s = "";
         return result[1];
     }
 
