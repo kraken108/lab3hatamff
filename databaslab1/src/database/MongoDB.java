@@ -76,7 +76,6 @@ public class MongoDB implements Queries{
         document.put("ratings",ratingList);
         try{
             mediaTable.insert(document);
-            System.out.println("lyckades");
         }catch(Exception e){
             throw(e);
         }
@@ -85,12 +84,14 @@ public class MongoDB implements Queries{
     @Override
     public void addArtist(Person artist) throws Exception {
         
+        
+        BasicDBObject document = new BasicDBObject();
+        document.put("name", artist.getName());
+        document.put("nationality", artist.getCountry());
+        document.put("age", artist.getAge());
+        document.put("profession", "artist");
+            
         try{
-            BasicDBObject document = new BasicDBObject();
-            document.put("name", artist.getName());
-            document.put("nationality", artist.getCountry());
-            document.put("age", artist.getAge());
-            document.put("profession", "artist");
             artistTable.insert(document);
         }catch(Exception e){
             System.out.println(e);
@@ -130,10 +131,7 @@ public class MongoDB implements Queries{
             doc.put("avgRating",s);
             
             mediaTable.update(findQuery, new BasicDBObject("$set",doc));
-        }
-        
-        
-        
+        }        
     }
 
     
@@ -157,7 +155,6 @@ public class MongoDB implements Queries{
         cursor = mediaTable.find(fields);
         
         while(cursor.hasNext()){
-            //System.out.println(cursor.next());
             Media media = new Media();
             BasicDBObject obj = (BasicDBObject) cursor.next();
             media.setTitle(obj.getString("Title"));
@@ -207,11 +204,9 @@ public class MongoDB implements Queries{
     public void closeConnection() {
         try{
             mongo.close();
-
         }
         catch(Exception e){
             throw(e);
-
         }
     }
     
