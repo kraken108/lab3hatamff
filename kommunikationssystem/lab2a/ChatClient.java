@@ -37,7 +37,11 @@ public class ChatClient extends UnicastRemoteObject implements Notifiable {
         Scanner scan = new Scanner(System.in);
         while(true){
             String s = scan.nextLine();
-            chat.sendMessage(s);
+            try{
+                chat.sendMessage(s);
+            }catch(RemoteException re){
+                System.out.println("eghhhhh åhnej");
+            }
         }
     }
 }

@@ -12,7 +12,12 @@ public class ChatServer extends UnicastRemoteObject implements Chat{
     
     synchronized public void sendMessage(String message) throws RemoteException{
         for(Notifiable n : clientList){
-            n.notifyNewMessage(message);
+            try{
+                n.notifyNewMessage(message);
+            }catch(RemoteException re){
+                System.out.println("removing failed client");
+                deRegisterForNotifications(n);
+            }
         }
     }
     
