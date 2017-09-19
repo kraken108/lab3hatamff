@@ -10,4 +10,3 @@ COPY /Y "Notifiable.class" Chatclient
 cd Chatserver
 start rmiregistry
 java ChatServer
-PAUSE

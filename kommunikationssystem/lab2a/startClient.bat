@@ -1,3 +1,3 @@
 cd Chatclient
 java ChatClient
-PAUSE
+EXIT
