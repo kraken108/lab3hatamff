@@ -32,7 +32,7 @@ public class ChatServer extends UnicastRemoteObject implements Chat {
             return "Bye bye";
         } else if (message.startsWith("/nick ")) {
             String name = changeName(message);
-            if(message.equals("")){
+            if (message.equals("")) {
                 return "Please specify a name.";
             }
             client.changeName(name);
@@ -43,13 +43,19 @@ public class ChatServer extends UnicastRemoteObject implements Chat {
         } else if (message.startsWith("/")) {
             return "Invalid command";
         } else {
+            ArrayList<Notifiable> toRemove = new ArrayList<>();
+
             for (Notifiable n : clientList) {
                 try {
                     n.notifyNewMessage(client.getName() + ": " + message);
                 } catch (RemoteException re) {
-                    System.out.println("removing failed client");
-                    deRegisterForNotifications(n);
+
+                    toRemove.add(n);
                 }
+            }
+            for (Notifiable n : toRemove) {
+                System.out.println("removing failed client");
+                deRegisterForNotifications(n);
             }
         }
         return "";
@@ -70,13 +76,19 @@ public class ChatServer extends UnicastRemoteObject implements Chat {
         String name = clientNames.get(x);
         clientNames.remove(x);
 
+        ArrayList<Notifiable> toRemove = new ArrayList<>();
         for (Notifiable no : clientList) {
             try {
                 no.notifyNewMessage("Server: " + name + " has disconnected from the chat.");
             } catch (RemoteException re) {
-                System.out.println("removing failed client");
-                deRegisterForNotifications(no);
+
+                toRemove.add(n);
+                //deRegisterForNotifications(no);
             }
+        }
+        for (Notifiable no : toRemove) {
+            System.out.println("removing failed client");
+            deRegisterForNotifications(no);
         }
     }
 
@@ -104,17 +116,23 @@ public class ChatServer extends UnicastRemoteObject implements Chat {
     private String getConnectedClients() throws RemoteException {
         String s = "Connected clients: [";
 
+        ArrayList<Notifiable> toRemove = new ArrayList<>();
         for (Notifiable n : clientList) {
             try {
                 s += n.getName();
                 s += ", ";
             } catch (RemoteException re) {
-                System.out.println("removing failed client");
-                deRegisterForNotifications(n);
+                
+               // deRegisterForNotifications(n);
+                toRemove.add(n);
             }
         }
         s += "]";
 
+        for (Notifiable n : toRemove) {
+            System.out.println("removing failed client");
+            deRegisterForNotifications(n);
+        }
         return s;
     }
 
