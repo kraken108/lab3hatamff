@@ -5,17 +5,24 @@
  */
 package lab2b;
 
+import java.io.IOException;
+import static java.lang.System.exit;
+
 /**
  *
  * @author Anders
  */
 public class Lab2b {
-
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        try{
+            NewSkype newSkype = new NewSkype();
+            newSkype.start();
+        }catch(IOException e){
+            System.out.println("Something went wrong :PPPP");
+            exit(1);
+        }
     }
-    
 }
