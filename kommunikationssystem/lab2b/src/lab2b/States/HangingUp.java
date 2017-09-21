@@ -10,6 +10,7 @@ package lab2b.States;
  */
 public class HangingUp extends State{
     
-    
-    
+    public State hangUp(){
+        return new Idle();
+    }   
 }

@@ -10,6 +10,12 @@ package lab2b.States;
  */
 public class CallingIn extends State{
     
+ 
+    public State ACK(){
+        
+        return new InCall();
+    }
+    
     
     
     

@@ -10,4 +10,14 @@ package lab2b.States;
  */
 public class Idle extends State {
     
+    
+   public State initiateCall(){
+       return new CallingOut();
+   }
+   
+   public State inviteTRO(){
+       return new CallingIn();
+   } 
+    
+    
 }

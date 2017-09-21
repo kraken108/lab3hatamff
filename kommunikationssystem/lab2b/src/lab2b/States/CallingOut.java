@@ -10,4 +10,12 @@ package lab2b.States;
  */
 public class CallingOut extends State{
     
+    public State Busy(){
+        return new Idle();
+    }
+    
+    public State troAck(){
+        return new InCall();
+    }  
+    
 }

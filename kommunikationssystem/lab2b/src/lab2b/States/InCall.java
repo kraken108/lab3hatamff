@@ -11,8 +11,19 @@ package lab2b.States;
  */
 public class InCall extends State{
     
+    
+   
+    public State requestHangUpBye(){
+        return new HangingUp();
+    }    
+    
+    public State error(){
+        return new Idle();
+    }
+    
+    public State byeOK(){
+        return new Idle();
+    }    
 }
 
-public State receivedIdle(){
-    return new Idle();
-}
+

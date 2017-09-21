@@ -16,9 +16,7 @@ public abstract class State {
     
     public State receivedIdle(){
         return this;
-    };
-    
-    
+    };    
     
     public State receivedInitiateInvite(){
         return this;
@@ -56,5 +54,11 @@ public abstract class State {
         return this;
     }
     
+    public State sendTROACK(){
+        return this;
+    }
     
+    public State okHangUp(){
+        return this;
+    }   
 }
