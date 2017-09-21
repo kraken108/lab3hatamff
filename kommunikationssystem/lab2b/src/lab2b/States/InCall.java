@@ -9,10 +9,8 @@ package lab2b.States;
  *
  * @author Michael
  */
-public class InCall extends State{
+public class InCall extends StateUncallable{
     
-    
-   
     public State requestHangUpBye(){
         return new HangingUp();
     }    
@@ -24,6 +22,11 @@ public class InCall extends State{
     public State byeOK(){
         return new Idle();
     }    
+
+    @Override
+    public String getStatename() {
+        return "InCall";
+    }
 }
 
 

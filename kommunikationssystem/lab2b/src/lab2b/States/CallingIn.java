@@ -8,12 +8,17 @@ package lab2b.States;
  *
  * @author Michael
  */
-public class CallingIn extends State{
+public class CallingIn extends StateUncallable{
     
  
     public State ACK(){
         
         return new InCall();
+    }
+
+    @Override
+    public String getStatename() {
+        return ("CallingIn");
     }
     
     
