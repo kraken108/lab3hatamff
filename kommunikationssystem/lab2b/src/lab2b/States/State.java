@@ -18,22 +18,43 @@ public abstract class State {
         return this;
     };
     
-    public State receivedInCall(){
+    
+    
+    public State receivedInitiateInvite(){
         return this;
     }
     
-    public State receivedHangingUp(){
+    public State receivedRequestHangup(){
         return this;
     }
     
-    public State receivedCallingOut(){
+    public State receivedOkHangUp(){
+        return this;
+    }
+    
+    public State initiateCall(){
         return this;
     }
     
     public State receivedCallingIn(){
         return this;
-    } 
+    }  
     
+    public State isBusy(){
+        return this;
+    }
+    
+    public State sendACK(){
+        return this;
+    }
+    
+    public State sendByeOk(){
+        return this;
+    }
+    
+    public State sendError(){
+        return this;
+    }
     
     
 }
