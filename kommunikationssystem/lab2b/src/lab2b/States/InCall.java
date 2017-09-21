@@ -12,3 +12,7 @@ package lab2b.States;
 public class InCall extends State{
     
 }
+
+public State receivedIdle(){
+    return new Idle();
+}

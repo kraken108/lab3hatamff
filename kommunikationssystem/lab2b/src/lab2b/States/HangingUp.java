@@ -13,9 +13,3 @@ public class HangingUp extends State{
     
     
 }
-
-
-public State received Hangup(){
-
-
-}

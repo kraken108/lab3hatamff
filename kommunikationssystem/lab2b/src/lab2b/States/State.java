@@ -12,12 +12,27 @@ package lab2b.States;
  */
 public abstract class State {
     
-    public State(){
-        
-        
-        
+    public abstract String getStatename();
+    
+    public State receivedIdle(){
+        return this;
+    };
+    
+    public State receivedInCall(){
+        return this;
     }
     
+    public State receivedHangingUp(){
+        return this;
+    }
+    
+    public State receivedCallingOut(){
+        return this;
+    }
+    
+    public State receivedCallingIn(){
+        return this;
+    } 
     
     
     
