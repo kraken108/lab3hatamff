@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package lab2b.Controller;
+import java.net.DatagramPacket;
 import lab2b.States.*;
 
 /**
@@ -23,7 +24,7 @@ public class CallController {
         currentState = new Idle();
     }
     
-    public void processNextEvent(Signal signal){
+    public void processNextEvent(Signal signal,DatagramPacket p){
         switch(signal){
             case INITIATE_INVITE: break;
             case INVITE: break;

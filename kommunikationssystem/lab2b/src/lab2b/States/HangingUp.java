@@ -11,6 +11,7 @@ package lab2b.States;
 public class HangingUp extends StateUncallable{
     
     public State hangUp(){
+        
         return new Idle();
     }
 
