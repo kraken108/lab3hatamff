@@ -12,5 +12,11 @@ public class HangingUp extends State{
     
     public State hangUp(){
         return new Idle();
-    }   
+    }
+
+    @Override
+    public String getStatename() {
+        return "HangingUp";
+    }
+    
 }
