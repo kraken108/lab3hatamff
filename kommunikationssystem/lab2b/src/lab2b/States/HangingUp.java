@@ -1,24 +1,21 @@
-package lab2b.States;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-;
-
+package lab2b.States;
 /**
  *
  * @author Michael
  */
-public abstract class State {
-    
-    public State(){
-        
-        
-        
-    }
+public class HangingUp extends State{
     
     
     
-    
+}
+
+
+public State received Hangup(){
+
+
 }
