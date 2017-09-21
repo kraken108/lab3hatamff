@@ -8,7 +8,7 @@ package lab2b.States;
  *
  * @author Michael
  */
-public class HangingUp extends State{
+public class HangingUp extends StateUncallable{
     
     public State hangUp(){
         return new Idle();

@@ -9,10 +9,8 @@ package lab2b.States;
  *
  * @author Michael
  */
-public class InCall extends State{
+public class InCall extends StateUncallable{
     
-    
-   
     public State requestHangUpBye(){
         return new HangingUp();
     }    
