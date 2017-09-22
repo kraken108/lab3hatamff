@@ -10,7 +10,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import lab2b.NewSkype;
+import lab2b.Application.NewSkype;
 
 /**
  *

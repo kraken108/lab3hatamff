@@ -3,21 +3,30 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lab2b.States;
+package lab2b.StateMachine;
+
 /**
  *
  * @author Michael
  */
-public class HangingUp extends StateUncallable{
+public class InCall extends StateUncallable{
     
-    public State hangUp(){
-        
+    public State requestHangUpBye(){
+        return new HangingUp();
+    }    
+    
+    public State error(){
         return new Idle();
     }
+    
+    public State byeOK(){
+        return new Idle();
+    }    
 
     @Override
     public String getStatename() {
-        return "HangingUp";
+        return "InCall";
     }
-    
 }
+
+

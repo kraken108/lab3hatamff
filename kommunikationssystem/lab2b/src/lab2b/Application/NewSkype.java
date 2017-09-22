@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lab2b;
+package lab2b.Application;
 
+import lab2b.Application.KeyboardListener;
 import java.io.IOException;
 import java.net.*;
 import java.util.logging.Level;
