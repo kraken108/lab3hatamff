@@ -5,12 +5,16 @@
  */
 package lab2b.States;
 
+import java.net.DatagramPacket;
+
 /**
  *
  * @author Michael
  */
-public class StateUncallable extends State{
+public abstract class StateUncallable extends State{
 
+    DatagramPacket p;
+    
     @Override
     public String getStatename() {
         return "StateUncallable";

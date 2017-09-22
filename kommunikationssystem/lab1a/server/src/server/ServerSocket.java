@@ -42,7 +42,6 @@ public class ServerSocket {
 
     private void acceptNewConnection() throws IOException {
         
-
         try {
             while (running) {
                 byte[] data = new byte[1024];
