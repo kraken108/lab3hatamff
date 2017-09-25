@@ -31,10 +31,10 @@ public class Login {
         }
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            return "ERROR";
+            return ex.toString();
         } catch (SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            return "ERROR";
+            return ex.toString();
         }
             return "UNSUCCESSFUL";
     }
