@@ -5,7 +5,10 @@
  */
 package DBManager;
 
+import BO.Item;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -14,4 +17,5 @@ import java.sql.SQLException;
 public interface DBManager {
     public void getData();
     public Boolean tryLogin(String username,String password) throws SQLException;
+    public ArrayList<Item> getItems() throws SQLException;
 }
