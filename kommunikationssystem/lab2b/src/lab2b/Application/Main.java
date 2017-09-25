@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lab2b;
+package lab2b.Application;
 
 import java.io.IOException;
 import static java.lang.System.exit;
@@ -12,7 +12,7 @@ import static java.lang.System.exit;
  *
  * @author Anders
  */
-public class Lab2b {
+public class Main {
     /**
      * @param args the command line arguments
      */

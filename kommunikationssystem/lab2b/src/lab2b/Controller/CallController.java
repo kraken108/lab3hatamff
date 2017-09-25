@@ -4,8 +4,9 @@
  * and open the template in the editor.
  */
 package lab2b.Controller;
+import lab2b.StateMachine.State;
+import lab2b.StateMachine.Idle;
 import java.net.DatagramPacket;
-import lab2b.States.*;
 
 /**
  *
