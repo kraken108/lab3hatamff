@@ -50,5 +50,22 @@ public class MysqlManager implements DBManager {
     }
     
     
+    public void insertUser(String userName, String passWord){
+        
+        Statement stmt = null;
+        String query  = "INSERT INTO users VALUES" + userName +
+                 
+        
+        try {
+            stmt = connection.createStatement();
+        } catch (SQLException ex) {
+            Logger.getLogger(MysqlManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            ResultSet rs = stmt.executeQuery(query);
+        } catch (SQLException ex) {
+            Logger.getLogger(MysqlManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }   
 
 }
