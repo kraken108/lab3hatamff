@@ -35,7 +35,7 @@ public class MysqlManager implements DBManager {
 
     @Override
     public Boolean tryLogin(String username, String password) throws SQLException {
-        String query = "SELECT * FROM User WHERE Password ='" + password + "' AND Username ='" + username + "';";
+        String query = "SELECT * FROM users WHERE passWord ='" + password + "' AND userName ='" + username + "';";
         System.out.println(query);
 
         Statement stmt;
@@ -48,5 +48,7 @@ public class MysqlManager implements DBManager {
             return false;
         }
     }
+    
+    
 
 }
