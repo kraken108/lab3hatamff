@@ -14,7 +14,7 @@
         <%
             String username = request.getParameter("uname");
             String pwd = request.getParameter("pwd");
-
+            
             if (pwd != null && username != null && !pwd.equals("") && !username.equals("")) {
                 Login login = new Login();
                 String result = login.tryLogin(username, pwd);
@@ -22,18 +22,23 @@
                     //session.setAttribute("username", username);
                     out.println("Logged in as: " + username);
                     
-                    
+                    session.setAttribute("username", username);
+                    String redirectURL = "http://localhost:8080/Webbshop/test.jsp";
+                    response.sendRedirect(redirectURL);
+
+                    //redirect to main page
                     
                 } else if (result.equals("UNSUCCESSFUL")) {
                     //failed to login
                     out.println("Username or password was incorrect.");
-                } else if (result.equals("ERROR")) {
+                } else{
                     //error
-                    out.println("An error occured");
+                    out.println(result);
+ 
                 }
             } else { %>
 
-        <form method="get">
+        <form method="post">
             Username: <input type="text" name="uname"><br>
             Password: <input type="password" name="pwd"><br>
             <input type="submit" value="Login">

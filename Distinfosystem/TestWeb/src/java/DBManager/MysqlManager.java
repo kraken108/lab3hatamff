@@ -24,7 +24,7 @@ public class MysqlManager implements DBManager {
                 + "?UseClientEnc=UTF8";
 
         Class.forName("com.mysql.jdbc.Driver");
-        connection = DriverManager.getConnection(server, "", "");
+        connection = DriverManager.getConnection(server, "reguser", "abc123");
         System.out.println("Connected to database");
     }
 
