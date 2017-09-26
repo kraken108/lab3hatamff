@@ -23,7 +23,7 @@
                     out.println("Logged in as: " + username);
                     
                     session.setAttribute("username", username);
-                    String redirectURL = "http://localhost:8080/Webbshop/test.jsp";
+                    String redirectURL = "http://localhost:8080/Webbshop/main.jsp";
                     response.sendRedirect(redirectURL);
 
                     //redirect to main page

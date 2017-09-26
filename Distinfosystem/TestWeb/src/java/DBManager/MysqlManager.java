@@ -5,8 +5,11 @@
  */
 package DBManager;
 
+import BO.Item;
 import java.sql.Connection;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,6 +50,23 @@ public class MysqlManager implements DBManager {
         }else{
             return false;
         }
+    }
+
+    @Override
+    public ArrayList<Item> getItems() throws SQLException {
+        ArrayList<Item> items = new ArrayList<>();
+        
+        String query = "SELECT * FROM Items";
+        Statement stmt = connection.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+        
+
+        while(rs.next()){
+            Item i = new Item((String) rs.getObject("name"),(Float)rs.getObject("price"));
+
+            items.add(i);
+        }
+        return items;
     }
     
     
