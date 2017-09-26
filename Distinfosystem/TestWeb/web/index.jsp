@@ -5,7 +5,6 @@
 --%>
 
 <%@page import="Facade.Login"%>
-<%@page import="BO.TestClass"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html> 
@@ -45,7 +44,9 @@
                     out.println(result);
  
                 }
-            } else { %>
+            } else { 
+                    
+                    %>
 
         <form method="post">
             Username: <input type="text" name="uname"><br>

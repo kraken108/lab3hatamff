@@ -6,36 +6,38 @@
 package Facade;
 
 import DBManager.*;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.NamingException;
 
 /**
  *
  * @author Jakob
  */
 public class Login {
-    
-    
-    public Login(){
-        
-    }
-    
-    
-    public String tryLogin(String username, String password){
+
+
+    public String tryLogin(String username, String password) {
         DBManager dbManager;
         try {
             dbManager = new MysqlManager();
-            if(dbManager.tryLogin(username,password)){
+            Connection c = dbManager.getConnection();
+            DBLogin dbLogin = new DBLogin();
+            Boolean success = dbLogin.tryLogin(username,password,c);
+            c.close();
+            if (success) {
                 return "SUCCESSFUL";
-        }
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            return ex.toString();
+            }else{
+                return "UNSUCCESSFUL";
+            }
         } catch (SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             return ex.toString();
+        } catch (NamingException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            return ex.toString();
         }
-            return "UNSUCCESSFUL";
     }
 }

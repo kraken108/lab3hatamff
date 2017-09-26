@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/Webbshop"/>
+<Context path="/Webbshop">
+    <Resource name="jdbc/Webbshop"
+              auth="Container"
+              type="javax.sql.DataSource"
+              username="reguser"
+              password="abc123"
+              driverClassName="com.mysql.jdbc.Driver"
+              url="jdbc:mysql://localhost:3306/Webbshop"
+              maxActive="15"
+              maxIdle="3"/>
+</Context>

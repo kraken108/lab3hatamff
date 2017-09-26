@@ -6,16 +6,16 @@
 package DBManager;
 
 import BO.Item;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.naming.NamingException;
 
 /**
  *
  * @author Jakob
  */
 public interface DBManager {
-    public void getData();
-    public Boolean tryLogin(String username,String password) throws SQLException;
-    public ArrayList<Item> getItems() throws SQLException;
+    public Connection getConnection()throws NamingException, SQLException;
 }
