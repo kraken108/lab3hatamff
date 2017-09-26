@@ -21,7 +21,7 @@ public class ServerSocket {
     private String word;
     private char[] wordStatus;
     private int maxAttempts;
-    private Client currentClient;
+    private ConnectedClient currentClient;
 
     public ServerSocket(String word) throws SocketException {
         try {
@@ -31,7 +31,7 @@ public class ServerSocket {
         }
         running = false;
         this.word = word;
-        maxAttempts = word.length() * 3;
+        maxAttempts = word.length() * 2;
         setupWordStatus();
     }
 
@@ -67,7 +67,7 @@ public class ServerSocket {
     private void initiateNewSession(DatagramPacket packet) throws IOException {
         sendMessage("OK", packet);
         System.out.println("New session!");
-        currentClient = new Client(packet.getAddress(), packet.getPort());
+        currentClient = new ConnectedClient(packet.getAddress(), packet.getPort());
         long connectionTime = System.currentTimeMillis();
 
         int timeout = 20000;

@@ -11,13 +11,13 @@ import java.net.InetAddress;
  *
  * @author Jakob
  */
-public class Client {
+public class ConnectedClient {
     
     private int nrAttempts;
     private InetAddress ip;
     private int port;
     
-    public Client(InetAddress ip, int port){
+    public ConnectedClient(InetAddress ip, int port){
         this.ip = ip;
         this.port = port;
         nrAttempts = 0;

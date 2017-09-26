@@ -4,6 +4,7 @@
     Author     : Jakob
 --%>
 
+<%@page import="java.lang.String"%>
 <%@page import="Facade.ItemController"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="BO.Item"%>
@@ -12,20 +13,26 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Webbshop</title>
     </head>
     <body>
-        <h1>Main page!</h1>
-
+        <h1>Welcome to the webbshop!
+        </h1>
+        
         <%
 
             if (session.getAttribute("username") == null || session.getAttribute("username").equals("")) {
                 out.println("Please login m8");
             } else {
-                out.println("Logged in as: " + session.getAttribute("username"));
+        out.println("Logged in as: " + session.getAttribute("username"));%>
+        <form action="logout.jsp">
+            <input type="submit" value="Logout">
+        </form>
+        <br><br><br><%
 
-        %><h3> Available items: </h3><br>
-        <%                // Collect current items and display them to user, plus buttons to add to cart
+        %><form action="shopping-cart.jsp">
+            <input type="submit" value="Shopping cart">
+        </form><%                // Collect current items and display them to user, plus buttons to add to cart
             ItemController ic = new ItemController();
             ArrayList<Item> items = ic.getItems();
 
@@ -37,33 +44,41 @@
             }
 
             String addToCart = null;
-            if(request.getParameter("addToCart") == null){
-            }else{
+            if (request.getParameter("addToCart") == null) {
+            } else {
                 addToCart = request.getParameter("addToCart");
             }
 
             if (addToCart == null) {
-                out.println("nulli");
+                //no items in cart
             } else {
-                out.println(addToCart + addToCart + addToCart);
-              //  int index = Integer.parseInt(addToCart);
-              //  cartItems[index] = items.get(index);
-            }
-
-          /*  for (int i = 0; i < cartItems.length; i++) {
-                if (cartItems[i] == null) {
-                } else {
-                    out.println(cartItems[i].getName() + "   " + cartItems[i].getPrice());%><br><%
+                for (int i = 0; i < cartItems.length; i++) {
+                    if (cartItems[i] == null) {
+                        String[] stringsToAdd = addToCart.split(" ");
+                        cartItems[i] = new Item(stringsToAdd[0], Float.parseFloat(stringsToAdd[1]));
+                        session.setAttribute("cartItems", cartItems);
+                        break;
+                    }
                 }
-            }*/
+            }
+            int x = 0;
+            for (int i = 0; i < cartItems.length; i++) {
+                if (cartItems[i] == null) {
 
-                        if (items == null) {
-                            out.println("NULL LUL");
-                        } else {
-                            for (int i = 0; i < items.size(); i++) {
-                                out.println(items.get(i).getName() + "\t" + items.get(i).getPrice());%>
+                } else {
+                    x++;
+                }
+            }
+            out.println("Items in cart: " + x);
+
+        %><h3> Available items: </h3>
+        <%            if (items == null) {
+                //no items
+            } else {
+                for (int i = 0; i < items.size(); i++) {
+                    out.println(items.get(i).getName() + "\t" + items.get(i).getPrice());%>
         <form>
-            <input type="hidden" name="addToCart" value="<%out.println(i);%>">
+            <input type="hidden" name="addToCart" value="<%out.println(items.get(i).toString());%>">
             <input type="submit" value="Add to cart">
         </form>
         <br><%
