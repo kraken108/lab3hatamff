@@ -42,7 +42,14 @@
             Username: <input type="text" name="uname"><br>
             Password: <input type="password" name="pwd"><br>
             <input type="submit" value="Login">
+
         </form>
+        
+        <form name="sendToRegister" method="post" action="register.jsp">
+            
+                        <input type="submit" value="Register">
+        </form>
+            
         <%}%>
 
 

@@ -50,11 +50,11 @@ public class MysqlManager implements DBManager {
     }
     
     
-    public void insertUser(String userName, String passWord){
+    public void Register(String userName, String passWord){
+        
         
         Statement stmt = null;
-        String query  = "INSERT INTO users VALUES" + userName +
-                 
+        String query  = "INSERT INTO users userName" + userName + " AND passWord" + passWord;   
         
         try {
             stmt = connection.createStatement();
@@ -67,5 +67,9 @@ public class MysqlManager implements DBManager {
             Logger.getLogger(MysqlManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }   
+    ///String query = " insert into users (first_name, last_name, date_created, is_admin, num_points)"
+     ///   + " values (?, ?, ?, ?, ?)";
 
+    
+    
 }
