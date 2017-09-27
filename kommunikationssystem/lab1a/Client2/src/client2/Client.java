@@ -169,8 +169,6 @@ public class Client {
         
         System.out.println("result is: " + removeZeros(str));
         
-        if(removeZeros(str).equals("OK"))          
-            System.out.println("Det fungerade");       
     }
     
     private String removeZeros(String str){

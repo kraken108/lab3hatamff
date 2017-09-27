@@ -18,16 +18,31 @@
                     <tbody>
                         <tr>
                             <td>Username:</td>
-                            <td><input type="text" size="50" /></td>
+                            <td><input type="text" size="25" /></td>
                         </tr>
                         
                         <tr>           
                             <td>Password:</td>
-                            <td><input type="text" size="50" /></td>
+                            <td><input type="text" size="25" /></td>
                        </tr>                       
                     </tbody>              
                 </table>          
             </form>             
         </h1>
+        
+        <%
+            String userName;
+            String password;
+
+            
+        %>
+            
+        
+        <form name="submit" method="post" action="index.jsp">
+            
+                        <input type="submit" value="Submit information">
+        </form>
+        
+        
     </body>
 </html>
