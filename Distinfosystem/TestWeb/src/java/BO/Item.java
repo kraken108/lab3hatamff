@@ -12,12 +12,30 @@ package BO;
 public class Item {
     private String name;
     private Float price;
+    private int inStock;
+    private int id;
     
-    public Item(String name, Float price){
+    
+    
+    public Item(String name, Float price,int inStock,int id){
         this.name = name;
         this.price = price;
+        this.inStock = inStock;
+        this.id = id;
     }
 
+    public Item(String name, Float price, String inStock, String id){
+        this.name = name;
+        this.price = price;
+        
+        String st = "";
+        st += inStock.charAt(0);
+        this.inStock = Integer.parseInt(st);
+        
+        String s = "";
+        s += id.charAt(0);
+        this.id = Integer.parseInt(s);
+    }
     /**
      * @return the name
      */
@@ -34,7 +52,23 @@ public class Item {
     
     @Override
     public String toString(){
-        return getName() + " " + getPrice();
+        return "Product: " + getName() + " - Price:" + getPrice() + " - (" + getInStock() + ") in Stock";
     }
+
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * @return the inStock
+     */
+    public int getInStock() {
+        return inStock;
+    }
+    
+    
     
 }
