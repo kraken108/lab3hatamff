@@ -103,10 +103,29 @@ public class Client implements Runnable {
         return s;
     }
 
+    
+    private String removeBackSpaces(String message){
+        String newMessage = "";
+        
+        for(int i = 0; i<message.length(); i++){
+            if(message.charAt(i) == '\b'){
+                
+            }else{
+                newMessage += message.charAt(i);
+            }
+        }
+        
+        return newMessage;
+    }
     private void handleMessage(String message) {
+        
+        message = removeBackSpaces(message);
+        
         if (message.length() <= 0) {
             return;
         }
+        
+        removeBackSpaces(message);
         if (message.equals("/quit")) {
             out.println("Goodbye!");
             terminateSession();
