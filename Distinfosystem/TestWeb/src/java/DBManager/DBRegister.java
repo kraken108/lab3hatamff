@@ -5,14 +5,10 @@
  */
 package DBManager;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import javax.naming.NamingException;
-
 /**
  *
  * @author Jakob
  */
-public interface DBManager {
-    public Connection getConnection()throws NamingException, SQLException;
+public class DBRegister {
+    
 }

@@ -7,11 +7,13 @@ package Facade;
 
 import BO.Item;
 import DBManager.*;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.NamingException;
 
 /**
  *
@@ -19,18 +21,18 @@ import java.util.logging.Logger;
  */
 public class ItemController {
 
-    public ItemController() {
-    }
-
     public ArrayList<Item> getItems() {
-        ArrayList<Item> items = new ArrayList<>();
+        ArrayList<Item> items = null;
         try {
             DBManager dbManager = new MysqlManager();
-            items = dbManager.getItems();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ItemController.class.getName()).log(Level.SEVERE, null, ex);
+            Connection c = dbManager.getConnection();
+            DBItem dbItem = new DBItem();
+            items = dbItem.getItems(c);
+            c.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
+        } catch (NamingException ex) {
+            Logger.getLogger(ItemController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         if(items == null){
@@ -39,4 +41,5 @@ public class ItemController {
             return items;
         }
     }
+    
 }
