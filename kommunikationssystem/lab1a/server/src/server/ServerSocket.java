@@ -79,17 +79,17 @@ public class ServerSocket {
                 if (System.currentTimeMillis() < connectionTime + timeout) {
                     // connectionTime = System.currentTimeMillis(); //reset timeout
                     if (isStartMessage(packet)) {
-                        System.out.println("Mm det var rätt");
+                        System.out.println("Received start message from client");
                         startNewGame();
                         return;
                     } else {
-                        System.out.println("Ej start, skickar error");
+                        System.out.println("Didnt receive start from client, sending error and terminating session.");
                         sendMessage("ERROR! Disconnected", packet);
                         terminateSession();
                         return;
                     }
                 } else {
-                    System.out.println("???");
+                    System.out.println("Client timeout");
                     sendTimeout();
                     terminateSession();
                     return;
@@ -97,7 +97,7 @@ public class ServerSocket {
 
             } else //if other client
             {
-                System.out.println("hallå");
+                System.out.println("Message from another client received");
                 if (isHelloMessage(packet)) {
                     if (System.currentTimeMillis() < connectionTime + timeout) {
                         sendMessage("BUSY", packet);
