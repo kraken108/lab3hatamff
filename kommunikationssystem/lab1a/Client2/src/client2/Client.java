@@ -156,7 +156,6 @@ public class Client {
             return -1;
         }
 
-        print(dpTwo);
         return 0;
     }
 
