@@ -127,6 +127,14 @@ public class Client {
 
         print(dpTwo);
 
+        if(checkForError(errorCheck) == -1){
+            return -1;
+        }
+
+        return 0;
+    }
+
+    private int checkForError(String errorCheck){
         if (errorCheck.contains("NO MORE")) {
 
             System.out.println("Shutting down...");
@@ -155,10 +163,9 @@ public class Client {
             System.out.println("Received error, shutting down...");
             return -1;
         }
-
+        
         return 0;
     }
-
     private void print(DatagramPacket dp) {
 
         String str = new String(dp.getData());
