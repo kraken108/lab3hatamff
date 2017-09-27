@@ -125,7 +125,7 @@ public class Client {
 
         errorCheck = new String(dpTwo.getData());
 
-
+        print(dpTwo);
 
         if (errorCheck.contains("NO MORE")) {
 
