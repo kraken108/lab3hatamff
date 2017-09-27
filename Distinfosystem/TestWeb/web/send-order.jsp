@@ -17,29 +17,25 @@
         <%
             if (session.getAttribute("username") == null || session.getAttribute("username").equals("")) {
                 out.println("Please login first");
-                %>
+        %>
         <%
             } else {
-                if(session.getAttribute("cartItems") == null){
+                if (session.getAttribute("cartItems") == null) {
                     out.println("empty cart");
-                }else{
+                } else {
                     //send order here
                     OrderController oc = new OrderController();
-                    if(oc.sendOrder((Item[])session.getAttribute("cartItems"))){
-                        out.println("Thank you for your order!");
-                    }else{
-                    out.println("An error occured :(");
-}
-                    
+                    out.println(oc.sendOrder((Item[]) session.getAttribute("cartItems"), (String) session.getAttribute("username")));
+                    session.removeAttribute("cartItems");
                 }
-                %>
-                <form action="main.jsp">
-                    <input type="submit" value="Back to shop">
-                </form>
-                
-        <%
-    
-            }%>
             
+        %>
+        <form action="main.jsp">
+            <input type="submit" value="Back to shop">
+        </form>
+
+        <%
+            }%>
+
     </body>
 </html>

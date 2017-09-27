@@ -22,19 +22,19 @@ public class OrderController {
     
     
     
-    public Boolean sendOrder(Item[] items){
+    public String sendOrder(Item[] items,String username){
         MysqlManager dbManager = new MysqlManager();
         try {
             Connection c = dbManager.getConnection();
             DBOrder dbOrder = new DBOrder();
-           // dbOrder.sendOrder(items,c);
-            
+            String s = dbOrder.sendOrder(items,c,username);
+            return s;
         } catch (NamingException ex) {
             Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
+            return ex.toString();
         } catch (SQLException ex) {
             Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
+            return ex.toString();
         }
-        
-        return false;
     }
 }
