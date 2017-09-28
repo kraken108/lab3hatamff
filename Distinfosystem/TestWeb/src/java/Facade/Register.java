@@ -35,13 +35,48 @@ public class Register {
         this.passWord="1234";               
     }
 
+    public boolean checkStrings(String userName){
+        
+        if(!(checkForCharacters(userName)))
+            return false;
+        
+        if(!(checkCorrectFormat(userName)))
+            return false;
+               
+        return true;
+    }
+    
+    private boolean checkForCharacters(String text){
+        
+        char testChar[] = text.toCharArray();
+                
+        for (char c : testChar){
+            if(!Character.isAlphabetic(c))
+                return false;
+        }  
+        return true;
+    }
+    
+    private boolean checkCorrectFormat(String text){
+        
+        if(!((text.length()>1) && (text.length() < 10)))
+            return false;
+        
+        if(text.contains(" "))
+            return false;
+        
+        return true;
+    }
+    
+    
     /**
      * @return the userName
      */
     public String getUserName() {
         return userName;
     }
-
+    
+    
     /**
      * @param userName the userName to set
      */

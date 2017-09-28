@@ -18,14 +18,15 @@
         String userName = request.getParameter("userName");
         String passWord = request.getParameter("passWord");
         
-        Register register = new Register();
+        Register register = new Register(userName, passWord);
         
-        register.setPassWord(passWord);
-        register.setUserName(userName);
+        if(register.checkStrings(userName))
+            register.setUserName(userName);
+
+        if(register.checkStrings(passWord))
+            register.setPassWord(passWord);
         
-
-
-          %>
+        %>
         <table border="1">
             <tbody>
                 <tr>
@@ -41,8 +42,7 @@
       
             <form reg ="backToMainPage" action="index.jsp" method="POST">
                 
-                
-                            <input type="submit" value="Back" name="submitReg"/>                        
+                        <input type="submit" value="Back" name="submitReg"/>                        
 
             </form>    
                 

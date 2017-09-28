@@ -25,6 +25,10 @@
                         <td>Password: </td>
                         <td><input type="text" name="passWord" value="" size="50" /></td>
                     </tr>
+                    <tr>
+                        <td>Password again: </td>
+                        <td><input type="text" name="passWord" value="" size="50" /></td>
+                    </tr>
                 </tbody>
             </table>  
             <input type="submit" value="Submit" name="submitReg"/>                        
