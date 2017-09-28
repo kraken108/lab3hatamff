@@ -51,9 +51,10 @@ public class Server {
     private void acceptNewConnections() throws IOException{
         System.out.println("Server started successfully!");
     
+        ///loopar oändligt och väntar på att klienter vill ansluta till servern
         while(running){
             try {
-                Socket clientSocket = serverSocket.accept();
+                Socket clientSocket = serverSocket.accept();  ///servern accepterar connection med klienten
                 System.out.println("New connection!");
                 initiateNewClient(clientSocket);
             } catch (IOException ex){

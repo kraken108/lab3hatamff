@@ -27,9 +27,9 @@ public class Client implements Runnable {
     private Client[] clients;
     private int id;
     private String clientName;
-
     private Boolean running;
 
+        
     public Client(Socket socket, Client[] clients, int id) throws IOException {
 
         this.id = id;
@@ -85,6 +85,8 @@ public class Client implements Runnable {
         return s;
     }
 
+    
+    /*adds all the client names and returns a string with the name of all clients*/    
     private String getAllClients() {
         String s = "Connected clients: ";
         for (int i = 0; i < clients.length; i++) {
@@ -99,6 +101,7 @@ public class Client implements Runnable {
         return s;
     }
 
+    /*loops through the client array and compares the name with all the existing clients*/    
     private Boolean nameAlreadyExists(String name) {
         for (int i = 0; i < clients.length; i++) {
             if (clients[i] != null && i != id) {
@@ -110,6 +113,7 @@ public class Client implements Runnable {
         return false;
     }
 
+    /*returns the name minus the first 6 characters that are "client"*/
     private String getTheName(String message) {
         String s = "";
         for (int i = 6; i < message.length(); i++) {
@@ -118,6 +122,7 @@ public class Client implements Runnable {
         return s;
     }
 
+    /* handles the different commands*/
     private void handleMessage(String message) {
         if (message.length() <= 0) {
             return;
@@ -161,7 +166,8 @@ public class Client implements Runnable {
             }
         }
     }
-
+    
+    /*terminates the session and sends the name of the terminating client to other clients*/
     private void terminateSession() {
 
         sendToOtherClients(clientName + " has disconnected from the chat.");
