@@ -117,6 +117,7 @@ public class Client implements Runnable {
         
         return newMessage;
     }
+    
     private void handleMessage(String message) {
         
         message = removeBackSpaces(message);
@@ -182,6 +183,7 @@ public class Client implements Runnable {
         }
     }
 
+    //säkerställer att inga andra trådar kan använda send samtidigt, orden kan blandas
     private synchronized void send(String message) {
         out.println(message);
     }

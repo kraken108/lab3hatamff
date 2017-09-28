@@ -5,6 +5,16 @@
  */
 package Facade;
 
+import BO.Item;
+import DBManager.*;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.NamingException;
+
 /**
  *
  * @author Michael
@@ -15,8 +25,14 @@ public class Register {
     private String passWord;
     
     public Register(String userName, String passWord){
+        
         this.userName=userName;
-        this.passWord=passWord;      
+        this.passWord=passWord;
+    }   
+    
+    public Register(){                
+        this.userName="";
+        this.passWord="1234";               
     }
 
     /**
@@ -46,5 +62,11 @@ public class Register {
     public void setPassWord(String passWord) {
         this.passWord = passWord;
     }   
+    
+    @Override
+    public String toString(){
+        return getUserName() + " " + getPassWord();
+    }
+    
     
 }

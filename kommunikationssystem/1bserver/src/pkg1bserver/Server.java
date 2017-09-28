@@ -16,6 +16,9 @@ import java.util.logging.Logger;
  *
  * @author Jakob
  */
+
+//lyssnar på serversocketen, skapar nytt klientobjekt om den får ny klient
+
 public class Server {
     private ServerSocket serverSocket;
     private Client[] clients;

@@ -56,8 +56,9 @@
         </form>
         
         <form name="sendToRegister" method="post" action="register.jsp">
-            
+                                                
                         <input type="submit" value="Register">
+        
         </form>
             
         <%}%>
