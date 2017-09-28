@@ -5,8 +5,7 @@
  */
 package Facade;
 
-<<<<<<< HEAD
-=======
+
 import BO.Item;
 import DBManager.*;
 import java.sql.Connection;
@@ -41,7 +40,13 @@ public class Register {
         this.userName="";
         this.passWord="";               
     }
-
+    
+    public void insertUser(String userName, String passWord){
+        
+        
+        
+    }
+    
     public boolean checkStrings(String text){
         
         if(!(checkForCharacters(text)))

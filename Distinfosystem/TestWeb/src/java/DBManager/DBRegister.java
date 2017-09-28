@@ -30,15 +30,15 @@ import java.sql.Statement;
  */
 public class DBRegister {
         
+    
 
-    public ArrayList<Register> getRegistries() {
-            ArrayList<Register> registers = null;
+    public ArrayList<User> getRegistries(String userName, String passWord) {
+            ArrayList<User> theUsers = null;
       try{
           DBManager dbManager = new MysqlManager();
           Connection c = dbManager.getConnection();
-          registers = getUsers(c);
-
-
+          
+          theUsers=getUsers(c);          
           c.close();
       }
       catch (SQLException ex) {                 
@@ -48,25 +48,26 @@ public class DBRegister {
           Logger.getLogger(DBRegister.class.getName()).log(Level.SEVERE, null, ex);
       }
       
-      if(registers == null){
+      if(theUsers == null){
           return null;
       }else{
-          return registers;          
+          return theUsers;          
       }           
     }
     
-    
-    public void insertUsers(String userName, String passWord){
+ 
+    public void insertUsers(Connection connection, String userName, String passWord) throws SQLException{
         
-        String insertIntoUsers = "INSERT INTO USERS(userName,passWord)"
-                + " VALUES(userName,passWord)";       
+        String query  = "INSERT INTO users userName" + userName + " AND passWord" + passWord; 
+        Statement stmt = connection.createStatement();
+        ResultSet rs = stmt.executeQuery(query);  
     }
     
     public ArrayList<User> getUsers(Connection connection){
         
+        String query = "SELECT * FROM user";
         
-        
-        return null;       
+             
     }   
     
 }
