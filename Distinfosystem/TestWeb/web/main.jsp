@@ -4,6 +4,7 @@
     Author     : Jakob
 --%>
 
+<%@page import="BO.User"%>
 <%@page import="java.lang.String"%>
 <%@page import="Facade.ItemController"%>
 <%@page import="java.util.ArrayList"%>
@@ -18,21 +19,39 @@
     <body>
         <h1>Welcome to the webbshop!
         </h1>
-        
-        <%
 
+        <%
             if (session.getAttribute("username") == null || session.getAttribute("username").equals("")) {
                 out.println("Please login m8");
             } else {
-        out.println("Logged in as: " + session.getAttribute("username"));%>
+                User user = (User)session.getAttribute("user");
+                if(user.isAdministrator()){
+                    out.println("Logged in as administrator");
+                    
+        %>
+        <form action="adminpanel.jsp">
+            <input type="submit" value="Administration Panel">
+        </form>
+        <%
+                }  
+        %>
+        <br>
+        <%
+                
+                out.println("Logged in as: " + session.getAttribute("username"));
+        %>
+
         <form action="logout.jsp">
             <input type="submit" value="Logout">
         </form>
-        <br><br><br><%
+        <br><br><br>
+        <%
 
-        %><form action="shopping-cart.jsp">
+        %>
+        <form action="shopping-cart.jsp">
             <input type="submit" value="Shopping cart">
-        </form><%                // Collect current items and display them to user, plus buttons to add to cart
+        </form>
+        <% // Collect current items and display them to user, plus buttons to add to cart
             ItemController ic = new ItemController();
             ArrayList<Item> items = ic.getItems();
 
@@ -56,10 +75,10 @@
                     if (cartItems[i] == null) {
                         String[] stringsToAdd = addToCart.split(" ");
                         out.println(stringsToAdd.length);
-                        for(String s : stringsToAdd){
+                        for (String s : stringsToAdd) {
                             out.println(s);
                         }
-                        cartItems[i] = new Item(stringsToAdd[0], Float.parseFloat(stringsToAdd[1]),stringsToAdd[2],stringsToAdd[3]);
+                        cartItems[i] = new Item(stringsToAdd[0], Float.parseFloat(stringsToAdd[1]), stringsToAdd[2], stringsToAdd[3]);
                         session.setAttribute("cartItems", cartItems);
                         break;
                     }
@@ -75,18 +94,23 @@
             }
             out.println("Items in cart: " + x);
 
-        %><h3> Available items: </h3>
+        %>
+        <h3> Available items: </h3>
         <%            if (items == null) {
                 //no items
             } else {
                 for (int i = 0; i < items.size(); i++) {
-                    out.println(items.get(i).toString());%>
+                    out.println(items.get(i).toString());
+        %>
         <form>
-            <input type="hidden" name="addToCart" value="<%out.println(items.get(i).getName() 
-                    + " " + items.get(i).getPrice() + " "+items.get(i).getInStock() +" " + items.get(i).getId());%>">
+            <input type="hidden" name="addToCart" value="
+                   <%out.println(items.get(i).getName()
+                               + " " + items.get(i).getPrice() + " " + items.get(i).getInStock() + " " + items.get(i).getId());
+                   %>">
             <input type="submit" value="Add to cart">
         </form>
-        <br><%
+        <br>
+        <%
                     }
 
                 }

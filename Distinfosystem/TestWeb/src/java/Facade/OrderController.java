@@ -20,8 +20,7 @@ import javax.naming.NamingException;
  */
 public class OrderController {
     
-    
-    
+
     public String sendOrder(Item[] items,String username){
         MysqlManager dbManager = new MysqlManager();
         try {

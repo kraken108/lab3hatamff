@@ -31,7 +31,7 @@
                 if (cartItems[i] == null) {
                 } else {
                     total += cartItems[i].getPrice();
-                    out.println(cartItems[i].toString() + " id: " + cartItems[i].getId());%><br><%
+                    out.println(cartItems[i].toString());%><br><%
                             }
                         }
         %><br><br><% out.println("Total: " + total);
