@@ -16,15 +16,17 @@
         <%
         
         String userName = request.getParameter("userName");
-        String passWord = request.getParameter("passWord");
+        String passWordOne = request.getParameter("passWordOne");
+        String passWordTwo = request.getParameter("passWordTwo");
         
-        Register register = new Register(userName, passWord);
+        Register register = new Register();
         
         if(register.checkStrings(userName))
             register.setUserName(userName);
 
-        if(register.checkStrings(passWord))
-            register.setPassWord(passWord);
+        if((register.checkStrings(passWordOne)) &&  (register.checkStrings(passWordTwo))
+                && (register.comparePasswords(passWordOne, passWordTwo)))
+            register.setPassWord(passWordOne);
         
         %>
         <table border="1">
@@ -35,7 +37,7 @@
                 </tr>
                 <tr>
                     <td>Password: </td>
-                    <td><%= passWord %></td>
+                    <td><%= passWordOne %></td>
                 </tr>
             </tbody>
         </table>

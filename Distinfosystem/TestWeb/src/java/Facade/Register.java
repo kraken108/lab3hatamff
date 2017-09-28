@@ -23,6 +23,7 @@ public class Register {
     
     private String userName;
     private String passWord;
+    private DBRegister dbRegister;
     
     public Register(String userName, String passWord){
         
@@ -32,18 +33,31 @@ public class Register {
     
     public Register(){                
         this.userName="";
-        this.passWord="1234";               
+        this.passWord="";               
     }
 
-    public boolean checkStrings(String userName){
+    public boolean checkStrings(String text){
         
-        if(!(checkForCharacters(userName)))
+        if(!(checkForCharacters(text)))
             return false;
         
-        if(!(checkCorrectFormat(userName)))
+        if(!(checkCorrectFormat(text)))
             return false;
                
         return true;
+    }
+    
+    public boolean comparePasswords(String pwdOne, String pwdTwo){
+        
+        char one[]=pwdOne.toCharArray();
+        char two[]=pwdTwo.toCharArray();
+        
+        for(int i=0; i<pwdOne.length(); i++){
+            if(!(one.equals(two)))
+                return false;
+        }
+            
+            return true;
     }
     
     private boolean checkForCharacters(String text){
