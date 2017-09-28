@@ -55,7 +55,11 @@
                 for (int i = 0; i < cartItems.length; i++) {
                     if (cartItems[i] == null) {
                         String[] stringsToAdd = addToCart.split(" ");
-                        cartItems[i] = new Item(stringsToAdd[0], Float.parseFloat(stringsToAdd[1]));
+                        out.println(stringsToAdd.length);
+                        for(String s : stringsToAdd){
+                            out.println(s);
+                        }
+                        cartItems[i] = new Item(stringsToAdd[0], Float.parseFloat(stringsToAdd[1]),stringsToAdd[2],stringsToAdd[3]);
                         session.setAttribute("cartItems", cartItems);
                         break;
                     }
@@ -76,9 +80,10 @@
                 //no items
             } else {
                 for (int i = 0; i < items.size(); i++) {
-                    out.println(items.get(i).getName() + "\t" + items.get(i).getPrice());%>
+                    out.println(items.get(i).toString());%>
         <form>
-            <input type="hidden" name="addToCart" value="<%out.println(items.get(i).toString());%>">
+            <input type="hidden" name="addToCart" value="<%out.println(items.get(i).getName() 
+                    + " " + items.get(i).getPrice() + " "+items.get(i).getInStock() +" " + items.get(i).getId());%>">
             <input type="submit" value="Add to cart">
         </form>
         <br><%

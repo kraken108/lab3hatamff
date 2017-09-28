@@ -25,14 +25,29 @@ public class DBItem {
         Statement stmt = connection.createStatement();
         ResultSet rs = stmt.executeQuery(query);
         
-        
         while(rs.next()){
-            Item i = new Item((String) rs.getObject("name"),(Float)rs.getObject("price"));
+            int inStock = getInStock((int)rs.getObject("id"),connection);
+            Item i = new Item((String) rs.getObject("itemName"),(Float)rs.getObject("price"),inStock,(int)rs.getObject("id"));
             items.add(i);
         }
         stmt.close();
         rs.close();
         return items;
+    }
+
+    private int getInStock(int itemId,Connection connection) throws SQLException{
+        
+        String query = "SELECT * FROM ItemStock WHERE itemId="+itemId+";";
+        Statement stmt = connection.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+        
+        int x = 0;
+        while(rs.next()){
+            x++;
+        }
+        stmt.close();
+        rs.close();
+        return x;
     }
     
     
