@@ -38,5 +38,13 @@
                 </tr>
             </tbody>
         </table>
+      
+            <form reg ="backToMainPage" action="index.jsp" method="POST">
+                
+                
+                            <input type="submit" value="Back" name="submitReg"/>                        
+
+            </form>    
+                
     </body>
 </html>
