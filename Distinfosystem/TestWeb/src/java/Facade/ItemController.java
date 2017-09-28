@@ -26,6 +26,7 @@ public class ItemController {
         try {
             DBManager dbManager = new MysqlManager();
             Connection c = dbManager.getConnection();
+            
             DBItem dbItem = new DBItem();
             items = dbItem.getItems(c);
             c.close();

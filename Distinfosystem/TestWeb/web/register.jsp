@@ -1,6 +1,6 @@
 <%-- 
     Document   : register
-    Created on : 26-Sep-2017, 11:49:41
+    Created on : 27-Sep-2017, 11:21:29
     Author     : Michael
 --%>
 
@@ -12,22 +12,22 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>
-            <form name="theRegistry" method="post">
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>Username:</td>
-                            <td><input type="text" size="50" /></td>
-                        </tr>
-                        
-                        <tr>           
-                            <td>Password:</td>
-                            <td><input type="text" size="50" /></td>
-                       </tr>                       
-                    </tbody>              
-                </table>          
-            </form>             
-        </h1>
+        <h1>Register</h1>
+        <form reg ="Register" action="registerHandler.jsp" method="POST">
+            <table border="0">
+                
+                <tbody>
+                    <tr>
+                        <td>Username : </td>
+                        <td><input type="text" name="userName" value="" size="50" /></td>
+                    </tr>
+                    <tr>
+                        <td>Password: </td>
+                        <td><input type="text" name="passWord" value="" size="50" /></td>
+                    </tr>
+                </tbody>
+            </table>  
+            <input type="submit" value="Submit" name="submitReg"/>                        
+        </form>
     </body>
 </html>

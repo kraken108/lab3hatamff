@@ -27,7 +27,6 @@ public class Client implements Runnable {
     private Client[] clients;
     private int id;
     private String clientName;
-
     private Boolean running;
 
     public Client(Socket socket, Client[] clients, int id) throws IOException {
@@ -69,20 +68,6 @@ public class Client implements Runnable {
 
     public String getClientName() {
         return clientName;
-    }
-
-    private String getOtherClientsString() {
-        String s = "Connected clients: ";
-        for (int i = 0; i < clients.length; i++) {
-            if (clients[i] != null && i != id) {
-                s += clients[i].getClientName();
-                if (!(i == clients.length - 1)) {
-                    s += ", ";
-                }
-            }
-
-        }
-        return s;
     }
 
     private String getAllClients() {
@@ -132,6 +117,7 @@ public class Client implements Runnable {
         
         return newMessage;
     }
+    
     private void handleMessage(String message) {
         
         message = removeBackSpaces(message);
@@ -197,6 +183,7 @@ public class Client implements Runnable {
         }
     }
 
+    //säkerställer att inga andra trådar kan använda send samtidigt, orden kan blandas
     private synchronized void send(String message) {
         out.println(message);
     }
