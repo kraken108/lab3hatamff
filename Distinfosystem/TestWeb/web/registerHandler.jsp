@@ -15,7 +15,7 @@
     <body>            
         <%
         
-        
+       
         String userName = request.getParameter("userName");
         String passWord = request.getParameter("passWord");
         
@@ -23,10 +23,27 @@
         System.out.println("Username: " + userName + "Password" + passWord);
 
           %>
+
+        String userName = request.getParameter("userName");
+        String passWordOne = request.getParameter("passWordOne");
+        String passWordTwo = request.getParameter("passWordTwo");
+        
+        Register register = new Register();
+        
+        if(register.checkStrings(userName))
+            register.setUserName(userName);
+
+        if((register.checkStrings(passWordOne)) &&  (register.checkStrings(passWordTwo))
+                && (register.comparePasswords(passWordOne, passWordTwo)))
+            register.setPassWord(passWordOne);
+        
+        %>
+
         <table border="1">
             <tbody>
                 <tr>
                     <td>Username: </td>
+
                     <td><%=userName %></td>
                 </tr>
                 <tr>
@@ -48,3 +65,22 @@
             
     </body>
 </html>
+
+                    <td><%= userName  %></td>
+                </tr>
+                <tr>
+                    <td>Password: </td>
+                    <td><%= passWordOne %></td>
+                </tr>
+            </tbody>
+        </table>
+      
+            <form reg ="backToMainPage" action="index.jsp" method="POST">
+                
+                        <input type="submit" value="Back" name="submitReg"/>                        
+
+            </form>    
+                
+    </body>
+</html>
+

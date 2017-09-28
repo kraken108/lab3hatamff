@@ -12,6 +12,7 @@
         <title>Logging out</title>
     </head>
     <body>
+        Please wait
         <%
             session.removeAttribute("username");
             session.removeAttribute("cartItems");

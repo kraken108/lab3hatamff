@@ -23,7 +23,15 @@
                     </tr>
                     <tr>
                         <td>Password: </td>
+<<<<<<< HEAD
                         <td><input type="text" name="passWord" value="" size="50" /></td>
+=======
+                        <td><input type="text" name="passWordOne" value="" size="50" /></td>
+                    </tr>
+                    <tr>
+                        <td>Password again: </td>
+                        <td><input type="text" name="passWordTwo" value="" size="50" /></td>
+>>>>>>> ec0a0903180e9fb7bb299d2d6f29c7c0bcdb7ed1
                     </tr>
                 </tbody>
             </table>  

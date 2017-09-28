@@ -71,6 +71,7 @@ public class Client implements Runnable {
         return clientName;
     }
 
+<<<<<<< HEAD
     private String getOtherClientsString() {
         String s = "Connected clients: ";
         for (int i = 0; i < clients.length; i++) {
@@ -87,6 +88,8 @@ public class Client implements Runnable {
 
     
     /*adds all the client names and returns a string with the name of all clients*/    
+=======
+>>>>>>> ec0a0903180e9fb7bb299d2d6f29c7c0bcdb7ed1
     private String getAllClients() {
         String s = "Connected clients: ";
         for (int i = 0; i < clients.length; i++) {
@@ -122,11 +125,34 @@ public class Client implements Runnable {
         return s;
     }
 
+<<<<<<< HEAD
     /* handles the different commands*/
+=======
+    
+    private String removeBackSpaces(String message){
+        String newMessage = "";
+        
+        for(int i = 0; i<message.length(); i++){
+            if(message.charAt(i) == '\b'){
+                
+            }else{
+                newMessage += message.charAt(i);
+            }
+        }
+        
+        return newMessage;
+    }
+    
+>>>>>>> ec0a0903180e9fb7bb299d2d6f29c7c0bcdb7ed1
     private void handleMessage(String message) {
+        
+        message = removeBackSpaces(message);
+        
         if (message.length() <= 0) {
             return;
         }
+        
+        removeBackSpaces(message);
         if (message.equals("/quit")) {
             out.println("Goodbye!");
             terminateSession();
@@ -184,6 +210,7 @@ public class Client implements Runnable {
         }
     }
 
+    //säkerställer att inga andra trådar kan använda send samtidigt, orden kan blandas
     private synchronized void send(String message) {
         out.println(message);
     }

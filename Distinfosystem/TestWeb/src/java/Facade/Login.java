@@ -5,6 +5,7 @@
  */
 package Facade;
 
+import BO.User;
 import DBManager.*;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -38,6 +39,20 @@ public class Login {
         } catch (NamingException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             return ex.toString();
+        }
+    }
+    
+    public User getUserInfo(String username){
+        try{
+            DBManager dbManager = new MysqlManager();
+            Connection c = dbManager.getConnection();
+            DBLogin dbLogin = new DBLogin();
+            User user = dbLogin.getUserInfo(username,c);
+            return user;
+        }catch(SQLException ex){
+            return null;
+        } catch (NamingException ex) {
+            return null;
         }
     }
 }

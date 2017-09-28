@@ -5,11 +5,8 @@
  */
 package DBManager;
 
-import BO.Item;
 import java.sql.Connection;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.Context;
@@ -27,8 +24,6 @@ public class MysqlManager implements DBManager {
     private final String contextLookup = "java:comp/env";
     private final String resourceName = "jdbc/Webbshop";
     
-    
-    
     @Override
     public Connection getConnection() throws NamingException, SQLException{
         Context initialContext = new InitialContext();
@@ -43,8 +38,6 @@ public class MysqlManager implements DBManager {
     
     
     public void Register(String userName, String passWord,Connection connection){
-        
-        
         Statement stmt = null;
         String query  = "INSERT INTO users userName" + userName + " AND passWord" + passWord;   
         

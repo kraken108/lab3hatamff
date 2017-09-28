@@ -23,6 +23,8 @@ public class ServerSocket {
     private int maxAttempts;
     private ConnectedClient currentClient;
 
+    private final int TIMEOUT = 20000;
+    
     public ServerSocket(String word) throws SocketException {
         try {
             socket = new DatagramSocket(1234);
@@ -70,7 +72,7 @@ public class ServerSocket {
         currentClient = new ConnectedClient(packet.getAddress(), packet.getPort());
         long connectionTime = System.currentTimeMillis();
 
-        int timeout = 20000;
+        int timeout = TIMEOUT;
         while (true) {
 
             socket.receive(packet);
@@ -79,17 +81,17 @@ public class ServerSocket {
                 if (System.currentTimeMillis() < connectionTime + timeout) {
                     // connectionTime = System.currentTimeMillis(); //reset timeout
                     if (isStartMessage(packet)) {
-                        System.out.println("Mm det var rätt");
+                        System.out.println("Received start message from client");
                         startNewGame();
                         return;
                     } else {
-                        System.out.println("Ej start, skickar error");
+                        System.out.println("Didnt receive start from client, sending error and terminating session.");
                         sendMessage("ERROR! Disconnected", packet);
                         terminateSession();
                         return;
                     }
                 } else {
-                    System.out.println("???");
+                    System.out.println("Client timeout");
                     sendTimeout();
                     terminateSession();
                     return;
@@ -97,7 +99,7 @@ public class ServerSocket {
 
             } else //if other client
             {
-                System.out.println("hallå");
+                System.out.println("Message from another client received");
                 if (isHelloMessage(packet)) {
                     if (System.currentTimeMillis() < connectionTime + timeout) {
                         sendMessage("BUSY", packet);
@@ -141,7 +143,7 @@ public class ServerSocket {
     private void gameLoop() throws IOException {
         long lastMessageTime = System.currentTimeMillis();
 
-        int timeout = 20000;
+        int timeout = TIMEOUT;
         //** GAME LOOP **//
         while (true) {
             byte[] data = new byte[1024];

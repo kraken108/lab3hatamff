@@ -26,7 +26,7 @@
                     out.println("Logged in as: " + username);
                     
                     session.setAttribute("username", username);
-                    String redirectURL = "http://localhost:8080/Webbshop/main.jsp";
+                    String redirectURL = "http://localhost:8080/Webbshop/logging-in.jsp";
                     response.sendRedirect(redirectURL);
 
                     //redirect to main page
@@ -56,8 +56,9 @@
         </form>
         
         <form name="sendToRegister" method="post" action="register.jsp">
-            
+                                                
                         <input type="submit" value="Register">
+        
         </form>
             
         <%}%>
