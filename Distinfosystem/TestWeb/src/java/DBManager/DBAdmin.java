@@ -25,6 +25,10 @@ public class DBAdmin {
         PreparedStatement selectUsersStatement = null;
         PreparedStatement getRightsStatement = null;
         
+        
+        //TODO: Change to userId instead of username
+        
+        
         String getRightsQuery = "SELECT * FROM UserRights WHERE username=?";
         String query = "SELECT * FROM Users";
         
@@ -36,7 +40,6 @@ public class DBAdmin {
         
         while(rs.next()){
             String username = (String) rs.getObject("userName");
-            
             getRightsStatement = c.prepareStatement(getRightsQuery);
             getRightsStatement.setString(1, username);
             ResultSet rightsResult = getRightsStatement.executeQuery();
@@ -54,6 +57,9 @@ public class DBAdmin {
     
     public User getSingleUser(String username,Connection c) throws SQLException{
         PreparedStatement getUserInfoStatement = null;
+        
+        
+        //TODO: change username to userId
         String getUserInfoQuery = "SELECT * FROM UserRights WHERE username=?";
         getUserInfoStatement = c.prepareStatement(getUserInfoQuery);
         getUserInfoStatement.setString(1, username);
@@ -93,6 +99,9 @@ public class DBAdmin {
     
     public void addRights(String username, String rightToAdd,Connection c) throws SQLException{
         PreparedStatement changeUsernameStatement = null;
+        
+        //TODO: change username to userid
+        
         String changeUsernameString = "INSERT INTO UserRights VALUES(?,?)";
         changeUsernameStatement = c.prepareStatement(changeUsernameString);
         changeUsernameStatement.setString(1, username);
@@ -102,6 +111,9 @@ public class DBAdmin {
     
     public void removeRights(String username, String rightToRemove,Connection c) throws SQLException{
         PreparedStatement changeUsernameStatement = null;
+        
+        //TODO: change username to userid
+        
         String changeUsernameString = "DELETE FROM UserRights WHERE username=? AND rightsname=?";
         changeUsernameStatement = c.prepareStatement(changeUsernameString);
         changeUsernameStatement.setString(1, username);
@@ -114,7 +126,10 @@ public class DBAdmin {
         PreparedStatement deleteFromOrdersStatement = null;
         PreparedStatement deleteFromUsersStatement = null;
         
-        String deleteFromOrdersQuery = "DELETE FROM Orders WHERE userName=?";
+        //TODO: change username to userId
+        
+        
+        String deleteFromOrdersQuery = "DELETE FROM Orders WHERE username=?";
         String changeUsernameString = "DELETE FROM UserRights WHERE username=?";
         String deleteFromUsersQuery = "DELETE FROM Users WHERE userName=?";
         

@@ -43,11 +43,7 @@
             out.println("User rights: " + userToEditInfo.getRightsString());
         %>
         <br><br>
-        <form method="post" action="change-username.jsp">
-            <input type="text" name="newUsername">
-            <input type="submit" value="Change Username">
-        </form>
-        <br>
+        
         <form method="post" action="change-password.jsp">
             <input type="text" name="newPassword">
             <input type="submit" value="Change Password">

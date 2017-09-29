@@ -24,10 +24,14 @@ public class DBOrder {
         PreparedStatement insertOrderStatement = null;
         PreparedStatement insertOrderItemsStatement = null;
 
+        
+        //TODO: retreive userId using userame
+        
+        
         String insertOrderItemsString = "INSERT INTO OrderItems(orderId,itemId) VALUES(?,?)";
         String selectString = "SELECT * FROM ItemStock WHERE itemId=?";
         String deleteFromItemStockString = "DELETE FROM ItemStock WHERE id=?";
-        String insertOrderString = "INSERT INTO Orders(userName) VALUES(?)";
+        String insertOrderString = "INSERT INTO Orders(username) VALUES(?)";
 
         ResultSet rs = null;
         int orderId;
@@ -81,6 +85,7 @@ public class DBOrder {
 
             c.commit();
         } catch (SQLException ex) {
+            c.rollback();
             return ex.toString();
         } finally {
             if (selectStatement != null) {
