@@ -14,12 +14,12 @@
     </head>
     <body>            
         <%
-        
+            
         String userName = request.getParameter("userName");
         String passWordOne = request.getParameter("passWordOne");
         String passWordTwo = request.getParameter("passWordTwo");
         
-        Register register = new Register();
+        Register register = new Register();       
         
         if(register.checkStrings(userName))
             register.setUserName(userName);
@@ -29,24 +29,27 @@
             register.setPassWord(passWordOne);
         
         %>
+
         <table border="1">
             <tbody>
                 <tr>
                     <td>Username: </td>
-                    <td><%= userName  %></td>
+                    <td><%=userName %></td>
                 </tr>
                 <tr>
-                    <td>Password: </td>
-                    <td><%= passWordOne %></td>
+                    <td>Password:</td>
+                    <td><%=passWordOne %></td>
                 </tr>
             </tbody>
-        </table>
-      
-            <form reg ="backToMainPage" action="index.jsp" method="POST">
-                
-                        <input type="submit" value="Back" name="submitReg"/>                        
+        </table>            
+       
+        
+        <form name="backToMainPage" action="index.jsp" method="POST">
+            
+             <input type="submit" value="Back to main page" name="backToMainPage"/>
+        </form>
 
-            </form>    
                 
     </body>
 </html>
+
