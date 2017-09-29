@@ -67,7 +67,7 @@ public class DBRegister {
         
         String query = "SELECT * FROM user";
         
-             
+        return null;
     }   
     
 }

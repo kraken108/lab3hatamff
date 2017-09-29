@@ -42,7 +42,8 @@ public class Register {
     }
     
     public void insertUser(String userName, String passWord){
-        
+            
+        dbRegister.insertUsers(connection, userName, passWord);
         
         
     }
