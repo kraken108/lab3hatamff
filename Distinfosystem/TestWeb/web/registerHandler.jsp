@@ -29,7 +29,9 @@
                 register.insertUser(userName,passWordOne);
             }
             catch(SQLException Ex){
-                System.out.println(Ex);
+                session.setAttribute("error", "Username already exists");
+                String redirectURL = "http://localhost:8080/Webbshop/error.jsp";   
+                response.sendRedirect(redirectURL);  
                }
             }           
         else{
