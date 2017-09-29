@@ -30,7 +30,13 @@
                 if (userToEdit == null) {
                      userToEditInfo = (User)session.getAttribute("userToEdit");
                 } else {
-                    userToEditInfo = uc.getSingleUser(userToEdit);
+                    try{
+                        userToEditInfo = uc.getSingleUser(userToEdit);
+                    }catch(Exception e){
+                        session.setAttribute("error", "Error retrieving user to edit");
+                        String redirectURL = "http://localhost:8080/Webbshop/error.jsp";
+                        response.sendRedirect(redirectURL);
+                    }
                     session.setAttribute("userToEdit", userToEditInfo);
                 }
                 

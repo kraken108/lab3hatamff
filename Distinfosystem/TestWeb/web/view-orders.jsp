@@ -4,6 +4,7 @@
     Author     : Jakob
 --%>
 
+<%@page import="BO.User"%>
 <%@page import="BO.Order"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="Facade.OrderController"%>
@@ -15,10 +16,18 @@
         <title>Order page</title>
     </head>
     <body>
+        <%
+            User user = (User) session.getAttribute("user");
+            if (user == null) {
+                out.println("You are not logged in.");
+            } else if (!user.isStock()) {
+                out.println("Insufficient rights.");
+            } else {
+
+        %>
         <h3>Current orders:</h3>
 
-        <%
-            OrderController oc = new OrderController();
+        <%            OrderController oc = new OrderController();
             try {
                 ArrayList<Order> orders = oc.getAllOrders();
                 if (orders.isEmpty()) {
@@ -35,7 +44,14 @@
                 out.println(e);
             }
 
+        %>
+        <form action="main.jsp">
+            <input type="submit" value="Back to shop">
+        </form>
+        <%                    }
+
 
         %>
+
     </body>
 </html>
