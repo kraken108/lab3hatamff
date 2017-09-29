@@ -5,6 +5,7 @@
  */
 package Facade;
 
+
 import BO.Item;
 import DBManager.*;
 import java.sql.Connection;
@@ -15,27 +16,37 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
 
+
 /**
  *
  * @author Michael
  */
 public class Register {
     
-    private String userName;
+
+    
     private String passWord;
+    private String userName;
     private DBRegister dbRegister;
     
-    public Register(String userName, String passWord){
+    public Register(String passWord, String userName){
         
-        this.userName=userName;
         this.passWord=passWord;
-    }   
+        this.userName=userName;
+            
+    }     
     
     public Register(){                
         this.userName="";
         this.passWord="";               
     }
-
+    
+    public void insertUser(String userName, String passWord){
+        
+        
+        
+    }
+    
     public boolean checkStrings(String text){
         
         if(!(checkForCharacters(text)))
@@ -115,7 +126,6 @@ public class Register {
     @Override
     public String toString(){
         return getUserName() + " " + getPassWord();
-    }
-    
+    }   
     
 }
