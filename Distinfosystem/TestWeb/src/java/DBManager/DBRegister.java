@@ -29,31 +29,6 @@ import java.sql.Statement;
  * @author Jakob
  */
 public class DBRegister {
-        
-    
-
-    public ArrayList<User> getRegistries(String userName, String passWord) {
-            ArrayList<User> theUsers = null;
-      try{
-          DBManager dbManager = new MysqlManager();
-          Connection c = dbManager.getConnection();
-          
-          theUsers=getUsers(c);          
-
-      }
-      catch (SQLException ex) {                 
-          ex.printStackTrace();
-      }
-      catch (NamingException ex) {
-          Logger.getLogger(DBRegister.class.getName()).log(Level.SEVERE, null, ex);
-      }
-      
-      if(theUsers == null){
-          return null;
-      }else{
-          return theUsers;          
-      }           
-    }
     
  
     public void insertUsers(Connection connection, String userName, String passWord) throws SQLException{
@@ -69,33 +44,7 @@ public class DBRegister {
         
         myStmt.executeUpdate();
         myStmt.close();
-        
-        ///String query = "INSERT INTO users(userName,passWord) VALUES();  
-        /*
-        String query  = "INSERT INTO users ("
-        + "userName,"
-        + "passWord) VALUES ("
-        + "userName,passWord)";   
-        */
-        /*
-        try{
-            PreparedStatement st = connection.prepareStatement(query);
-            st.setString(1, userName);
-            st.setString(2, passWord);
-            st.executeUpdate();
-            st.close();
-        }
-        catch(SQLException ex){
-            throw ex;
-        }
-        */
     }
-
-    
-    public ArrayList<User> getUsers(Connection connection){
-        
-        String query = "SELECT * FROM user";
-        return null;
-    }   
+  
     
 }
