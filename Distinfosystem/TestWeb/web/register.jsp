@@ -23,11 +23,11 @@
                     </tr>
                     <tr>
                         <td>Password: </td>
-                        <td><input type="text" name="passWordOne" value="" size="50" /></td>
+                        <td><input type="password" name="passWordOne" value="" size="50" /></td>
                     </tr>
                     <tr>
                         <td>Password again: </td>
-                        <td><input type="text" name="passWordTwo" value="" size="50" /></td>
+                        <td><input type="password" name="passWordTwo" value="" size="50" /></td>
                     </tr>
                 </tbody>
             </table>  
