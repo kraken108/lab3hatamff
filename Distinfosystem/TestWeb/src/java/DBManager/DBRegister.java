@@ -36,7 +36,7 @@ public class DBRegister {
       try{
           DBManager dbManager = new MysqlManager();
           Connection c = dbManager.getConnection();
-          registers = getUsers(c);
+         // registers = getUsers(c);
 
 
           c.close();

@@ -48,6 +48,7 @@ public class Login {
             Connection c = dbManager.getConnection();
             DBLogin dbLogin = new DBLogin();
             User user = dbLogin.getUserInfo(username,c);
+            c.close();
             return user;
         }catch(SQLException ex){
             return null;
