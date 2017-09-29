@@ -58,15 +58,43 @@ public class DBRegister {
  
     public void insertUsers(Connection connection, String userName, String passWord) throws SQLException{
         
-        String query  = "INSERT INTO users userName" + userName + " AND passWord" + passWord; 
-        Statement stmt = connection.createStatement();
-        ResultSet rs = stmt.executeQuery(query);  
+        PreparedStatement myStmt = null;
+        String query = "INSERT INTO users(userName,passWord) VALUES(?,?)";
+        
+        myStmt = connection.prepareStatement(query);
+        
+        myStmt.setString(1, userName);
+        myStmt.setString(2,passWord);
+        
+        
+        myStmt.executeUpdate();
+        myStmt.close();
+        
+        ///String query = "INSERT INTO users(userName,passWord) VALUES();  
+        /*
+        String query  = "INSERT INTO users ("
+        + "userName,"
+        + "passWord) VALUES ("
+        + "userName,passWord)";   
+        */
+        /*
+        try{
+            PreparedStatement st = connection.prepareStatement(query);
+            st.setString(1, userName);
+            st.setString(2, passWord);
+            st.executeUpdate();
+            st.close();
+        }
+        catch(SQLException ex){
+            throw ex;
+        }
+        */
     }
+
     
     public ArrayList<User> getUsers(Connection connection){
         
         String query = "SELECT * FROM user";
-        
         return null;
     }   
     

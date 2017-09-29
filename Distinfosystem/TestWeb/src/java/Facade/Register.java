@@ -24,16 +24,18 @@ import javax.naming.NamingException;
 public class Register {
     
 
-    
-    private String passWord;
-    private String userName;
+    private Connection connection;
+    private final String passWord;
+    private final String userName;
     private DBRegister dbRegister;
     
-    public Register(String passWord, String userName){
+    public Register(String passWord, String userName) throws NamingException, SQLException{
         
-        this.passWord=passWord;
+        MysqlManager mysqlManager = new MysqlManager();
+        connection = mysqlManager.getConnection();
+        dbRegister=new DBRegister();
         this.userName=userName;
-            
+        this.passWord=passWord;
     }     
     
     public Register(){                
@@ -41,11 +43,10 @@ public class Register {
         this.passWord="";               
     }
     
-    public void insertUser(String userName, String passWord){
+    public void insertUser(String userName, String passWord) throws SQLException{
             
-        dbRegister.insertUsers(connection, userName, passWord);
-        
-        
+       dbRegister.insertUsers(connection, userName, passWord);
+       
     }
     
     public boolean checkStrings(String text){
@@ -106,9 +107,7 @@ public class Register {
     /**
      * @param userName the userName to set
      */
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+
 
     /**
      * @return the passWord
@@ -120,9 +119,7 @@ public class Register {
     /**
      * @param passWord the passWord to set
      */
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
-    }   
+ 
     
     @Override
     public String toString(){

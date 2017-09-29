@@ -4,6 +4,7 @@
     Author     : Michael
 --%>
 
+<%@page import="java.sql.SQLException"%>
 <%@page import="Facade.Register"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -19,14 +20,20 @@
         String passWordOne = request.getParameter("passWordOne");
         String passWordTwo = request.getParameter("passWordTwo");
         
-        Register register = new Register();       
+        Register register = new Register(userName,passWordOne);
         
-        if(register.checkStrings(userName))
-            register.setUserName(userName);
 
-        if((register.checkStrings(passWordOne)) &&  (register.checkStrings(passWordTwo))
-                && (register.comparePasswords(passWordOne, passWordTwo)))
-            register.setPassWord(passWordOne);
+        
+        out.println("Im here line 27");
+            try{
+                out.println("öhöhöh");
+                register.insertUser(userName,passWordOne);
+            }
+            catch(SQLException Ex){
+                System.out.println(Ex);
+            }
+        
+        
         
         %>
 
