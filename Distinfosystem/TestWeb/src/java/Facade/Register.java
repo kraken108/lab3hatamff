@@ -24,30 +24,43 @@ import javax.naming.NamingException;
 public class Register {
     
 
-    
+    private Connection connection;
     private String passWord;
     private String userName;
     private DBRegister dbRegister;
     
-    public Register(String passWord, String userName){
+    public Register(String passWord, String userName) throws NamingException, SQLException{
         
-        this.passWord=passWord;
+        MysqlManager mysqlManager = new MysqlManager();
+        connection = mysqlManager.getConnection();
+        dbRegister=new DBRegister();
         this.userName=userName;
-            
+        this.passWord=passWord;
     }     
     
-    public Register(){                
-        this.userName="";
-        this.passWord="";               
+    public Register() throws NamingException, SQLException{                
+        
+        MysqlManager mysqlManager = new MysqlManager();
+        connection = mysqlManager.getConnection();
+        dbRegister=new DBRegister();       
     }
     
-    public void insertUser(String userName, String passWord){
-        
-        
-        
+    public void insertUser(String userName, String passWord) throws SQLException{
+            
+       dbRegister.insertUsers(connection, userName, passWord);
+       
     }
     
-    public boolean checkStrings(String text){
+    public boolean checkPassWord(String text){
+        
+        if(!(checkCorrectFormat(text)))
+            return false;
+               
+        return true;
+    }
+    
+    
+    public boolean checkUserName(String text){
         
         if(!(checkForCharacters(text)))
             return false;
@@ -56,19 +69,6 @@ public class Register {
             return false;
                
         return true;
-    }
-    
-    public boolean comparePasswords(String pwdOne, String pwdTwo){
-        
-        char one[]=pwdOne.toCharArray();
-        char two[]=pwdTwo.toCharArray();
-        
-        for(int i=0; i<pwdOne.length(); i++){
-            if(!(one.equals(two)))
-                return false;
-        }
-            
-            return true;
     }
     
     private boolean checkForCharacters(String text){
@@ -93,39 +93,31 @@ public class Register {
         return true;
     }
     
-    
-    /**
-     * @return the userName
-     */
     public String getUserName() {
         return userName;
     }
     
-    
-    /**
-     * @param userName the userName to set
-     */
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    /**
-     * @return the passWord
-     */
     public String getPassWord() {
         return passWord;
     }
+   
+    @Override
+    public String toString(){
+        return getUserName() + " " + getPassWord();
+    }   
 
     /**
      * @param passWord the passWord to set
      */
     public void setPassWord(String passWord) {
         this.passWord = passWord;
-    }   
-    
-    @Override
-    public String toString(){
-        return getUserName() + " " + getPassWord();
-    }   
+    }
+
+    /**
+     * @param userName the userName to set
+     */
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
     
 }

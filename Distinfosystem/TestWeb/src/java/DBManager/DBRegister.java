@@ -29,6 +29,8 @@ import java.sql.Statement;
  * @author Jakob
  */
 public class DBRegister {
+<<<<<<< HEAD
+=======
 
     public ArrayList<User> getRegistries(String userName, String passWord) {
             ArrayList<User> theUsers = null;
@@ -52,21 +54,29 @@ public class DBRegister {
           return theUsers;          
       }           
     }
+>>>>>>> 69041390076e9864027d815315e6e331f75a8444
     
  
     public void insertUsers(Connection connection, String userName, String passWord) throws SQLException{
         
-        String query  = "INSERT INTO users userName" + userName + " AND passWord" + passWord; 
-        Statement stmt = connection.createStatement();
-        ResultSet rs = stmt.executeQuery(query);  
+        PreparedStatement myStmt = null;
+        String query = "INSERT INTO users(userName,passWord) VALUES(?,?)";
+        
+        myStmt = connection.prepareStatement(query);
+        
+        myStmt.setString(1, userName);
+        myStmt.setString(2,passWord);
+        
+<<<<<<< HEAD
+        
+        myStmt.executeUpdate();
+        myStmt.close();
     }
-    
-    public ArrayList<User> getUsers(Connection connection){
-        
-        String query = "SELECT * FROM user";
-        
+  
+=======
              
         return null;
     }   
+>>>>>>> 69041390076e9864027d815315e6e331f75a8444
     
 }

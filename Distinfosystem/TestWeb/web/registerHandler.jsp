@@ -4,6 +4,7 @@
     Author     : Michael
 --%>
 
+<%@page import="java.sql.SQLException"%>
 <%@page import="Facade.Register"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -13,20 +14,28 @@
         <title>JSP Page</title>
     </head>
     <body>            
-        <%
-            
+        <%            
         String userName = request.getParameter("userName");
         String passWordOne = request.getParameter("passWordOne");
         String passWordTwo = request.getParameter("passWordTwo");
+        Register register = new Register();
         
-        Register register = new Register();       
-        
-        if(register.checkStrings(userName))
-            register.setUserName(userName);
+        if(passWordOne.equals(passWordTwo) && register.checkPassWord(passWordOne) && register.checkUserName(userName)){
 
-        if((register.checkStrings(passWordOne)) &&  (register.checkStrings(passWordTwo))
-                && (register.comparePasswords(passWordOne, passWordTwo)))
             register.setPassWord(passWordOne);
+            register.setUserName(userName);
+                
+            try{
+                register.insertUser(userName,passWordOne);
+            }
+            catch(SQLException Ex){
+                System.out.println(Ex);
+               }
+            }           
+        else{
+            String redirectURL = "http://localhost:8080/Webbshop/registrationFailed.jsp";   
+            response.sendRedirect(redirectURL);            
+        } 
         
         %>
 
@@ -47,9 +56,7 @@
         <form name="backToMainPage" action="index.jsp" method="POST">
             
              <input type="submit" value="Back to main page" name="backToMainPage"/>
-        </form>
-
-                
+        </form>                
     </body>
 </html>
 
