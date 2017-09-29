@@ -39,7 +39,7 @@ public class DBRegister {
           Connection c = dbManager.getConnection();
           
           theUsers=getUsers(c);          
-          c.close();
+
       }
       catch (SQLException ex) {                 
           ex.printStackTrace();
