@@ -6,11 +6,13 @@
 package DBManager;
 
 import BO.Item;
+import BO.Order;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
@@ -115,6 +117,45 @@ public class DBOrder {
 
         return "Thank you for your order!";
 
+    }
+    
+    
+    
+    public ArrayList<Order> getAllOrders(Connection c) throws SQLException{
+        PreparedStatement getAllOrdersStatement = null;
+        PreparedStatement getOrderItemsStatement = null;
+        
+        String getOrderItemsQuery = "SELECT * FROM OrderItems WHERE orderId=?";
+        String getAllOrdersQuery = "SELECT * FROM Orders;";
+        
+        getAllOrdersStatement = c.prepareStatement(getAllOrdersQuery);
+        
+        ResultSet rs = getAllOrdersStatement.executeQuery();
+        
+        
+        ArrayList<Order> orders = new ArrayList<>();
+        
+        while(rs.next()){
+            String username = (String)rs.getObject("username");
+            int orderId = (int)rs.getObject("id");
+            
+            getOrderItemsStatement = c.prepareStatement(getOrderItemsQuery);
+            getOrderItemsStatement.setInt(1, orderId);
+            ResultSet rs2 = getOrderItemsStatement.executeQuery();
+            ArrayList<Item> items = new ArrayList<>();
+            
+            while(rs2.next()){
+                int itemId = (int)rs2.getObject("itemId");
+                DBItem dbItem = new DBItem();
+                Item i = dbItem.getItemById(itemId, c);
+                items.add(i);
+            }
+            
+            Order order = new Order(username,orderId,items);
+            orders.add(order);
+        }
+        
+        return orders;
     }
 
 }

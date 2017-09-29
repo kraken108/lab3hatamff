@@ -6,10 +6,12 @@
 package Facade;
 
 import BO.Item;
+import BO.Order;
 import DBManager.DBOrder;
 import DBManager.MysqlManager;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
@@ -34,6 +36,23 @@ public class OrderController {
         } catch (SQLException ex) {
             Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
             return ex.toString();
+        }
+    }
+    
+    public ArrayList<Order> getAllOrders() throws NamingException, SQLException{
+         
+        try {
+            MysqlManager dbManager = new MysqlManager();
+            Connection c = dbManager.getConnection();
+            DBOrder dbOrder = new DBOrder();
+            ArrayList<Order> orders = dbOrder.getAllOrders(c);
+            return orders;
+        } catch (NamingException ex) {
+            Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
+            throw(ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
+            throw(ex);
         }
     }
 }

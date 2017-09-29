@@ -24,21 +24,25 @@
             if (session.getAttribute("username") == null || session.getAttribute("username").equals("")) {
                 out.println("Please login m8");
             } else {
-                User user = (User)session.getAttribute("user");
-                if(user.isAdministrator()){
-                    out.println("Logged in as administrator");
-                    
+                User user = (User) session.getAttribute("user");
+                if (user.isAdministrator()) {;
+
         %>
         <form action="adminpanel.jsp">
             <input type="submit" value="Administration Panel">
         </form>
+        <%            }
+            if (user.isStock()) {
+        %>
+        <form action="view-orders.jsp">
+            <input type="submit" value="View orders">
+        </form>
         <%
-                }  
+            }
         %>
         <br>
         <%
-                
-                out.println("Logged in as: " + session.getAttribute("username"));
+            out.println("Logged in as: " + session.getAttribute("username"));
         %>
 
         <form action="logout.jsp">
@@ -76,7 +80,7 @@
                     if (cartItems[i] == null) {
                         String[] stringsToAdd = addToCart.split("\t");
                         //out.println(stringsToAdd.length);
-                       /* for (String s : stringsToAdd) {
+                        /* for (String s : stringsToAdd) {
                             out.println(s);
                             out.println("kk");
                         }*/
