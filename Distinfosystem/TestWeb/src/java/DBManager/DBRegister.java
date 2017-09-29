@@ -29,6 +29,32 @@ import java.sql.Statement;
  * @author Jakob
  */
 public class DBRegister {
+<<<<<<< HEAD
+=======
+
+    public ArrayList<User> getRegistries(String userName, String passWord) {
+            ArrayList<User> theUsers = null;
+      try{
+          DBManager dbManager = new MysqlManager();
+          Connection c = dbManager.getConnection();
+          
+          theUsers=getUsers(c);          
+
+      }
+      catch (SQLException ex) {                 
+          ex.printStackTrace();
+      }
+      catch (NamingException ex) {
+          Logger.getLogger(DBRegister.class.getName()).log(Level.SEVERE, null, ex);
+      }
+      
+      if(theUsers == null){
+          return null;
+      }else{
+          return theUsers;          
+      }           
+    }
+>>>>>>> 69041390076e9864027d815315e6e331f75a8444
     
  
     public void insertUsers(Connection connection, String userName, String passWord) throws SQLException{
@@ -41,10 +67,16 @@ public class DBRegister {
         myStmt.setString(1, userName);
         myStmt.setString(2,passWord);
         
+<<<<<<< HEAD
         
         myStmt.executeUpdate();
         myStmt.close();
     }
   
+=======
+             
+        return null;
+    }   
+>>>>>>> 69041390076e9864027d815315e6e331f75a8444
     
 }
