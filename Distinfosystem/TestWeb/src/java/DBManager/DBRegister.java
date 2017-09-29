@@ -29,8 +29,6 @@ import java.sql.Statement;
  * @author Jakob
  */
 public class DBRegister {
-        
-    
 
     public ArrayList<User> getRegistries(String userName, String passWord) {
             ArrayList<User> theUsers = null;
@@ -68,6 +66,7 @@ public class DBRegister {
         String query = "SELECT * FROM user";
         
              
+        return null;
     }   
     
 }
