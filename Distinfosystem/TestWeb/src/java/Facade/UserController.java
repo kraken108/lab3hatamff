@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Facade;
 
 import BO.User;
@@ -17,13 +12,17 @@ import java.util.logging.Logger;
 import javax.naming.NamingException;
 
 /**
- *
- * @author Jakob
+ * UserController is used to retrieve user information from the database.
  */
 public class UserController {
 
+    /**
+     * Returns an array of all users in the database.
+     * @return Array of users
+     * @throws SQLException
+     * @throws NamingException 
+     */
     public ArrayList<User> getUsers() throws SQLException, NamingException {
-
         try {
             DBManager dbManager = new MysqlManager();
             Connection c = dbManager.getConnection();
@@ -38,6 +37,13 @@ public class UserController {
         }
     }
     
+    /**
+     * Returns information about a single user in the database.
+     * @param username
+     * @return User object
+     * @throws SQLException
+     * @throws NamingException 
+     */
     public User getSingleUser(String username) throws SQLException, NamingException {
         try {
             DBManager dbManager = new MysqlManager();
@@ -54,6 +60,13 @@ public class UserController {
         
     }
     
+    /**
+     * Changes the username of a user in the database.
+     * @param currentUsername
+     * @param newUsername
+     * @throws SQLException
+     * @throws NamingException 
+     */
     public void changeUsername(String currentUsername, String newUsername) throws SQLException, NamingException{
         try {
             DBManager dbManager = new MysqlManager();
@@ -67,6 +80,13 @@ public class UserController {
         
     }
     
+    /**
+     * Changes the password of a user in the database.
+     * @param username
+     * @param newPassword
+     * @throws SQLException
+     * @throws NamingException 
+     */
     public void changePassword(String username, String newPassword) throws SQLException, NamingException{
         try {
             DBManager dbManager = new MysqlManager();
@@ -80,6 +100,13 @@ public class UserController {
         
     }
     
+    /**
+     * Adds a right to a user in the database.
+     * @param username
+     * @param rightToAdd
+     * @throws SQLException
+     * @throws NamingException 
+     */
     public void addRights(String username,String rightToAdd) throws SQLException, NamingException{
         try {
             DBManager dbManager = new MysqlManager();
@@ -92,6 +119,13 @@ public class UserController {
         }
     }
     
+    /**
+     * Removes a right from a user in the database.
+     * @param username
+     * @param rightToRemove
+     * @throws NamingException
+     * @throws SQLException 
+     */
     public void removeRights(String username,String rightToRemove) throws NamingException, SQLException{
         try {
             DBManager dbManager = new MysqlManager();
@@ -104,6 +138,12 @@ public class UserController {
         }
     }
     
+    /**
+     * Deletes a user from the database.
+     * @param username
+     * @throws NamingException
+     * @throws SQLException 
+     */
     public void deleteUser(String username) throws NamingException, SQLException{
         try {
             DBManager dbManager = new MysqlManager();

@@ -6,8 +6,7 @@
 package BO;
 
 /**
- *
- * @author Jakob
+ * Enum of available Rights.
  */
 public enum Rights {
     ADMINISTRATOR,

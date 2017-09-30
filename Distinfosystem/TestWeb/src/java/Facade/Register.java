@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Facade;
 
 
@@ -18,8 +13,7 @@ import javax.naming.NamingException;
 
 
 /**
- *
- * @author Michael
+ *  Used to register new users towards the database.
  */
 public class Register {
     
@@ -29,6 +23,13 @@ public class Register {
     private String userName;
     private DBRegister dbRegister;
     
+    /**
+     * Construct a new Register object with parameters the user types in.
+     * @param passWord
+     * @param userName
+     * @throws NamingException
+     * @throws SQLException 
+     */
     public Register(String passWord, String userName) throws NamingException, SQLException{
         
         MysqlManager mysqlManager = new MysqlManager();
@@ -38,6 +39,11 @@ public class Register {
         this.passWord=passWord;
     }     
     
+    /**
+     * Creates a new Register object.
+     * @throws NamingException
+     * @throws SQLException 
+     */
     public Register() throws NamingException, SQLException{                
         
         MysqlManager mysqlManager = new MysqlManager();
@@ -45,12 +51,23 @@ public class Register {
         dbRegister=new DBRegister();       
     }
     
+    /**
+     * Inserts a new user with information from the end user.
+     * @param userName
+     * @param passWord
+     * @throws SQLException 
+     */
     public void insertUser(String userName, String passWord) throws SQLException{
             
        dbRegister.insertUsers(connection, userName, passWord);
        
     }
     
+    /**
+     * Check if password is correct format.
+     * @param text
+     * @return 
+     */
     public boolean checkPassWord(String text){
         
         if(!(checkCorrectFormat(text)))
@@ -60,6 +77,11 @@ public class Register {
     }
     
     
+    /**
+     * Checks if username is correct format.
+     * @param text
+     * @return 
+     */
     public boolean checkUserName(String text){
         
         if(!(checkForCharacters(text)))
@@ -71,6 +93,11 @@ public class Register {
         return true;
     }
     
+    /**
+     * Checks if username contains anything else than alphabetical letters.
+     * @param text
+     * @return 
+     */
     private boolean checkForCharacters(String text){
         
         char testChar[] = text.toCharArray();
@@ -82,6 +109,11 @@ public class Register {
         return true;
     }
     
+    /**
+     * Cjecls of the text is correct format.
+     * @param text
+     * @return 
+     */
     private boolean checkCorrectFormat(String text){
         
         if(!((text.length()>1) && (text.length() < 10)))
@@ -93,14 +125,26 @@ public class Register {
         return true;
     }
     
+    /**
+     * Returns the username.
+     * @return 
+     */
     public String getUserName() {
         return userName;
     }
     
+    /**
+     * Returns the password.
+     * @return 
+     */
     public String getPassWord() {
         return passWord;
     }
    
+    /**
+     * Constructs a string with the username and password.
+     * @return 
+     */
     @Override
     public String toString(){
         return getUserName() + " " + getPassWord();

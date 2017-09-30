@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package DBManager;
 
 import BO.*;
@@ -14,11 +9,18 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
- *
- * @author Jakob
+ * Used to communicate with the database regarding logging in to the webbshop.
  */
 public class DBLogin {
     
+    /**
+     * Try to login using a username and a password.
+     * @param username
+     * @param password
+     * @param connection
+     * @return
+     * @throws SQLException 
+     */
     public Boolean tryLogin(String username, String password, Connection connection) throws SQLException {
         PreparedStatement selectStatement = null;
         String query2 = "SELECT * FROM users WHERE password=? AND userName =?";        
@@ -38,6 +40,13 @@ public class DBLogin {
         }
     }
     
+    /**
+     * Get information about a single user.
+     * @param username
+     * @param c
+     * @return
+     * @throws SQLException 
+     */
     public User getUserInfo(String username, Connection c) throws SQLException{
         PreparedStatement selectStatement = null;
         String query = "SELECT * FROM UserRights WHERE username=?";
