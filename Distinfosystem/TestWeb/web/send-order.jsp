@@ -27,15 +27,13 @@
                     OrderController oc = new OrderController();
                     out.println(oc.sendOrder((Item[]) session.getAttribute("cartItems"), (String) session.getAttribute("username")));
                     session.removeAttribute("cartItems");
-                }
-            
+                }  
         %>
-        <form action="main.jsp">
-            <input type="submit" value="Back to shop">
-        </form>
-
         <%
             }%>
 
+            <form action="main.jsp">
+            <input type="submit" value="Back to shop">
+        </form>
     </body>
 </html>

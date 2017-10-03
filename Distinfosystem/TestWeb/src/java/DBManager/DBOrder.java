@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package DBManager;
 
 import BO.Item;
@@ -15,20 +10,25 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
- *
- * @author Jakob
+ * Used to communicate with the database regarding Orders.
  */
 public class DBOrder {
 
+    /**
+     * Creates a new order.
+     * The database operations are made in a transaction and rolls back if one of the operation fails.
+     * @param items
+     * @param c
+     * @param username
+     * @return
+     * @throws SQLException 
+     */
     public String sendOrder(Item[] items, Connection c, String username) throws SQLException {
         PreparedStatement selectStatement = null;
         PreparedStatement deleteFromItemStockStatement = null;
         PreparedStatement insertOrderStatement = null;
         PreparedStatement insertOrderItemsStatement = null;
 
-        
-        //TODO: retreive userId using userame
-        
         
         String insertOrderItemsString = "INSERT INTO OrderItems(orderId,itemId) VALUES(?,?)";
         String selectString = "SELECT * FROM ItemStock WHERE itemId=?";
@@ -79,6 +79,7 @@ public class DBOrder {
                         }
                     }
                     if (!success) {
+                        c.rollback();
                         return "AN ERROR OCCURED :( (ERROR: 2)";
                     }
                 }
@@ -120,7 +121,12 @@ public class DBOrder {
     }
     
     
-    
+    /**
+     * Returns all orders from the database.
+     * @param c
+     * @return
+     * @throws SQLException 
+     */
     public ArrayList<Order> getAllOrders(Connection c) throws SQLException{
         PreparedStatement getAllOrdersStatement = null;
         PreparedStatement getOrderItemsStatement = null;

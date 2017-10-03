@@ -14,11 +14,16 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
- *
- * @author Jakob
+ * Used to communicate with the database regarding Items.
  */
 public class DBItem {
  
+    /**
+     * Get all items from the database.
+     * @param connection
+     * @return
+     * @throws SQLException 
+     */
     public ArrayList<Item> getItems(Connection connection) throws SQLException {
         ArrayList<Item> items = new ArrayList<>();
         
@@ -36,6 +41,13 @@ public class DBItem {
         return items;
     }
 
+    /**
+     * Gets information about an item if its in stock.
+     * @param itemId
+     * @param connection
+     * @return nr of items in stock of a current itemId
+     * @throws SQLException 
+     */
     private int getInStock(int itemId,Connection connection) throws SQLException{
         
         String query = "SELECT * FROM ItemStock WHERE itemId="+itemId+";";
@@ -51,6 +63,13 @@ public class DBItem {
         return x;
     }
     
+    /**
+     * Returns an Item by searching for item id.
+     * @param itemId
+     * @param c
+     * @return
+     * @throws SQLException 
+     */
     public Item getItemById(int itemId,Connection c) throws SQLException{
         PreparedStatement stmt = null;
         String query = "SELECT * FROM Items WHERE id=?";

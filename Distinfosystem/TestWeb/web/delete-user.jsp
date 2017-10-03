@@ -41,5 +41,8 @@
             
             session.removeAttribute("userToEdit");
         %>
+        <form action="main.jsp">
+            <input type="submit" value="Back to shop">
+        </form>
     </body>
 </html>

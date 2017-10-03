@@ -8,36 +8,60 @@ package BO;
 import java.util.ArrayList;
 
 /**
- *
- * @author Jakob
+ * Data represenation of a user from the database.
  */
 public class User {
 
     private String name;
     private ArrayList<Rights> rights;
     
+    /**
+     * Constructs a new user.
+     * @param name
+     * @param rights 
+     */
     public User(String name, ArrayList<Rights> rights){
         this.name = name;
         this.rights = new ArrayList<>();
         this.rights = rights;
     }
     
+    /**
+     * Returns true if the user has the administration rights.
+     * @return 
+     */
     public Boolean isAdministrator(){
         return rights.contains(Rights.ADMINISTRATOR);
     }
     
+    /**
+     * Returns true if the user has customer rights.
+     * @return 
+     */
     public Boolean isCustomer(){
         return rights.contains(Rights.CUSTOMER);
     }
     
+    /**
+     * Returns true if the user has stock staff rights.
+     * @return 
+     */
     public Boolean isStock(){
         return rights.contains(Rights.STOCK);
     }
     
+    /**
+     * Returns the name of the user.
+     * @return 
+     */
     public String getName(){
         return name;
     }
     
+    /**
+     * Constructs a string with the users rights.
+     * @return 
+     */
     public String getRightsString(){
         String s = "";
         if(isAdministrator()){
