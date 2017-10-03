@@ -1,13 +1,14 @@
 package DBManager;
 
-import BO.Item;
-import BO.Order;
+import Model.Item;
+import Model.Order;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javax.naming.NamingException;
 
 /**
  * Used to communicate with the database regarding Orders.
@@ -23,7 +24,11 @@ public class DBOrder {
      * @return
      * @throws SQLException 
      */
-    public String sendOrder(Item[] items, Connection c, String username) throws SQLException {
+    public String sendOrder(Item[] items, String username) throws SQLException, NamingException {
+        
+        DBManager dbManager = new MysqlManager();
+            Connection c = dbManager.getConnection();
+            
         PreparedStatement selectStatement = null;
         PreparedStatement deleteFromItemStockStatement = null;
         PreparedStatement insertOrderStatement = null;
@@ -115,7 +120,7 @@ public class DBOrder {
                 rs.close();
             }
         }
-
+        
         return "Thank you for your order!";
 
     }
@@ -127,7 +132,11 @@ public class DBOrder {
      * @return
      * @throws SQLException 
      */
-    public ArrayList<Order> getAllOrders(Connection c) throws SQLException{
+    public ArrayList<Order> getAllOrders() throws SQLException, NamingException{
+        
+        DBManager dbManager = new MysqlManager();
+            Connection c = dbManager.getConnection();
+            
         PreparedStatement getAllOrdersStatement = null;
         PreparedStatement getOrderItemsStatement = null;
         
@@ -153,14 +162,14 @@ public class DBOrder {
             while(rs2.next()){
                 int itemId = (int)rs2.getObject("itemId");
                 DBItem dbItem = new DBItem();
-                Item i = dbItem.getItemById(itemId, c);
+                Item i = dbItem.getItemById(itemId);
                 items.add(i);
             }
             
             Order order = new Order(username,orderId,items);
             orders.add(order);
         }
-        
+        c.close();
         return orders;
     }
 

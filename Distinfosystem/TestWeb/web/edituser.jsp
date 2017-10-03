@@ -4,8 +4,8 @@
     Author     : Jakob
 --%>
 
+<%@page import="ViewModel.UserInfo"%>
 <%@page import="Facade.UserController"%>
-<%@page import="BO.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -15,7 +15,7 @@
     </head>
     <body>
         <%
-            User user = (User) session.getAttribute("user");
+            UserInfo user = (UserInfo) session.getAttribute("user");
             if (user == null) {
                 out.println("You are not logged in.");
             } else if (!user.isAdministrator()) {
@@ -25,10 +25,10 @@
                 String userToEdit = request.getParameter("userToEdit");
                 
                 UserController uc = new UserController();
-                User userToEditInfo = null;
-                User userEdit = null;
+                UserInfo userToEditInfo = null;
+                UserInfo userEdit = null;
                 if (userToEdit == null) {
-                     userToEditInfo = (User)session.getAttribute("userToEdit");
+                     userToEditInfo = (UserInfo)session.getAttribute("userToEdit");
                 } else {
                     try{
                         userToEditInfo = uc.getSingleUser(userToEdit);

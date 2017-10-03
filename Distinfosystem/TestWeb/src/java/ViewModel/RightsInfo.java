@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package BO;
+package ViewModel;
 
 /**
- * Enum of available Rights.
+ *
+ * @author Jakob
  */
-public enum Rights {
+public enum RightsInfo {
     ADMINISTRATOR,
     CUSTOMER,
     STOCK

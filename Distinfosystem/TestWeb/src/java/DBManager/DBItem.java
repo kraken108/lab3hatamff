@@ -5,13 +5,14 @@
  */
 package DBManager;
 
-import BO.Item;
+import Model.Item;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javax.naming.NamingException;
 
 /**
  * Used to communicate with the database regarding Items.
@@ -24,7 +25,10 @@ public class DBItem {
      * @return
      * @throws SQLException 
      */
-    public ArrayList<Item> getItems(Connection connection) throws SQLException {
+    public ArrayList<Item> getItems() throws SQLException, NamingException {
+        DBManager dbManager = new MysqlManager();
+        Connection connection = dbManager.getConnection();
+            
         ArrayList<Item> items = new ArrayList<>();
         
         String query = "SELECT * FROM Items";
@@ -32,12 +36,13 @@ public class DBItem {
         ResultSet rs = stmt.executeQuery(query);
         
         while(rs.next()){
-            int inStock = getInStock((int)rs.getObject("id"),connection);
+            int inStock = getInStock((int)rs.getObject("id"));
             Item i = new Item((String) rs.getObject("itemName"),(Float)rs.getObject("price"),inStock,(int)rs.getObject("id"));
             items.add(i);
         }
         stmt.close();
         rs.close();
+        connection.close();
         return items;
     }
 
@@ -48,7 +53,9 @@ public class DBItem {
      * @return nr of items in stock of a current itemId
      * @throws SQLException 
      */
-    private int getInStock(int itemId,Connection connection) throws SQLException{
+    private int getInStock(int itemId) throws SQLException, NamingException{
+        DBManager dbManager = new MysqlManager();
+            Connection connection = dbManager.getConnection();
         
         String query = "SELECT * FROM ItemStock WHERE itemId="+itemId+";";
         Statement stmt = connection.createStatement();
@@ -60,6 +67,7 @@ public class DBItem {
         }
         stmt.close();
         rs.close();
+        connection.close();
         return x;
     }
     
@@ -70,7 +78,10 @@ public class DBItem {
      * @return
      * @throws SQLException 
      */
-    public Item getItemById(int itemId,Connection c) throws SQLException{
+    public Item getItemById(int itemId) throws SQLException, NamingException{
+        DBManager dbManager = new MysqlManager();
+            Connection c = dbManager.getConnection();
+            
         PreparedStatement stmt = null;
         String query = "SELECT * FROM Items WHERE id=?";
         
@@ -82,8 +93,10 @@ public class DBItem {
         
         if(rs.next()){
             i = new Item((String)rs.getObject("itemName"),(Float)rs.getObject("price"),0,itemId);
+            c.close();
             return i;
         }else{
+            c.close();
             throw(new SQLException("Couldnt find item"));
         }
     }

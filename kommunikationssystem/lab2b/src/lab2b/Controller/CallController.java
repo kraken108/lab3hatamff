@@ -7,6 +7,7 @@ package lab2b.Controller;
 import lab2b.StateMachine.State;
 import lab2b.StateMachine.Idle;
 import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 
 /**
  *
@@ -25,10 +26,10 @@ public class CallController {
         currentState = new Idle();
     }
     
-    public void processNextEvent(Signal signal,DatagramPacket p){
+    public void processNextEvent(Signal signal,DatagramPacket p,DatagramSocket s){
         switch(signal){
-            case INITIATE_INVITE: break;
-            case INVITE: break;
+            case INITIATE_INVITE: invokeInitiateCall(p,s);
+            case INVITE: invokeReceivedInvite(p,s);
             case BUSY: break;
             case TRO: break;
             case OK: break;
@@ -42,12 +43,12 @@ public class CallController {
        // return currentState.getStateName();
     }
 
-    public void invokeInitiateCall(){
-        
+    public void invokeInitiateCall(DatagramPacket p, DatagramSocket s){
+        currentState = currentState.initiateCall(p, s);
     }
     
-    public void invokeReceivedInvite(){
-        
+    public void invokeReceivedInvite(DatagramPacket p, DatagramSocket s){
+        currentState = currentState.receivedInvite(p,s);
     }
     
     public void invokeReceivedBusy(){

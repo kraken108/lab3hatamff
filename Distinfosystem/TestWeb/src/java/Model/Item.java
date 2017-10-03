@@ -1,5 +1,5 @@
 
-package BO;
+package Model;
 
 /**
  * Data representation of an item from the database.
@@ -9,7 +9,6 @@ public class Item {
     private Float price;
     private int inStock;
     private int id;
-    
     
     /**
      * Constructs a new Item object.

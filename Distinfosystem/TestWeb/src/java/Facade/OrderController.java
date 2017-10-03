@@ -1,9 +1,11 @@
 package Facade;
 
-import BO.Item;
-import BO.Order;
+import Model.Item;
+import Model.Order;
 import DBManager.DBOrder;
 import DBManager.MysqlManager;
+import ViewModel.ItemInfo;
+import ViewModel.OrderInfo;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,12 +25,21 @@ public class OrderController {
      * @param username The username the order is made by.
      * @return Message if the order was successful or not.
      */
-    public String sendOrder(Item[] items,String username){
-        MysqlManager dbManager = new MysqlManager();
+    public String sendOrder(ItemInfo[] items,String username){
         try {
-            Connection c = dbManager.getConnection();
             DBOrder dbOrder = new DBOrder();
-            String s = dbOrder.sendOrder(items,c,username);
+            
+            Item[] itemModel = new Item[items.length];
+            
+            for(int i = 0; i<items.length; i++){
+                if(items[i] == null){
+                    
+                }else{
+                    itemModel[i] = new Item(items[i].getName(),items[i].getPrice(),items[i].getInStock(),items[i].getId());
+                }
+                
+            }
+            String s = dbOrder.sendOrder(itemModel,username);
             return s;
         } catch (NamingException ex) {
             Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
@@ -45,14 +56,23 @@ public class OrderController {
      * @throws NamingException
      * @throws SQLException 
      */
-    public ArrayList<Order> getAllOrders() throws NamingException, SQLException{
+    public ArrayList<OrderInfo> getAllOrders() throws NamingException, SQLException{
          
         try {
-            MysqlManager dbManager = new MysqlManager();
-            Connection c = dbManager.getConnection();
             DBOrder dbOrder = new DBOrder();
-            ArrayList<Order> orders = dbOrder.getAllOrders(c);
-            return orders;
+            ArrayList<Order> orders = dbOrder.getAllOrders();
+            
+            ArrayList<OrderInfo> orderInfo = new ArrayList<>();
+            
+            for(Order o : orders){
+                ArrayList<ItemInfo> itemInfo = new ArrayList<>();
+                for(Item i : o.getItems()){
+                    itemInfo.add(new ItemInfo(i.getName(),i.getPrice(),i.getInStock(),i.getId()));
+                }
+                orderInfo.add(new OrderInfo(o.getUsername(),o.getOrderId(),itemInfo));
+            }
+            
+            return orderInfo;
         } catch (NamingException ex) {
             Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
             throw(ex);

@@ -6,6 +6,9 @@ package lab2b.StateMachine;
  */
 ;
 
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+
 /**
  *
  * @author Michael
@@ -17,6 +20,10 @@ public abstract class State {
     public State receivedIdle(){
         return this;
     };    
+    
+    public State receivedInvite(DatagramPacket p, DatagramSocket s){
+        return this;
+    }
     
     public State receivedInitiateInvite(){
         return this;
@@ -30,7 +37,7 @@ public abstract class State {
         return this;
     }
     
-    public State initiateCall(){
+    public State initiateCall(DatagramPacket p, DatagramSocket s){
         return this;
     }
     

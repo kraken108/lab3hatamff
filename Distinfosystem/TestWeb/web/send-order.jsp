@@ -4,7 +4,7 @@
     Author     : Jakob
 --%>
 
-<%@page import="BO.Item"%>
+<%@page import="ViewModel.ItemInfo"%>
 <%@page import="Facade.OrderController"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -25,7 +25,7 @@
                 } else {
                     //send order here
                     OrderController oc = new OrderController();
-                    out.println(oc.sendOrder((Item[]) session.getAttribute("cartItems"), (String) session.getAttribute("username")));
+                    out.println(oc.sendOrder((ItemInfo[]) session.getAttribute("cartItems"), (String) session.getAttribute("username")));
                     session.removeAttribute("cartItems");
                 }  
         %>
