@@ -40,11 +40,15 @@
         %> 
         <form action="send-order.jsp">
             <input type="submit" value="Send order">
+        </form>
+        <form action="empty-cart.jsp">
+            <input type="submit" value="Empty cart">
         </form><%
 
         }
         }
         %>
+        
         <form action="main.jsp">
             <input type="submit" value="Back to shop">
         </form><%

@@ -21,7 +21,7 @@ import javax.naming.NamingException;
  */
 public class ItemController {
 
-    public ArrayList<Item> getItems() {
+    public ArrayList<Item> getItems() throws SQLException, NamingException {
         ArrayList<Item> items = null;
         try {
             DBManager dbManager = new MysqlManager();
@@ -31,9 +31,9 @@ public class ItemController {
             items = dbItem.getItems(c);
             c.close();
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw(ex);
         } catch (NamingException ex) {
-            Logger.getLogger(ItemController.class.getName()).log(Level.SEVERE, null, ex);
+            throw(ex);
         }
 
         if(items == null){

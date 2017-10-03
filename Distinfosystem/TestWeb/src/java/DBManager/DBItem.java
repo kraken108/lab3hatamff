@@ -7,6 +7,7 @@ package DBManager;
 
 import BO.Item;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -50,5 +51,22 @@ public class DBItem {
         return x;
     }
     
+    public Item getItemById(int itemId,Connection c) throws SQLException{
+        PreparedStatement stmt = null;
+        String query = "SELECT * FROM Items WHERE id=?";
+        
+        stmt = c.prepareStatement(query);
+        stmt.setInt(1, itemId);
+        
+        ResultSet rs = stmt.executeQuery();
+        Item i = null;
+        
+        if(rs.next()){
+            i = new Item((String)rs.getObject("itemName"),(Float)rs.getObject("price"),0,itemId);
+            return i;
+        }else{
+            throw(new SQLException("Couldnt find item"));
+        }
+    }
     
 }

@@ -21,24 +21,37 @@
         </h1>
 
         <%
+            //check if logged in
             if (session.getAttribute("username") == null || session.getAttribute("username").equals("")) {
-                out.println("Please login m8");
+                out.println("Please login");
             } else {
-                User user = (User)session.getAttribute("user");
-                if(user.isAdministrator()){
-                    out.println("Logged in as administrator");
-                    
+                //if logged in then get the user info
+                User user = (User) session.getAttribute("user");
+                if (user == null) {
+                    session.setAttribute("error", "No login found");
+                    String redirectURL = "http://localhost:8080/Webbshop/error.jsp";
+                    response.sendRedirect(redirectURL);
+                }
+                //if user is admin then display admin panel button
+                if (user.isAdministrator()) {;
+
         %>
         <form action="adminpanel.jsp">
             <input type="submit" value="Administration Panel">
         </form>
+        <%            }
+            //if user is staff then display show orders button
+            if (user.isStock()) {
+        %>
+        <form action="view-orders.jsp">
+            <input type="submit" value="View orders">
+        </form>
         <%
-                }  
+            }
         %>
         <br>
         <%
-                
-                out.println("Logged in as: " + session.getAttribute("username"));
+            out.println("Logged in as: " + session.getAttribute("username"));
         %>
 
         <form action="logout.jsp">
@@ -46,15 +59,24 @@
         </form>
         <br><br><br>
         <%
-
+            
         %>
         <form action="shopping-cart.jsp">
             <input type="submit" value="Shopping cart">
         </form>
-        <% // Collect current items and display them to user, plus buttons to add to cart
+        <% 
+            //get a list of all current items from the database
             ItemController ic = new ItemController();
-            ArrayList<Item> items = ic.getItems();
+            ArrayList<Item> items = null;
+            try {
+                items = ic.getItems();
+            } catch (Exception e) {
+                session.setAttribute("error", "Failed to retrieve items");
+                String redirectURL = "http://localhost:8080/Webbshop/error.jsp";
+                response.sendRedirect(redirectURL);
+            }
 
+            //get the cartItems, if it doesnt exists (wont on first try) then create a new array
             Item[] cartItems;
             if (session.getAttribute("cartItems") == null) {
                 cartItems = new Item[100];
@@ -62,6 +84,7 @@
                 cartItems = (Item[]) session.getAttribute("cartItems");
             }
 
+            //get the add to cart parameter if it exists
             String addToCart = null;
             if (request.getParameter("addToCart") == null) {
             } else {
@@ -69,21 +92,21 @@
             }
 
             if (addToCart == null) {
-                //no items in cart
-            } else {
+                //no items to add to cart
+            } else { //add item to add to the cart
+
                 for (int i = 0; i < cartItems.length; i++) {
                     if (cartItems[i] == null) {
-                        String[] stringsToAdd = addToCart.split(" ");
-                        out.println(stringsToAdd.length);
-                        for (String s : stringsToAdd) {
-                            out.println(s);
-                        }
+                        String[] stringsToAdd = addToCart.split("\t");
+
                         cartItems[i] = new Item(stringsToAdd[0], Float.parseFloat(stringsToAdd[1]), stringsToAdd[2], stringsToAdd[3]);
                         session.setAttribute("cartItems", cartItems);
                         break;
                     }
                 }
             }
+            
+            //Calculate nr of items in cart and print it out
             int x = 0;
             for (int i = 0; i < cartItems.length; i++) {
                 if (cartItems[i] == null) {
@@ -98,14 +121,15 @@
         <h3> Available items: </h3>
         <%            if (items == null) {
                 //no items
-            } else {
+            } else { //print out the item name etc
                 for (int i = 0; i < items.size(); i++) {
                     out.println(items.get(i).toString());
         %>
         <form>
             <input type="hidden" name="addToCart" value="
-                   <%out.println(items.get(i).getName()
-                               + " " + items.get(i).getPrice() + " " + items.get(i).getInStock() + " " + items.get(i).getId());
+                   <% //Button for adding the item to cart. Send item info in a string as parameter
+                       out.print(items.get(i).getName()
+                               + "\t" + items.get(i).getPrice() + "\t" + items.get(i).getInStock() + "\t" + items.get(i).getId());
                    %>">
             <input type="submit" value="Add to cart">
         </form>

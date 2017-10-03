@@ -20,7 +20,7 @@ import javax.naming.NamingException;
 public class Login {
 
 
-    public String tryLogin(String username, String password) {
+    public String tryLogin(String username, String password) throws SQLException, NamingException {
         DBManager dbManager;
         try {
             dbManager = new MysqlManager();
@@ -35,24 +35,25 @@ public class Login {
             }
         } catch (SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            return ex.toString();
+            throw(ex);
         } catch (NamingException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            return ex.toString();
+            throw(ex);
         }
     }
     
-    public User getUserInfo(String username){
+    public User getUserInfo(String username) throws SQLException, NamingException{
         try{
             DBManager dbManager = new MysqlManager();
             Connection c = dbManager.getConnection();
             DBLogin dbLogin = new DBLogin();
             User user = dbLogin.getUserInfo(username,c);
+            c.close();
             return user;
         }catch(SQLException ex){
-            return null;
+            throw(ex);
         } catch (NamingException ex) {
-            return null;
+            throw(ex);
         }
     }
 }

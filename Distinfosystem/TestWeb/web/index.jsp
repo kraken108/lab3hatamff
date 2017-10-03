@@ -17,36 +17,40 @@
         <%
             String username = request.getParameter("uname");
             String pwd = request.getParameter("pwd");
-            
+
             if (pwd != null && username != null && !pwd.equals("") && !username.equals("")) {
                 Login login = new Login();
-                String result = login.tryLogin(username, pwd);
-                if (result.equals("SUCCESSFUL")) {
-                    //session.setAttribute("username", username);
-                    out.println("Logged in as: " + username);
-                    
-                    session.setAttribute("username", username);
-                    String redirectURL = "http://localhost:8080/Webbshop/logging-in.jsp";
-                    response.sendRedirect(redirectURL);
+                try {
+                    String result = login.tryLogin(username, pwd);
+                    if (result.equals("SUCCESSFUL")) {
+                        //session.setAttribute("username", username);
+                        out.println("Logged in as: " + username);
 
-                    //redirect to main page
-                    
-                } else if (result.equals("UNSUCCESSFUL")) {
-                    //failed to login
-                    out.println("Username or password was incorrect.");
-                    %>
-                    <form>
-                        <input type="submit" value="Try again">
-                    </form>
-                    <%
-                } else{
-                    //error
-                    out.println(result);
- 
+                        session.setAttribute("username", username);
+                        String redirectURL = "http://localhost:8080/Webbshop/logging-in.jsp";
+                        response.sendRedirect(redirectURL);
+
+                        //redirect to main page
+                    } else if (result.equals("UNSUCCESSFUL")) {
+                        //failed to login
+                        out.println("Username or password was incorrect.");
+        %>
+        <form>
+            <input type="submit" value="Try again">
+        </form>
+        <%
+                    } else {
+                        //error
+                        out.println(result);
+
+                    }
+                } catch (Exception e) {
+                    out.println(e);
                 }
-            } else { 
-                    
-                    %>
+
+            }
+
+        %>
 
         <form method="post">
             Username: <input type="text" name="uname"><br>
@@ -54,14 +58,14 @@
             <input type="submit" value="Login">
 
         </form>
-        
+
         <form name="sendToRegister" method="post" action="register.jsp">
-                                                
-                        <input type="submit" value="Register">
-        
+
+            <input type="submit" value="Register">
+
         </form>
-            
-        <%}%>
+
+        <%%>
 
 
 

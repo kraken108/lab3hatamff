@@ -38,4 +38,19 @@ public class User {
         return name;
     }
     
+    public String getRightsString(){
+        String s = "";
+        if(isAdministrator()){
+            s+="Administrator, ";
+        }
+        if(isCustomer()){
+            s+="Customer, ";
+        }
+        if(isStock()){
+            s+="Stock, ";
+        }
+        
+        return s;
+    }
+    
 }

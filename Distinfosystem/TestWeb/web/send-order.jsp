@@ -16,7 +16,7 @@
     <body>
         <%
             if (session.getAttribute("username") == null || session.getAttribute("username").equals("")) {
-                out.println("Please login first");
+                out.println("Please login");
         %>
         <%
             } else {
@@ -37,5 +37,8 @@
         <%
             }%>
 
+            <form action="main.jsp">
+            <input type="submit" value="Back to shop">
+        </form>
     </body>
 </html>

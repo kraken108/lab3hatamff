@@ -20,10 +20,15 @@
                 out.println("Please login m8");
             } else {
                 Login login = new Login();
-                User user = login.getUserInfo((String) session.getAttribute("username"));
-                session.setAttribute("user", user);
-                String redirectURL = "http://localhost:8080/Webbshop/main.jsp";
-                response.sendRedirect(redirectURL);
+                try{
+                    User user = login.getUserInfo((String) session.getAttribute("username"));
+                    session.setAttribute("user", user);
+                    String redirectURL = "http://localhost:8080/Webbshop/main.jsp";
+                    response.sendRedirect(redirectURL);
+                }catch(Exception e){
+                    out.println(e);
+                }
+                
             }
         %>
     </body>

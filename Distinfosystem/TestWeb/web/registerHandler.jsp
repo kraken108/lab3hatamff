@@ -4,6 +4,7 @@
     Author     : Michael
 --%>
 
+<%@page import="java.sql.SQLException"%>
 <%@page import="Facade.Register"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -13,6 +14,7 @@
         <title>JSP Page</title>
     </head>
     <body>            
+<<<<<<< HEAD
         <%
             
         String userName = request.getParameter("userName");
@@ -20,13 +22,32 @@
         String passWordTwo = request.getParameter("passWordTwo");
         
         Register register = new Register();       
+=======
+        <%            
+        String userName = request.getParameter("userName");
+        String passWordOne = request.getParameter("passWordOne");
+        String passWordTwo = request.getParameter("passWordTwo");
+        Register register = new Register();
+>>>>>>> 328ead9d00637673994f566ed0da52432fd78290
         
-        if(register.checkStrings(userName))
-            register.setUserName(userName);
+        if(passWordOne.equals(passWordTwo) && register.checkPassWord(passWordOne) && register.checkUserName(userName)){
 
-        if((register.checkStrings(passWordOne)) &&  (register.checkStrings(passWordTwo))
-                && (register.comparePasswords(passWordOne, passWordTwo)))
             register.setPassWord(passWordOne);
+            register.setUserName(userName);
+                
+            try{
+                register.insertUser(userName,passWordOne);
+            }
+            catch(SQLException Ex){
+                session.setAttribute("error", "Username already exists");
+                String redirectURL = "http://localhost:8080/Webbshop/error.jsp";   
+                response.sendRedirect(redirectURL);  
+               }
+            }           
+        else{
+            String redirectURL = "http://localhost:8080/Webbshop/registrationFailed.jsp";   
+            response.sendRedirect(redirectURL);            
+        } 
         
         %>
 
@@ -47,9 +68,13 @@
         <form name="backToMainPage" action="index.jsp" method="POST">
             
              <input type="submit" value="Back to main page" name="backToMainPage"/>
+<<<<<<< HEAD
         </form>
 
                 
+=======
+        </form>                
+>>>>>>> 328ead9d00637673994f566ed0da52432fd78290
     </body>
 </html>
 
