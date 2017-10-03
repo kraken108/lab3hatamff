@@ -27,9 +27,9 @@ public class HangingUp extends StateUncallable{
         return "HangingUp";
     }
     
-    public State receivedOK(DatagramPacket dp, DatagramSocket ds){
-       
-        sendHangUp(dp,ds);
+    @Override
+    public State receivedOK(){
+        //sendHangUp(dp,ds);
         return new Idle();        
     }
         

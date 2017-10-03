@@ -17,28 +17,14 @@ import java.util.logging.Logger;
  */
 public class InCall extends StateUncallable{
     
-    public State requestHangUpBye(){
-        return new HangingUp();
-    }    
-    
-    public State receivedInvite(){
-        return this;
-    }
-    
-    public State error(){
-        return new Idle();
-    }
-    
-    public State byeOK(){
-        return new Idle();
-    }    
 
     @Override
     public String getStatename() {
         return "InCall";
     }
     
-    public State receivedRequestHangUp(DatagramPacket dp, DatagramSocket ds){
+    @Override
+    public State requestHANGUP(DatagramPacket dp, DatagramSocket ds){
         
         sendBye(dp,ds);
         return new HangingUp();        

@@ -16,8 +16,8 @@ import java.util.logging.Logger;
  */
 public abstract class StateUncallable extends State {
 
-    private DatagramPacket packet;
-    private DatagramSocket socket;
+    DatagramPacket packet;
+    DatagramSocket socket;
     
     @Override
     public String getStatename() {
@@ -36,17 +36,19 @@ public abstract class StateUncallable extends State {
         return socket;
     }
     
-    public State receivedInvite(DatagramPacket dp, DatagramSocket ds){
+    @Override
+    public State receivedINVITE(DatagramPacket dp, DatagramSocket ds){
         
         sendBusy(dp,ds);
         return this; 
         
     }
     
-    public void sendBusy(DatagramPacket dp, DatagramSocket ds){
+    private void sendBusy(DatagramPacket dp, DatagramSocket ds){
         
-        String busy = "Busy";
+        String busy = "BUSY";
         dp.setData(busy.getBytes());
+        dp.setLength(busy.length());
         try {
             ds.send(dp);
         } catch (IOException ex) {

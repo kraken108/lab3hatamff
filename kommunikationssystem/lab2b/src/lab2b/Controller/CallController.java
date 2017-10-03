@@ -45,15 +45,15 @@ public class CallController {
     }
 
     public void invokeInitiateCall(DatagramPacket p, DatagramSocket s){
-        currentState = currentState.initiateCall(p, s);
+        currentState = currentState.initiateCALL(p, s);
     }
     
     public void invokeReceivedInvite(DatagramPacket p, DatagramSocket s){
-        currentState = currentState.receivedInvite(p,s);
+        currentState = currentState.receivedINVITE(p,s);
     }
     
     public void invokeReceivedBusy(){
-        currentState = currentState.receivedBusy();
+        currentState = currentState.receivedBUSY();
     }
     
     public void invokeReceivedTRO(DatagramPacket p, DatagramSocket s){
@@ -69,11 +69,11 @@ public class CallController {
     }
     
     public void invokeRequestHangUp(DatagramPacket p, DatagramSocket s){
-        currentState = currentState.requestHangUp(p,s);
+        currentState = currentState.requestHANGUP(p,s);
     }
     
     public void invokeReceivedError(){
-        currentState = currentState.receivedError();
+        currentState = currentState.receivedERROR();
     }
     
     public void invokeReceivedOK(){

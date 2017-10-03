@@ -18,11 +18,11 @@ public abstract class State {
     public abstract String getStatename();
       
     
-    public State receivedInvite(DatagramPacket p, DatagramSocket s){
+    public State receivedINVITE(DatagramPacket p, DatagramSocket s){
         return this;
     }
     
-    public State receivedBusy(){
+    public State receivedBUSY(){
         return this;
     }
     
@@ -34,7 +34,7 @@ public abstract class State {
         return this;
     }
     
-    public State requestHangUp(DatagramPacket p, DatagramSocket s){
+    public State requestHANGUP(DatagramPacket p, DatagramSocket s){
         return this;
     }
     
@@ -42,7 +42,7 @@ public abstract class State {
         return this;
     }
     
-    public State receivedError(){
+    public State receivedERROR(){
         return this;
     }
     
@@ -50,7 +50,7 @@ public abstract class State {
         return this;
     }
         
-    public State initiateCall(DatagramPacket p, DatagramSocket s){
+    public State initiateCALL(DatagramPacket p, DatagramSocket s){
         return this;
     }
 
