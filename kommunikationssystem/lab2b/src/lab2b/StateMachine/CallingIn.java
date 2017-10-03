@@ -4,6 +4,13 @@
  * and open the template in the editor.
  */
 package lab2b.StateMachine;
+
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Michael
@@ -21,7 +28,12 @@ public class CallingIn extends StateUncallable{
         return ("CallingIn");
     }
     
+    public State receivedACK(DatagramPacket dp, DatagramSocket ds){
+        
+        return new InCall();        
+    }
     
+
     
     
 }

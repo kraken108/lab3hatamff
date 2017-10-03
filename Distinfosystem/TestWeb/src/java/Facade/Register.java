@@ -11,11 +11,18 @@ import javax.naming.NamingException;
  */
 public class Register {
     
+<<<<<<< HEAD
+    private Connection connection;
+=======
 
+>>>>>>> 262ffb31ae1d49ae1884dc8fdeb485104abcda44
     private String passWord;
     private String userName;
     private DBRegister dbRegister;
     
+<<<<<<< HEAD
+    
+=======
     /**
      * Construct a new Register object with parameters the user types in.
      * @param passWord
@@ -23,6 +30,7 @@ public class Register {
      * @throws NamingException
      * @throws SQLException 
      */
+>>>>>>> 70f689fea4b58dcffd7d88cc0b78a90ad0cb11f6
     public Register(String passWord, String userName) throws NamingException, SQLException{
 
         dbRegister=new DBRegister();
@@ -144,13 +152,11 @@ public class Register {
      */
     public void setPassWord(String passWord) {
         this.passWord = passWord;
-    }
 
-    /**
-     * @param userName the userName to set
-     */
+    }   
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
     
 }

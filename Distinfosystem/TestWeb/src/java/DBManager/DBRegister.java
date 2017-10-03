@@ -9,7 +9,10 @@ import javax.naming.NamingException;
  * Registers a new user to the database.
  */
 public class DBRegister {
+    
 
+    
+   
    
  
     /**
@@ -37,6 +40,7 @@ public class DBRegister {
         connection.close();
     }
   
+
 
     
 }

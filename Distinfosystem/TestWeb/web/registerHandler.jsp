@@ -14,11 +14,21 @@
         <title>JSP Page</title>
     </head>
     <body>            
+<<<<<<< HEAD
+        <%
+            
+        String userName = request.getParameter("userName");
+        String passWordOne = request.getParameter("passWordOne");
+        String passWordTwo = request.getParameter("passWordTwo");
+        
+        Register register = new Register();       
+=======
         <%            
         String userName = request.getParameter("userName");
         String passWordOne = request.getParameter("passWordOne");
         String passWordTwo = request.getParameter("passWordTwo");
         Register register = new Register();
+>>>>>>> 328ead9d00637673994f566ed0da52432fd78290
         
         if(passWordOne.equals(passWordTwo) && register.checkPassWord(passWordOne) && register.checkUserName(userName)){
 
@@ -58,7 +68,13 @@
         <form name="backToMainPage" action="index.jsp" method="POST">
             
              <input type="submit" value="Back to main page" name="backToMainPage"/>
+<<<<<<< HEAD
+        </form>
+
+                
+=======
         </form>                
+>>>>>>> 328ead9d00637673994f566ed0da52432fd78290
     </body>
 </html>
 
