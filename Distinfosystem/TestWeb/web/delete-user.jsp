@@ -4,6 +4,7 @@
     Author     : Jakob
 --%>
 
+<%@page import="ViewModel.UserInfo"%>
 <%@page import="Facade.UserController"%>
 <%@page import="BO.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -16,14 +17,14 @@
     <body>
         <%
             
-            User user = (User) session.getAttribute("user");
+            UserInfo user = (UserInfo) session.getAttribute("user");
             if (user == null) {
                 out.println("You are not logged in.");
             } else if (!user.isAdministrator()) {
                 out.println("Insufficient rights.");
             } else {
                 //gogo
-                User userToEdit = (User) session.getAttribute("userToEdit");
+                UserInfo userToEdit = (UserInfo) session.getAttribute("userToEdit");
                 if(userToEdit!=null){
                     UserController uc = new UserController();
                     try{

@@ -24,16 +24,13 @@ public class NewSkype {
     private Boolean inSession;
     private DatagramSocket ds;
     
-    public NewSkype() throws IOException{
+    public NewSkype(int port) throws IOException{
         callController = new CallController();
         //serverSocket = new ServerSocket(5678);
         inSession = false;
-        ds = new DatagramSocket(5678);
+        ds = new DatagramSocket(port);
     }
     
-    private void handleMessage(String message){
-        if(message.equals(""));
-    }
     public void start(){
         Thread t = new Thread(new KeyboardListener(this));
         t.start();
@@ -45,27 +42,43 @@ public class NewSkype {
         return inSession;
     }
     
-    public void handleInput(String message){
-        System.out.println("öh new input lol:");
-        System.out.println(message);
+    public void handleInput(String message) throws UnknownHostException, Exception{
+        if(message.startsWith("CALL")){
+            String[] strings = message.split(" ");
+            if(strings.length<3){
+                throw new Exception("Please enter an ip and a port");
+            }
+            
+            byte[] data = "INITIATE_INVITE".getBytes();
+            DatagramPacket p = new DatagramPacket(data,data.length);
+            p.setAddress(InetAddress.getByName(strings[1]));
+            p.setPort(Integer.parseInt(strings[2]));
+            
+            handleMessage(p,ds);
+        }
     }
     
-    public void handleMessage(DatagramPacket p){
+    public void handleMessage(DatagramPacket p,DatagramSocket s){
         String message = new String(p.getData());
         
-        if(message.equals("INVITE")){
-            callController.processNextEvent(Signal.INVITE,p);
-        }else if(message.equals("BUSY")){
-            callController.processNextEvent(Signal.BUSY,p);
-        }else if(message.equals("TRO")){
-            callController.processNextEvent(Signal.TRO,p);
-        }else if(message.equals("OK")){
-            callController.processNextEvent(Signal.OK,p);
-        }else if(message.equals("BYE")){
-            callController.processNextEvent(Signal.BYE,p);
-        }else if(message.equals("ERROR")){
-            callController.processNextEvent(Signal.ERROR,p);
+        if(message.startsWith("INVITE")){
+            callController.processNextEvent(Signal.INVITE,p,s);
+        }else if(message.startsWith("INITIATE_INVITE")){
+            p.setData("INVITE".getBytes());
+            p.setLength("INVITE".getBytes().length);
+            callController.processNextEvent(Signal.INITIATE_INVITE,p,s);
+        }else if(message.startsWith("BUSY")){
+            callController.processNextEvent(Signal.BUSY,p,s);
+        }else if(message.startsWith("TRO")){
+            callController.processNextEvent(Signal.TRO,p,s);
+        }else if(message.startsWith("OK")){
+            callController.processNextEvent(Signal.OK,p,s);
+        }else if(message.startsWith("BYE")){
+            callController.processNextEvent(Signal.BYE,p,s);
+        }else if(message.startsWith("ERROR")){
+            callController.processNextEvent(Signal.ERROR,p,s);
         }else{
+            System.out.println("Okänt paket :P");
             //do nothing?
         }
     }

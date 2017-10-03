@@ -1,14 +1,8 @@
 package Facade;
 
 
-import BO.Item;
 import DBManager.*;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.NamingException;
 
 
@@ -17,7 +11,11 @@ import javax.naming.NamingException;
  */
 public class Register {
     
+<<<<<<< HEAD
     private Connection connection;
+=======
+
+>>>>>>> 262ffb31ae1d49ae1884dc8fdeb485104abcda44
     private String passWord;
     private String userName;
     private DBRegister dbRegister;
@@ -34,9 +32,7 @@ public class Register {
      */
 >>>>>>> 70f689fea4b58dcffd7d88cc0b78a90ad0cb11f6
     public Register(String passWord, String userName) throws NamingException, SQLException{
-        
-        MysqlManager mysqlManager = new MysqlManager();
-        connection = mysqlManager.getConnection();
+
         dbRegister=new DBRegister();
         this.userName=userName;
         this.passWord=passWord;
@@ -48,9 +44,7 @@ public class Register {
      * @throws SQLException 
      */
     public Register() throws NamingException, SQLException{                
-        
-        MysqlManager mysqlManager = new MysqlManager();
-        connection = mysqlManager.getConnection();
+
         dbRegister=new DBRegister();       
     }
     
@@ -60,9 +54,9 @@ public class Register {
      * @param passWord
      * @throws SQLException 
      */
-    public void insertUser(String userName, String passWord) throws SQLException{
+    public void insertUser(String userName, String passWord) throws SQLException, NamingException{
             
-       dbRegister.insertUsers(connection, userName, passWord);
+       dbRegister.insertUsers(userName, passWord);
        
     }
     

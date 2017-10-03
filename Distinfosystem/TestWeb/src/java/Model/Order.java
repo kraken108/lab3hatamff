@@ -1,4 +1,4 @@
-package BO;
+package Model;
 
 import java.util.ArrayList;
 
@@ -30,12 +30,35 @@ public class Order {
     public String toString(){
         String s = "";
         
-        s += "Order(" + orderId + "), Ordered by(" + username + "), Items(";
-        for(Item i : items){
+        s += "Order(" + getOrderId() + "), Ordered by(" + getUsername() + "), Items(";
+        for(Item i : getItems()){
             s += i.getName() + ", ";
         }
         s += ")";
         
         return s;
     }
+
+    /**
+     * @return the username
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * @return the orderId
+     */
+    public int getOrderId() {
+        return orderId;
+    }
+
+    /**
+     * @return the items
+     */
+    public ArrayList<Item> getItems() {
+        return items;
+    }
+    
+    
 }

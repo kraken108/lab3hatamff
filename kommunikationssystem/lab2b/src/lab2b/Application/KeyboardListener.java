@@ -5,7 +5,10 @@
  */
 package lab2b.Application;
 
+import java.net.UnknownHostException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -25,7 +28,13 @@ public class KeyboardListener implements Runnable {
     public void run() {
         while (true) {
             String input = scanner.nextLine();
-            newSkype.handleInput(input);
+            try {
+                newSkype.handleInput(input);
+            } catch (UnknownHostException ex) {
+                System.out.println("Couldnd find host: " + ex);
+            } catch (Exception ex) {
+                System.out.println(ex);
+            }
         }
 
     }

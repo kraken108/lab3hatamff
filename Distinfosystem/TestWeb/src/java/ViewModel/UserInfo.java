@@ -3,24 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package BO;
+package ViewModel;
 
 import java.util.ArrayList;
 
 /**
- * Data represenation of a user from the database.
+ *
+ * @author Jakob
  */
-public class User {
-
+public class UserInfo {
     private String name;
-    private ArrayList<Rights> rights;
+    private ArrayList<RightsInfo> rights;
     
     /**
      * Constructs a new user.
      * @param name
      * @param rights 
      */
-    public User(String name, ArrayList<Rights> rights){
+    public UserInfo(String name, ArrayList<RightsInfo> rights){
         this.name = name;
         this.rights = new ArrayList<>();
         this.rights = rights;
@@ -31,7 +31,7 @@ public class User {
      * @return 
      */
     public Boolean isAdministrator(){
-        return rights.contains(Rights.ADMINISTRATOR);
+        return rights.contains(RightsInfo.ADMINISTRATOR);
     }
     
     /**
@@ -39,7 +39,7 @@ public class User {
      * @return 
      */
     public Boolean isCustomer(){
-        return rights.contains(Rights.CUSTOMER);
+        return rights.contains(RightsInfo.CUSTOMER);
     }
     
     /**
@@ -47,7 +47,7 @@ public class User {
      * @return 
      */
     public Boolean isStock(){
-        return rights.contains(Rights.STOCK);
+        return rights.contains(RightsInfo.STOCK);
     }
     
     /**
@@ -76,5 +76,4 @@ public class User {
         
         return s;
     }
-    
 }

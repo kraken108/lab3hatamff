@@ -7,6 +7,7 @@ package lab2b.Controller;
 import lab2b.StateMachine.State;
 import lab2b.StateMachine.Idle;
 import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 
 /**
  *
@@ -25,16 +26,16 @@ public class CallController {
         currentState = new Idle();
     }
     
-    public void processNextEvent(Signal signal,DatagramPacket p){
+    public void processNextEvent(Signal signal,DatagramPacket p,DatagramSocket s){
         switch(signal){
-            case INITIATE_INVITE: break;
-            case INVITE: break;
-            case BUSY: break;
-            case TRO: break;
-            case OK: break;
-            case REQUEST_HANGUP: break;
-            case BYE: break;
-            case ERROR: break;
+            case INITIATE_INVITE: invokeInitiateCall(p,s);
+            case INVITE: invokeReceivedInvite(p,s);
+            case BUSY: invokeReceivedBusy();
+            case TRO: invokeReceivedTRO(p,s);
+            case OK: invokeReceivedOK();
+            case REQUEST_HANGUP: invokeRequestHangUp(p,s);
+            case BYE: invokeReceivedBYE(p,s);
+            case ERROR: invokeReceivedError();
         }
     }
     
@@ -42,20 +43,20 @@ public class CallController {
        // return currentState.getStateName();
     }
 
-    public void invokeInitiateCall(){
-        
+    public void invokeInitiateCall(DatagramPacket p, DatagramSocket s){
+        currentState = currentState.initiateCall(p, s);
     }
     
-    public void invokeReceivedInvite(){
-        
+    public void invokeReceivedInvite(DatagramPacket p, DatagramSocket s){
+        currentState = currentState.receivedInvite(p,s);
     }
     
     public void invokeReceivedBusy(){
-        
+        currentState = currentState.receivedBusy();
     }
     
-    public void invokeReceivedTRO(){
-        
+    public void invokeReceivedTRO(DatagramPacket p, DatagramSocket s){
+        currentState = currentState.receivedTRO(p,s);
     }
     
     
@@ -63,20 +64,20 @@ public class CallController {
         
     }
     
-    public void invokeReceivedBYE(){
-        
+    public void invokeReceivedBYE(DatagramPacket p, DatagramSocket s){
+        currentState = currentState.receivedBYE(p, s);
     }
     
-    public void invokeRequestHangUp(){
-        
+    public void invokeRequestHangUp(DatagramPacket p, DatagramSocket s){
+        currentState = currentState.requestHangUp(p,s);
     }
     
     public void invokeReceivedError(){
-        
+        currentState = currentState.receivedError();
     }
     
     public void invokeReceivedOK(){
-        
+        currentState = currentState.receivedOK();
     }
    
 }
