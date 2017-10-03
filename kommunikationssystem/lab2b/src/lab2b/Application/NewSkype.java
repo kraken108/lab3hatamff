@@ -55,6 +55,10 @@ public class NewSkype {
             p.setPort(Integer.parseInt(strings[2]));
             
             handleMessage(p,ds);
+        }else if(message.startsWith("HANGUP")){
+            byte[] data = "HANGUP".getBytes();
+            DatagramPacket p = new DatagramPacket(data,data.length);
+            handleMessage(p,null);
         }
     }
     
@@ -77,7 +81,10 @@ public class NewSkype {
             callController.processNextEvent(Signal.BYE,p,s);
         }else if(message.startsWith("ERROR")){
             callController.processNextEvent(Signal.ERROR,p,s);
-        }else{
+        }else if(message.startsWith("HANGUP")){
+            callController.processNextEvent(Signal.REQUEST_HANGUP,p,null);
+        }
+        else{
             System.out.println("Okänt paket :P");
             //do nothing?
         }

@@ -26,6 +26,10 @@ public abstract class State {
         return this;
     }
     
+    public State receivedACK(){
+        return this;
+    }
+    
     public State receivedOK(){
         return this;
     }

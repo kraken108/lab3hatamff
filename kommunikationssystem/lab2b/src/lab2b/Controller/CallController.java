@@ -18,7 +18,7 @@ public class CallController {
     public enum Signal{
         INITIATE_INVITE,INVITE
         ,BUSY,TRO,OK,REQUEST_HANGUP
-        ,BYE,ERROR;
+        ,BYE,ERROR,ACK;
     }
     private State currentState;
     
@@ -36,6 +36,7 @@ public class CallController {
             case REQUEST_HANGUP: invokeRequestHangUp(p,s);
             case BYE: invokeReceivedBYE(p,s);
             case ERROR: invokeReceivedError();
+            case ACK: invokeReceivedACK();
         }
     }
     
@@ -58,10 +59,9 @@ public class CallController {
     public void invokeReceivedTRO(DatagramPacket p, DatagramSocket s){
         currentState = currentState.receivedTRO(p,s);
     }
-    
-    
+
     public void invokeReceivedACK(){
-        
+        currentState = currentState.receivedACK();
     }
     
     public void invokeReceivedBYE(DatagramPacket p, DatagramSocket s){
