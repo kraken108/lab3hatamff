@@ -16,56 +16,38 @@ import java.net.DatagramSocket;
 public abstract class State {
     
     public abstract String getStatename();
-    
-    public State receivedIdle(){
-        return this;
-    };    
+      
     
     public State receivedInvite(DatagramPacket p, DatagramSocket s){
         return this;
     }
     
-    public State receivedInitiateInvite(){
+    public State receivedBusy(){
         return this;
     }
     
-    public State receivedRequestHangup(){
+    public State receivedOK(){
         return this;
     }
     
-    public State receivedOkHangUp(){
+    public State requestHangUp(DatagramPacket p, DatagramSocket s){
         return this;
     }
     
+    public State receivedBYE(DatagramPacket p, DatagramSocket s){
+        return this;
+    }
+    
+    public State receivedError(){
+        return this;
+    }
+    
+    public State receivedTRO(DatagramPacket p, DatagramSocket s){
+        return this;
+    }
+        
     public State initiateCall(DatagramPacket p, DatagramSocket s){
         return this;
     }
-    
-    public State receivedCallingIn(){
-        return this;
-    }  
-    
-    public State isBusy(){
-        return this;
-    }
-    
-    public State sendACK(){
-        return this;
-    }
-    
-    public State sendByeOk(){
-        return this;
-    }
-    
-    public State sendError(){
-        return this;
-    }
-    
-    public State sendTROACK(){
-        return this;
-    }
-    
-    public State okHangUp(){
-        return this;
-    }   
+
 }

@@ -15,6 +15,10 @@ public class InCall extends StateUncallable{
         return new HangingUp();
     }    
     
+    public State receivedInvite(){
+        return this;
+    }
+    
     public State error(){
         return new Idle();
     }

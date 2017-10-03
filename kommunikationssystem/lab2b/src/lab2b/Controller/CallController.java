@@ -30,12 +30,12 @@ public class CallController {
         switch(signal){
             case INITIATE_INVITE: invokeInitiateCall(p,s);
             case INVITE: invokeReceivedInvite(p,s);
-            case BUSY: break;
-            case TRO: break;
-            case OK: break;
-            case REQUEST_HANGUP: break;
-            case BYE: break;
-            case ERROR: break;
+            case BUSY: invokeReceivedBusy();
+            case TRO: invokeReceivedTRO(p,s);
+            case OK: invokeReceivedOK();
+            case REQUEST_HANGUP: invokeRequestHangUp(p,s);
+            case BYE: invokeReceivedBYE(p,s);
+            case ERROR: invokeReceivedError();
         }
     }
     
@@ -52,11 +52,11 @@ public class CallController {
     }
     
     public void invokeReceivedBusy(){
-        
+        currentState = currentState.receivedBusy();
     }
     
-    public void invokeReceivedTRO(){
-        
+    public void invokeReceivedTRO(DatagramPacket p, DatagramSocket s){
+        currentState = currentState.receivedTRO(p,s);
     }
     
     
@@ -64,20 +64,20 @@ public class CallController {
         
     }
     
-    public void invokeReceivedBYE(){
-        
+    public void invokeReceivedBYE(DatagramPacket p, DatagramSocket s){
+        currentState = currentState.receivedBYE(p, s);
     }
     
-    public void invokeRequestHangUp(){
-        
+    public void invokeRequestHangUp(DatagramPacket p, DatagramSocket s){
+        currentState = currentState.requestHangUp(p,s);
     }
     
     public void invokeReceivedError(){
-        
+        currentState = currentState.receivedError();
     }
     
     public void invokeReceivedOK(){
-        
+        currentState = currentState.receivedOK();
     }
    
 }
