@@ -17,7 +17,14 @@ import java.util.logging.Logger;
  */
 public class InCall extends StateUncallable{
     
+    private DatagramPacket packet;
+    private DatagramSocket socket;
 
+    public InCall(DatagramPacket p, DatagramSocket s){
+        packet = p;
+        socket = s;
+    }
+    
     @Override
     public String getStatename() {
         return "InCall";
@@ -32,18 +39,25 @@ public class InCall extends StateUncallable{
     
     
     public void sendBye(DatagramPacket dp, DatagramSocket ds){
-        
-        String bye="Bye";
+        System.out.println("Sending BYE");
+        String bye="BYE";
         dp.setData(bye.getBytes());
+        dp.setLength(bye.length());
+        dp.setAddress(packet.getAddress());
+        dp.setPort(packet.getPort());
         try {
             ds.send(dp);
         } catch (IOException ex) {
-            Logger.getLogger(InCall.class.getName()).log(Level.SEVERE, null, ex);
-        }        
+            System.out.println("Exception");
+            System.out.println(ex);
+        }catch(Exception e){
+            System.out.println("Exception 2");
+            System.out.println(e);
+        }     
     }
     
     public void sendOk(DatagramPacket dp, DatagramSocket ds){
-        
+        System.out.println("Sending OK");
         String ok = "OK";
         dp.setData(ok.getBytes());
         try {
@@ -53,16 +67,13 @@ public class InCall extends StateUncallable{
         }        
     }
     
-    public State receivedBye(DatagramPacket dp, DatagramSocket ds){
-        
+    @Override
+    public State receivedBYE(DatagramPacket dp, DatagramSocket ds){
+        System.out.println("Received BYE");
         sendOk(dp,ds);
         return new Idle();        
     }
     
-    public State receivedError(DatagramPacket dp, DatagramSocket ds){
-        
-        return new Idle();        
-    }
 }
 
 

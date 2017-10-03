@@ -26,7 +26,7 @@ public abstract class State {
         return this;
     }
     
-    public State receivedACK(){
+    public State receivedACK(DatagramPacket p, DatagramSocket s){
         return this;
     }
     

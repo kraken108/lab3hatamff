@@ -17,28 +17,33 @@ import java.util.logging.Logger;
  */
 public class Idle extends State {
 
-    public State initiateCall(DatagramPacket p, DatagramSocket s) {
+    @Override
+    public State initiateCALL(DatagramPacket p, DatagramSocket s) {
         sendInvite(p,s);
+        System.out.println("initiating call and returning callingOut");
         return new CallingOut();
     }
 
     private void sendInvite(DatagramPacket p, DatagramSocket s){
         try {
-            System.out.println("Skickar invite");
+            System.out.println("Sending INVITE");
             s.send(p);
         } catch (IOException ex) {
             System.out.println("Gick inte att skicka invite: " + ex);
         }
     }
     
-    public State receivedInvite(DatagramPacket p, DatagramSocket s) {
+    @Override
+    public State receivedINVITE(DatagramPacket p, DatagramSocket s) {
+        System.out.println("Received INVITE");
         sendTRO(p,s);
         return new CallingIn();
     }
 
     private void sendTRO(DatagramPacket p, DatagramSocket s) {
         String tro = "TRO";
-        System.out.println("Skickar TRO");
+        System.out.println("Sending TRO");
+        System.out.println("Sending to: " + p.getAddress().toString() + " " + p.getPort());
         DatagramPacket returnPacket = new DatagramPacket(tro.getBytes(),tro.getBytes().length,p.getAddress(),p.getPort());
         try {
             s.send(returnPacket);

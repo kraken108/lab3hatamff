@@ -43,6 +43,7 @@ public class NewSkype {
     }
     
     public void handleInput(String message) throws UnknownHostException, Exception{
+        System.out.println("handleInput()");
         if(message.startsWith("CALL")){
             String[] strings = message.split(" ");
             if(strings.length<3){
@@ -58,13 +59,13 @@ public class NewSkype {
         }else if(message.startsWith("HANGUP")){
             byte[] data = "HANGUP".getBytes();
             DatagramPacket p = new DatagramPacket(data,data.length);
-            handleMessage(p,null);
+            handleMessage(p,ds);
         }
     }
     
     public void handleMessage(DatagramPacket p,DatagramSocket s){
         String message = new String(p.getData());
-        
+        System.out.println("handleMessage()");
         if(message.startsWith("INVITE")){
             callController.processNextEvent(Signal.INVITE,p,s);
         }else if(message.startsWith("INITIATE_INVITE")){
@@ -82,7 +83,9 @@ public class NewSkype {
         }else if(message.startsWith("ERROR")){
             callController.processNextEvent(Signal.ERROR,p,s);
         }else if(message.startsWith("HANGUP")){
-            callController.processNextEvent(Signal.REQUEST_HANGUP,p,null);
+            callController.processNextEvent(Signal.REQUEST_HANGUP,p,s);
+        }else if(message.startsWith("ACK")){
+            callController.processNextEvent(Signal.ACK,p,s);
         }
         else{
             System.out.println("Okänt paket :P");

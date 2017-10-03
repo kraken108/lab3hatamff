@@ -16,21 +16,17 @@ import java.util.logging.Logger;
  * @author Michael
  */
 public class CallingIn extends StateUncallable{
-    
- 
-    public State ACK(){
-        
-        return new InCall();
-    }
 
     @Override
     public String getStatename() {
         return ("CallingIn");
     }
     
+    @Override
     public State receivedACK(DatagramPacket dp, DatagramSocket ds){
-        super.packet = dp;
-        return new InCall();        
+        System.out.println("Received ACK");
+        
+        return new InCall(dp,ds);        
     }
     
 

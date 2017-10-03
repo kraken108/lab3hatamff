@@ -36,8 +36,6 @@ public class UDPListener implements Runnable{
                 String message = removeZeros(p);
                 p.setData(message.getBytes());
                 p.setLength(message.length());
-                
-                System.out.println(message);
                 newSkype.handleMessage(p,socket);
             } catch (IOException ex) {
                 System.out.println("couldnt receive datagram packet xD: "+ex);

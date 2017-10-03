@@ -29,14 +29,14 @@ public class CallingOut extends StateUncallable{
     
     @Override
     public State receivedTRO(DatagramPacket dp, DatagramSocket ds){
-        
+        System.out.println("Received TRO");
         sendACK(dp,ds);
-        super.packet = dp;
-        return new InCall(); 
+
+        return new InCall(dp,ds); 
     }
     
     private void sendACK(DatagramPacket dp, DatagramSocket ds){
-        
+        System.out.println("Sending ACK");
         String ack = "ACK";
         dp.setData(ack.getBytes());
         dp.setLength(ack.length());

@@ -16,8 +16,6 @@ import java.util.logging.Logger;
  */
 public abstract class StateUncallable extends State {
 
-    DatagramPacket packet;
-    DatagramSocket socket;
     
     @Override
     public String getStatename() {
@@ -27,14 +25,7 @@ public abstract class StateUncallable extends State {
     public State inviteBusy() {
         return this;
     }
-    
-    public DatagramPacket getPacket(){
-        return packet;
-    }
 
-    public DatagramSocket getSocket(){
-        return socket;
-    }
     
     @Override
     public State receivedINVITE(DatagramPacket dp, DatagramSocket ds){
@@ -42,6 +33,12 @@ public abstract class StateUncallable extends State {
         sendBusy(dp,ds);
         return this; 
         
+    }
+    
+    @Override
+    public State receivedERROR(){
+        System.out.println("Received ERROR");
+        return new Idle();
     }
     
     private void sendBusy(DatagramPacket dp, DatagramSocket ds){
