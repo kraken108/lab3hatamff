@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Facade;
 
 import BO.Item;
@@ -17,12 +12,17 @@ import java.util.logging.Logger;
 import javax.naming.NamingException;
 
 /**
- *
- * @author Jakob
+ * OrderController is used to send new orders and read current orders from the database.
  */
 public class OrderController {
     
 
+    /**
+     * Send a new order with a username the order is made by and an array of items.
+     * @param items The items the order contains.
+     * @param username The username the order is made by.
+     * @return Message if the order was successful or not.
+     */
     public String sendOrder(Item[] items,String username){
         MysqlManager dbManager = new MysqlManager();
         try {
@@ -39,6 +39,12 @@ public class OrderController {
         }
     }
     
+    /**
+     * Get all orders from the database. Used by stock staff.
+     * @return An array of all available orders.
+     * @throws NamingException
+     * @throws SQLException 
+     */
     public ArrayList<Order> getAllOrders() throws NamingException, SQLException{
          
         try {

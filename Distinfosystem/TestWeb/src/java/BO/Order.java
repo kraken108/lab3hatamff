@@ -1,28 +1,31 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package BO;
 
 import java.util.ArrayList;
 
 /**
- *
- * @author Jakob
+ * Data representation of an Order from the database.
  */
 public class Order {
     private String username;
     private int orderId;
     private ArrayList<Item> items;
     
-    
+    /**
+     * Constructs a new Order.
+     * @param username
+     * @param orderId
+     * @param items 
+     */
     public Order(String username, int orderId, ArrayList<Item> items){
         this.username = username;
         this.orderId = orderId;
         this.items = items;
     }
     
+    /**
+     * Constructs a string with the order information.
+     * @return 
+     */
     @Override
     public String toString(){
         String s = "";

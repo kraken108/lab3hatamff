@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Facade;
 
 import BO.Item;
@@ -16,11 +11,17 @@ import java.util.logging.Logger;
 import javax.naming.NamingException;
 
 /**
- *
- * @author Jakob
+ * ItemController is used to communicate with the database classes that retrieves Items.
+ * 
  */
 public class ItemController {
 
+    /**
+     * Get current items from the database
+     * @return Array if Item
+     * @throws SQLException
+     * @throws NamingException 
+     */
     public ArrayList<Item> getItems() throws SQLException, NamingException {
         ArrayList<Item> items = null;
         try {

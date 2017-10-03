@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Facade;
 
 import BO.User;
@@ -14,12 +9,19 @@ import java.util.logging.Logger;
 import javax.naming.NamingException;
 
 /**
- *
- * @author Jakob
+ * Login is used to communicate with the classes that retrieves login information.
  */
 public class Login {
 
 
+    /**
+     * Try to login by providing a username and a password.
+     * @param username
+     * @param password
+     * @return String explaining the result, if it's successful or not.
+     * @throws SQLException
+     * @throws NamingException 
+     */
     public String tryLogin(String username, String password) throws SQLException, NamingException {
         DBManager dbManager;
         try {
@@ -42,6 +44,13 @@ public class Login {
         }
     }
     
+    /**
+     * getUserInfo takes a username and returns a User object with all information about the user.
+     * @param username
+     * @return User object
+     * @throws SQLException
+     * @throws NamingException 
+     */
     public User getUserInfo(String username) throws SQLException, NamingException{
         try{
             DBManager dbManager = new MysqlManager();

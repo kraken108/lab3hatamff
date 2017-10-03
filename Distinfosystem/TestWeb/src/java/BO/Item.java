@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package BO;
 
 /**
- *
- * @author Jakob
+ * Data representation of an item from the database.
  */
 public class Item {
     private String name;
@@ -16,7 +11,13 @@ public class Item {
     private int id;
     
     
-    
+    /**
+     * Constructs a new Item object.
+     * @param name
+     * @param price
+     * @param inStock How many of the items exists in stock.
+     * @param id 
+     */
     public Item(String name, Float price,int inStock,int id){
         this.name = name;
         this.price = price;
@@ -24,6 +25,13 @@ public class Item {
         this.id = id;
     }
 
+    /**
+     * Constructs a new Item object using Strings as params.
+     * @param name
+     * @param price
+     * @param inStock
+     * @param id 
+     */
     public Item(String name, Float price, String inStock, String id){
         this.name = name;
         this.price = price;
@@ -50,6 +58,10 @@ public class Item {
         return price;
     }
     
+    /**
+     * Constructs a string of the Item with all information about it.
+     * @return 
+     */
     @Override
     public String toString(){
         return "Product: " + getName() + " - Price:" + getPrice() + " - (" + getInStock() + ") in Stock";
