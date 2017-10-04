@@ -19,7 +19,7 @@ public class CallController {
     public enum Signal{
         INITIATE_INVITE,INVITE
         ,BUSY,TRO,OK,REQUEST_HANGUP
-        ,BYE,ERROR,ACK;
+        ,BYE,ERROR,ACK,PORT;
     }
     private State currentState;
     
@@ -39,6 +39,7 @@ public class CallController {
             case BYE: invokeReceivedBYE(p,s);break;
             case ERROR: invokeReceivedError();break;
             case ACK: invokeReceivedACK(p,s);break;
+            case PORT: invokeReceivedPORT(p,s);break;
             default: break;
         }
     }
@@ -47,6 +48,9 @@ public class CallController {
        // return currentState.getStateName();
     }
 
+    public void invokeReceivedPORT(DatagramPacket p, DatagramSocket s){
+        currentState = currentState.receivedPORT(p, s);
+    }
     public void invokeInitiateCall(DatagramPacket p, DatagramSocket s){
         currentState = currentState.initiateCALL(p, s);
         System.out.println(currentState.getStatename());

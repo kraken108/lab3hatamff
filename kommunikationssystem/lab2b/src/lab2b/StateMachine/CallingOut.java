@@ -32,7 +32,13 @@ public class CallingOut extends StateUncallable{
         System.out.println("Received TRO");
         sendACK(dp,ds);
 
-        return new InCall(dp,ds); 
+        try { 
+            return new InCall(dp,ds);
+        } catch (IOException ex) {
+            
+            Logger.getLogger(CallingOut.class.getName()).log(Level.SEVERE, null, ex);
+            return new Idle();
+        }
     }
     
     private void sendACK(DatagramPacket dp, DatagramSocket ds){
