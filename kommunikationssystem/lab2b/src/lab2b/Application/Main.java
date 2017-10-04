@@ -7,6 +7,8 @@ package lab2b.Application;
 
 import java.io.IOException;
 import static java.lang.System.exit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -26,7 +28,7 @@ public class Main {
             }
             newSkype.start();
             
-        }catch(IOException e){
+        }catch(Exception e){
             System.out.println("Something went wrong :PPPP");
             exit(1);
         }
