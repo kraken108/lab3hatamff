@@ -16,12 +16,8 @@ import java.util.logging.Logger;
  */
 public class CallingIn extends StateUncallable{
 
-    private long initiationTime; 
-    private int timeOut;
-    
-    public CallingIn(){
+    public CallingIn(DatagramPacket p){
         
-        timeOut=20000;
         
     }
     
@@ -41,9 +37,5 @@ public class CallingIn extends StateUncallable{
             Logger.getLogger(CallingIn.class.getName()).log(Level.SEVERE, null, ex);
             return new Idle();
         }
-    }
-    
-
-    
-    
+    }     
 }
