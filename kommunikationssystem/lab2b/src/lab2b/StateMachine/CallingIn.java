@@ -26,7 +26,12 @@ public class CallingIn extends StateUncallable{
     public State receivedACK(DatagramPacket dp, DatagramSocket ds){
         System.out.println("Received ACK");
         
-        return new InCall(dp,ds);        
+        try {        
+            return new InCall(dp,ds);
+        } catch (IOException ex) {
+            Logger.getLogger(CallingIn.class.getName()).log(Level.SEVERE, null, ex);
+            return new Idle();
+        }
     }
     
 

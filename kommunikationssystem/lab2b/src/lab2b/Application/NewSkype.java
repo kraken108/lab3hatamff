@@ -86,6 +86,8 @@ public class NewSkype {
             callController.processNextEvent(Signal.REQUEST_HANGUP,p,s);
         }else if(message.startsWith("ACK")){
             callController.processNextEvent(Signal.ACK,p,s);
+        }else if(message.startsWith("PORT")){
+            callController.processNextEvent(Signal.PORT,p,s);
         }
         else{
             System.out.println("Okänt paket :P");
