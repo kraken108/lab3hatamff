@@ -4,9 +4,9 @@
     Author     : Jakob
 --%>
 
+<%@page import="ViewModel.UserInfo"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="Facade.UserController"%>
-<%@page import="BO.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -16,29 +16,34 @@
     </head>
     <body>
         <%
-            User user = (User) session.getAttribute("user");
+            UserInfo user = (UserInfo) session.getAttribute("user");
             if (user == null) {
-                out.println("You are not logged in.");
-            } else if (!user.isAdministrator()) {
-                out.println("Insufficient rights.");
-            } else {
-                out.println("Welcome to the administration panel!");
-                
-                
+        %>
+        You are not logged in.
+        <%
+        } else if (!user.isAdministrator()) {
+        %>
+        Insufficient rights.
+        <%
+        } else {
+        %>
+        Welcome to the administration panel!
+        <%
+
         %>
         <h4>Users:</h4>
 
+        <%            UserController uc = new UserController();
+            try {
+                ArrayList<UserInfo> users = uc.getUsers();
+                if (users.isEmpty()) {
+        %>
+        No users found!
         <%
-                UserController uc = new UserController();
-                try {
-                    ArrayList<User> users = uc.getUsers();
-                    if (users.isEmpty()) {
-                        out.println("No users found :<");
-                    }else{
-                        for(User u : users){
-                            out.println(u.getName());
-                            
-                            
+        } else {
+            for (UserInfo u : users) {
+                out.println(u.getName());
+
         %>
         <form action="edituser.jsp">
             <input type="hidden" name="userToEdit" value="<%out.print(u.getName());%>">

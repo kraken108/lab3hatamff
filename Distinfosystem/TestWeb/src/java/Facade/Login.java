@@ -1,9 +1,13 @@
 package Facade;
 
-import BO.User;
+import Model.User;
 import DBManager.*;
+import Model.Rights;
+import ViewModel.RightsInfo;
+import ViewModel.UserInfo;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
@@ -23,13 +27,11 @@ public class Login {
      * @throws NamingException 
      */
     public String tryLogin(String username, String password) throws SQLException, NamingException {
-        DBManager dbManager;
+
         try {
-            dbManager = new MysqlManager();
-            Connection c = dbManager.getConnection();
             DBLogin dbLogin = new DBLogin();
-            Boolean success = dbLogin.tryLogin(username,password,c);
-            c.close();
+            Boolean success = dbLogin.tryLogin(username,password);
+
             if (success) {
                 return "SUCCESSFUL";
             }else{
@@ -51,14 +53,24 @@ public class Login {
      * @throws SQLException
      * @throws NamingException 
      */
-    public User getUserInfo(String username) throws SQLException, NamingException{
+    public UserInfo getUserInfo(String username) throws SQLException, NamingException{
         try{
-            DBManager dbManager = new MysqlManager();
-            Connection c = dbManager.getConnection();
             DBLogin dbLogin = new DBLogin();
-            User user = dbLogin.getUserInfo(username,c);
-            c.close();
-            return user;
+            User user = dbLogin.getUserInfo(username);
+            ArrayList<RightsInfo> rightsInfo = new ArrayList<>();
+            for(Rights r : user.getRights()){
+                switch(r){
+                    case ADMINISTRATOR: rightsInfo.add(RightsInfo.ADMINISTRATOR);
+                    case CUSTOMER: rightsInfo.add(RightsInfo.CUSTOMER);
+                    case STOCK: rightsInfo.add(RightsInfo.STOCK);
+                    default: break;
+                }
+            }
+            
+            UserInfo userInfo = new UserInfo(user.getName(),rightsInfo);
+            
+            return userInfo;
+            
         }catch(SQLException ex){
             throw(ex);
         } catch (NamingException ex) {

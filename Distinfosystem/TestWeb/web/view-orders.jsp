@@ -4,8 +4,8 @@
     Author     : Jakob
 --%>
 
-<%@page import="BO.User"%>
-<%@page import="BO.Order"%>
+<%@page import="ViewModel.OrderInfo"%>
+<%@page import="ViewModel.UserInfo"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="Facade.OrderController"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -17,7 +17,7 @@
     </head>
     <body>
         <%
-            User user = (User) session.getAttribute("user");
+            UserInfo user = (UserInfo) session.getAttribute("user");
             if (user == null) {
                 out.println("You are not logged in.");
             } else if (!user.isStock()) {
@@ -29,11 +29,11 @@
 
         <%            OrderController oc = new OrderController();
             try {
-                ArrayList<Order> orders = oc.getAllOrders();
+                ArrayList<OrderInfo> orders = oc.getAllOrders();
                 if (orders.isEmpty()) {
                     out.println("No orders at the moment");
                 } else {
-                    for (Order o : orders) {
+                    for (OrderInfo o : orders) {
                         out.println(o.toString());
 
         %>

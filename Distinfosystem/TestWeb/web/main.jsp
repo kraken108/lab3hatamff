@@ -4,11 +4,11 @@
     Author     : Jakob
 --%>
 
-<%@page import="BO.User"%>
+<%@page import="ViewModel.ItemInfo"%>
+<%@page import="ViewModel.UserInfo"%>
 <%@page import="java.lang.String"%>
 <%@page import="Facade.ItemController"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="BO.Item"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -26,7 +26,7 @@
                 out.println("Please login");
             } else {
                 //if logged in then get the user info
-                User user = (User) session.getAttribute("user");
+                UserInfo user = (UserInfo) session.getAttribute("user");
                 if (user == null) {
                     session.setAttribute("error", "No login found");
                     String redirectURL = "http://localhost:8080/Webbshop/error.jsp";
@@ -67,7 +67,7 @@
         <% 
             //get a list of all current items from the database
             ItemController ic = new ItemController();
-            ArrayList<Item> items = null;
+            ArrayList<ItemInfo> items = null;
             try {
                 items = ic.getItems();
             } catch (Exception e) {
@@ -77,11 +77,11 @@
             }
 
             //get the cartItems, if it doesnt exists (wont on first try) then create a new array
-            Item[] cartItems;
+            ItemInfo[] cartItems;
             if (session.getAttribute("cartItems") == null) {
-                cartItems = new Item[100];
+                cartItems = new ItemInfo[100];
             } else {
-                cartItems = (Item[]) session.getAttribute("cartItems");
+                cartItems = (ItemInfo[]) session.getAttribute("cartItems");
             }
 
             //get the add to cart parameter if it exists
@@ -99,7 +99,7 @@
                     if (cartItems[i] == null) {
                         String[] stringsToAdd = addToCart.split("\t");
 
-                        cartItems[i] = new Item(stringsToAdd[0], Float.parseFloat(stringsToAdd[1]), stringsToAdd[2], stringsToAdd[3]);
+                        cartItems[i] = new ItemInfo(stringsToAdd[0], Float.parseFloat(stringsToAdd[1]), stringsToAdd[2], stringsToAdd[3]);
                         session.setAttribute("cartItems", cartItems);
                         break;
                     }

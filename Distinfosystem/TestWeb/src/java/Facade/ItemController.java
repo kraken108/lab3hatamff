@@ -1,7 +1,8 @@
 package Facade;
 
-import BO.Item;
+import Model.Item;
 import DBManager.*;
+import ViewModel.ItemInfo;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -22,15 +23,11 @@ public class ItemController {
      * @throws SQLException
      * @throws NamingException 
      */
-    public ArrayList<Item> getItems() throws SQLException, NamingException {
+    public ArrayList<ItemInfo> getItems() throws SQLException, NamingException {
         ArrayList<Item> items = null;
         try {
-            DBManager dbManager = new MysqlManager();
-            Connection c = dbManager.getConnection();
-            
             DBItem dbItem = new DBItem();
-            items = dbItem.getItems(c);
-            c.close();
+            items = dbItem.getItems();
         } catch (SQLException ex) {
             throw(ex);
         } catch (NamingException ex) {
@@ -40,7 +37,11 @@ public class ItemController {
         if(items == null){
             return null;
         }else{
-            return items;
+            ArrayList<ItemInfo> itemInfo = new ArrayList<>();
+            for(Item i : items){
+                itemInfo.add(new ItemInfo(i.getName(),i.getPrice(),i.getInStock(),i.getId()));
+            }
+            return itemInfo;
         }
     }
     

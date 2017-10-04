@@ -18,7 +18,7 @@ public class Main {
      */
     public static void main(String[] args) {
         try{
-            NewSkype newSkype = new NewSkype();
+            NewSkype newSkype = new NewSkype(Integer.parseInt(args[0]));
             newSkype.start();
         }catch(IOException e){
             System.out.println("Something went wrong :PPPP");

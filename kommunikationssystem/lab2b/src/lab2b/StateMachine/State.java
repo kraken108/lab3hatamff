@@ -6,6 +6,9 @@ package lab2b.StateMachine;
  */
 ;
 
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+
 /**
  *
  * @author Michael
@@ -13,52 +16,42 @@ package lab2b.StateMachine;
 public abstract class State {
     
     public abstract String getStatename();
+      
     
-    public State receivedIdle(){
-        return this;
-    };    
-    
-    public State receivedInitiateInvite(){
+    public State receivedINVITE(DatagramPacket p, DatagramSocket s){
         return this;
     }
     
-    public State receivedRequestHangup(){
+    public State receivedBUSY(){
         return this;
     }
     
-    public State receivedOkHangUp(){
+    public State receivedACK(DatagramPacket p, DatagramSocket s){
         return this;
     }
     
-    public State initiateCall(){
+    public State receivedOK(){
         return this;
     }
     
-    public State receivedCallingIn(){
-        return this;
-    }  
-    
-    public State isBusy(){
+    public State requestHANGUP(DatagramPacket p, DatagramSocket s){
         return this;
     }
     
-    public State sendACK(){
+    public State receivedBYE(DatagramPacket p, DatagramSocket s){
         return this;
     }
     
-    public State sendByeOk(){
+    public State receivedERROR(){
         return this;
     }
     
-    public State sendError(){
+    public State receivedTRO(DatagramPacket p, DatagramSocket s){
         return this;
     }
-    
-    public State sendTROACK(){
+        
+    public State initiateCALL(DatagramPacket p, DatagramSocket s){
         return this;
     }
-    
-    public State okHangUp(){
-        return this;
-    }   
+
 }

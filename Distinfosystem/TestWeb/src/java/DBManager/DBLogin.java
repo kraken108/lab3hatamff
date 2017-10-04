@@ -1,12 +1,14 @@
 package DBManager;
 
-import BO.*;
+import Model.User;
+import Model.Rights;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javax.naming.NamingException;
 
 /**
  * Used to communicate with the database regarding logging in to the webbshop.
@@ -21,7 +23,10 @@ public class DBLogin {
      * @return
      * @throws SQLException 
      */
-    public Boolean tryLogin(String username, String password, Connection connection) throws SQLException {
+    public Boolean tryLogin(String username, String password) throws SQLException, NamingException {
+        DBManager dbManager = new MysqlManager();
+            Connection connection = dbManager.getConnection();
+            
         PreparedStatement selectStatement = null;
         String query2 = "SELECT * FROM users WHERE password=? AND userName =?";        
         selectStatement = connection.prepareStatement(query2);
@@ -32,10 +37,12 @@ public class DBLogin {
         if (rs.next()) {
             rs.close();
             selectStatement.close();
+            connection.close();
             return true;
         }else{
             rs.close();
             selectStatement.close();
+            connection.close();
             return false;
         }
     }
@@ -47,7 +54,10 @@ public class DBLogin {
      * @return
      * @throws SQLException 
      */
-    public User getUserInfo(String username, Connection c) throws SQLException{
+    public User getUserInfo(String username) throws SQLException, NamingException{
+        DBManager dbManager = new MysqlManager();
+            Connection c = dbManager.getConnection();
+            
         PreparedStatement selectStatement = null;
         String query = "SELECT * FROM UserRights WHERE username=?";
         selectStatement = c.prepareStatement(query);
@@ -68,7 +78,7 @@ public class DBLogin {
         
         User user = new User(username,rights);
         
-        
+        c.close();
         return user;
     }
 }

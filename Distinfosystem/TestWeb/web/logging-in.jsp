@@ -4,7 +4,7 @@
     Author     : Jakob
 --%>
 
-<%@page import="BO.User"%>
+<%@page import="ViewModel.UserInfo"%>
 <%@page import="Facade.Login"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -21,7 +21,7 @@
             } else {
                 Login login = new Login();
                 try{
-                    User user = login.getUserInfo((String) session.getAttribute("username"));
+                    UserInfo user = login.getUserInfo((String) session.getAttribute("username"));
                     session.setAttribute("user", user);
                     String redirectURL = "http://localhost:8080/Webbshop/main.jsp";
                     response.sendRedirect(redirectURL);

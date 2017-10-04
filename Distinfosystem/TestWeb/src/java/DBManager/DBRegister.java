@@ -3,12 +3,16 @@ package DBManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import javax.naming.NamingException;
 
 /**
  * Registers a new user to the database.
  */
 public class DBRegister {
+    
 
+    
+   
    
  
     /**
@@ -18,8 +22,10 @@ public class DBRegister {
      * @param passWord
      * @throws SQLException 
      */
-    public void insertUsers(Connection connection, String userName, String passWord) throws SQLException{
-        
+    public void insertUsers(String userName, String passWord) throws SQLException, NamingException{
+        DBManager dbManager = new MysqlManager();
+            Connection connection = dbManager.getConnection();
+            
         PreparedStatement myStmt = null;
         String query = "INSERT INTO users(userName,passWord) VALUES(?,?)";
         
@@ -31,8 +37,10 @@ public class DBRegister {
         
         myStmt.executeUpdate();
         myStmt.close();
+        connection.close();
     }
   
+
 
     
 }

@@ -5,7 +5,10 @@
  */
 package lab2b.StateMachine;
 
+import java.io.IOException;
 import java.net.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -13,8 +16,6 @@ import java.net.*;
  */
 public abstract class StateUncallable extends State {
 
-    private DatagramPacket packet;
-    private DatagramSocket socket;
     
     @Override
     public String getStatename() {
@@ -24,12 +25,31 @@ public abstract class StateUncallable extends State {
     public State inviteBusy() {
         return this;
     }
-    
-    public DatagramPacket getPacket(){
-        return packet;
-    }
 
-    public DatagramSocket getSocket(){
-        return socket;
+    
+    @Override
+    public State receivedINVITE(DatagramPacket dp, DatagramSocket ds){
+        
+        sendBusy(dp,ds);
+        return this; 
+        
+    }
+    
+    @Override
+    public State receivedERROR(){
+        System.out.println("Received ERROR");
+        return new Idle();
+    }
+    
+    private void sendBusy(DatagramPacket dp, DatagramSocket ds){
+        
+        String busy = "BUSY";
+        dp.setData(busy.getBytes());
+        dp.setLength(busy.length());
+        try {
+            ds.send(dp);
+        } catch (IOException ex) {
+            Logger.getLogger(StateUncallable.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

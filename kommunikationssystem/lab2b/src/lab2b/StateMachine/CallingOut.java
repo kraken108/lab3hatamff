@@ -17,34 +17,29 @@ import java.util.logging.Logger;
  */
 public class CallingOut extends StateUncallable{
     
-    public State Busy(){
-        return new Idle();
-    }
-    
-    public State troAck(){
-        
-        return new InCall();
-    }  
-
     @Override
     public String getStatename() {
         return "CallingOut";
     }
     
-    public State receivedBusy(){
+    @Override
+    public State receivedBUSY(){
         return new Idle();
     }
     
-    public State receivedTro(DatagramPacket dp, DatagramSocket ds){
-        
+    @Override
+    public State receivedTRO(DatagramPacket dp, DatagramSocket ds){
+        System.out.println("Received TRO");
         sendACK(dp,ds);
-        return new InCall(); 
+
+        return new InCall(dp,ds); 
     }
     
     private void sendACK(DatagramPacket dp, DatagramSocket ds){
-        
+        System.out.println("Sending ACK");
         String ack = "ACK";
         dp.setData(ack.getBytes());
+        dp.setLength(ack.length());
         try {
             ds.send(dp);
         } catch (IOException ex) {
@@ -52,6 +47,7 @@ public class CallingOut extends StateUncallable{
         }       
     }
     
+
     
 }    
     
