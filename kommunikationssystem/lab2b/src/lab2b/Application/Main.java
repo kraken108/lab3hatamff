@@ -18,8 +18,14 @@ public class Main {
      */
     public static void main(String[] args) {
         try{
-            NewSkype newSkype = new NewSkype(Integer.parseInt(args[0]));
+            NewSkype newSkype = null;
+            if(args.length > 1){
+                newSkype = new NewSkype(Integer.parseInt(args[0]),args[1]);
+            }else{
+                newSkype = new NewSkype(Integer.parseInt(args[0]),"");
+            }
             newSkype.start();
+            
         }catch(IOException e){
             System.out.println("Something went wrong :PPPP");
             exit(1);

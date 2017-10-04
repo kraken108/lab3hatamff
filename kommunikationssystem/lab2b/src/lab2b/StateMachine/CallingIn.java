@@ -15,26 +15,45 @@ import java.util.logging.Logger;
  *
  * @author Michael
  */
-public class CallingIn extends StateUncallable{
+public class CallingIn extends StateUncallable {
+
+    public CallingIn(DatagramPacket p, DatagramSocket s) {
+        super(p);
+    }
 
     @Override
     public String getStatename() {
         return ("CallingIn");
     }
-    
+
     @Override
-    public State receivedACK(DatagramPacket dp, DatagramSocket ds){
+    public State receivedACK(DatagramPacket dp, DatagramSocket ds) {
         System.out.println("Received ACK");
-        
-        try {        
-            return new InCall(dp,ds);
-        } catch (IOException ex) {
-            Logger.getLogger(CallingIn.class.getName()).log(Level.SEVERE, null, ex);
-            return new Idle();
+
+        if (super.isCorrectClient(dp)) {
+            try {
+                return new InCall(dp, ds);
+            } catch (IOException ex) {
+                Logger.getLogger(CallingIn.class.getName()).log(Level.SEVERE, null, ex);
+                return new Idle();
+            }
+        }else{
+            sendError(dp,ds);
+            return this;
+        }
+
+    }
+
+    private void sendError(DatagramPacket p, DatagramSocket s) {
+        String message = "ERROR";
+        byte[] data = message.getBytes();
+        p.setData(data);
+        p.setLength(data.length);
+        try {
+            s.send(p);
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
-    
 
-    
-    
 }

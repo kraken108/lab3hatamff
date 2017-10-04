@@ -19,28 +19,38 @@ public class Idle extends State {
 
     @Override
     public State initiateCALL(DatagramPacket p, DatagramSocket s) {
-        sendInvite(p,s);
-        System.out.println("initiating call and returning callingOut");
-        return new CallingOut();
+        try {
+            sendInvite(p,s);
+            return new CallingOut(p);
+        } catch (IOException ex) {
+            System.out.println("Failed to send invite: " + ex);
+            return this;
+        }
+        
     }
 
-    private void sendInvite(DatagramPacket p, DatagramSocket s){
+    private void sendInvite(DatagramPacket p, DatagramSocket s) throws IOException{
         try {
             System.out.println("Sending INVITE");
             s.send(p);
         } catch (IOException ex) {
-            System.out.println("Gick inte att skicka invite: " + ex);
+            throw(ex);
         }
     }
     
     @Override
     public State receivedINVITE(DatagramPacket p, DatagramSocket s) {
-        System.out.println("Received INVITE");
-        sendTRO(p,s);
-        return new CallingIn();
+        try {
+            sendTRO(p,s);
+            return new CallingIn(p,s);
+        } catch (IOException ex) {
+            Logger.getLogger(Idle.class.getName()).log(Level.SEVERE, null, ex);
+            return this;
+        }
+        
     }
 
-    private void sendTRO(DatagramPacket p, DatagramSocket s) {
+    private void sendTRO(DatagramPacket p, DatagramSocket s) throws IOException {
         String tro = "TRO";
         System.out.println("Sending TRO");
         System.out.println("Sending to: " + p.getAddress().toString() + " " + p.getPort());
@@ -48,7 +58,8 @@ public class Idle extends State {
         try {
             s.send(returnPacket);
         } catch (IOException ex) {
-            System.out.println("Gick inte att svara TRO: " + ex);
+            System.out.println("Gick inte att svara TRO: ");
+            throw(ex);
         }
     }
 

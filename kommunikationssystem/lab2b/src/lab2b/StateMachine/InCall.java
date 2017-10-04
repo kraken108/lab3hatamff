@@ -29,7 +29,7 @@ public class InCall extends StateUncallable{
         sendAudioPortInfo();
     }
     
-    private void sendAudioPortInfo(){
+    private void sendAudioPortInfo() throws IOException{
         String s = "PORT " + audioSocket.getLocalPort();
         byte[] data = s.getBytes();
         packet.setData(data);
@@ -37,8 +37,23 @@ public class InCall extends StateUncallable{
         try {
             socket.send(packet);
         } catch (IOException ex) {
-            Logger.getLogger(InCall.class.getName()).log(Level.SEVERE, null, ex);
+            throw(ex);
         }
+    }
+    
+    private void terminateAudioSocket(){
+         try{
+            audioSocket.stopStreaming();
+            audioSocket.close();
+        }catch(Exception e){
+            System.out.println(e);
+        }
+    }
+    
+    @Override
+    public State receivedERROR(){
+        terminateAudioSocket();
+        return new Idle();
     }
     
     @Override
@@ -47,13 +62,12 @@ public class InCall extends StateUncallable{
         String[] splitted = message.split(" ");
         int port = Integer.parseInt(splitted[1]);
         try {
-            System.out.println("Connecting audio");
             audioSocket.connectTo(p.getAddress(), port);
             audioSocket.startStreaming();
-            System.out.println("Started streaming");
         } catch (IOException ex) {
-            System.out.println("Couldnt connect to other audiosocket");
-            Logger.getLogger(InCall.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Couldnt connect to other audiosocket: " + ex);
+            terminateAudioSocket();
+            return new Idle();
         }finally{
             return this;
         }
@@ -67,13 +81,19 @@ public class InCall extends StateUncallable{
     
     @Override
     public State requestHANGUP(DatagramPacket dp, DatagramSocket ds){
-        
-        sendBye(dp,ds);
-        return new HangingUp();        
+        try {
+            sendBye(dp,ds);
+            terminateAudioSocket();
+            return new HangingUp(packet);  
+        } catch (Exception ex) {
+            Logger.getLogger(InCall.class.getName()).log(Level.SEVERE, null, ex);
+            return new Idle();
+        }
+              
     }
     
     
-    public void sendBye(DatagramPacket dp, DatagramSocket ds){
+    public void sendBye(DatagramPacket dp, DatagramSocket ds) throws IOException{
         System.out.println("Sending BYE");
         String bye="BYE";
         dp.setData(bye.getBytes());
@@ -83,11 +103,9 @@ public class InCall extends StateUncallable{
         try {
             ds.send(dp);
         } catch (IOException ex) {
-            System.out.println("Exception");
-            System.out.println(ex);
+            throw(ex);
         }catch(Exception e){
-            System.out.println("Exception 2");
-            System.out.println(e);
+            throw(e);
         }     
     }
     
@@ -106,6 +124,7 @@ public class InCall extends StateUncallable{
     public State receivedBYE(DatagramPacket dp, DatagramSocket ds){
         System.out.println("Received BYE");
         sendOk(dp,ds);
+        terminateAudioSocket();
         return new Idle();        
     }
     

@@ -28,7 +28,6 @@ public class CallController {
     }
     
     public void processNextEvent(Signal signal,DatagramPacket p,DatagramSocket s){
-        System.out.println("processNextEvent()");
         switch(signal){
             case INITIATE_INVITE: invokeInitiateCall(p,s);break;
             case INVITE: invokeReceivedInvite(p,s);break;
@@ -42,10 +41,6 @@ public class CallController {
             case PORT: invokeReceivedPORT(p,s);break;
             default: break;
         }
-    }
-    
-    public void getState(){
-       // return currentState.getStateName();
     }
 
     public void invokeReceivedPORT(DatagramPacket p, DatagramSocket s){
