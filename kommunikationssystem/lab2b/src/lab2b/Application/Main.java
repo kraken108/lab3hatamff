@@ -28,7 +28,7 @@ public class Main {
             }
             newSkype.start();
             
-        }catch(IOException e){
+        }catch(Exception e){
             System.out.println("Something went wrong :PPPP");
             exit(1);
         } catch (Exception ex) {
