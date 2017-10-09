@@ -17,7 +17,11 @@ import java.util.logging.Logger;
  */
 public class HangingUp extends StateUncallable{
     
-
+    
+    public HangingUp(DatagramPacket p){
+        super(p);
+    }
+    
     @Override
     public String getStatename() {
         return "HangingUp";
@@ -25,21 +29,7 @@ public class HangingUp extends StateUncallable{
     
     @Override
     public State receivedOK(){
-        System.out.println("Received OK");
-        //sendHangUp(dp,ds);
         return new Idle();        
-    }
-        
-    private void sendHangUp(DatagramPacket dp, DatagramSocket ds){
-        
-        String hangUp = "HANGUP";
-        dp.setData(hangUp.getBytes());
-        try {
-            ds.send(dp);
-        } catch (IOException ex) {
-            Logger.getLogger(CallingIn.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
     }
     
 }
