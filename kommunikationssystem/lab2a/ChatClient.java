@@ -1,3 +1,4 @@
+import static java.lang.System.exit;
 import java.rmi.*;
 
 import java.rmi.*;
@@ -27,7 +28,12 @@ public class ChatClient extends UnicastRemoteObject implements Notifiable {
     public static void main(String[] args){
        
         try{
-            String url = "rmi://localhost/chatserver";
+            if(args.length < 2){
+                System.out.println("Please specify a ip and rmi server name (in the bash script)");
+                exit(1);
+            }
+            String url = "rmi://" + args[0] + "/"+args[1];
+            //String url = "rmi://localhost/chatserver";
             Chat chat = (Chat) Naming.lookup(url);
             ChatClient client = new ChatClient(chat);
             
@@ -58,7 +64,8 @@ public class ChatClient extends UnicastRemoteObject implements Notifiable {
                     return;
                 }
             }catch(RemoteException re){
-                System.out.println("eghhhhh åhnej");
+                System.out.println("An error occurred. Shutting down: " + re);
+                return;
             }
         }
     }
