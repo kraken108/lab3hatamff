@@ -21,7 +21,6 @@ import lab2b.Network.UDPListener;
 public class NewSkype {
 
     private CallController callController;
-    private ServerSocket serverSocket;
     private Boolean inSession;
     private DatagramSocket ds;
 

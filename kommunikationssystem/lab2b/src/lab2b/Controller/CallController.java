@@ -15,7 +15,6 @@ import java.net.DatagramSocket;
  */
 public class CallController {
     
-    
     public enum Signal{
         INITIATE_INVITE,INVITE
         ,BUSY,TRO,OK,REQUEST_HANGUP

@@ -29,7 +29,7 @@ public class Main {
             newSkype.start();
             
         }catch(Exception e){
-            System.out.println("Something went wrong :PPPP");
+            System.out.println("Something went wrong :" + e);
             exit(1);
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);

@@ -44,12 +44,10 @@ public class ChatServer extends UnicastRemoteObject implements Chat {
             return "Invalid command";
         } else {
             ArrayList<Notifiable> toRemove = new ArrayList<>();
-
             for (Notifiable n : clientList) {
                 try {
                     n.notifyNewMessage(client.getName() + ": " + message);
                 } catch (RemoteException re) {
-
                     toRemove.add(n);
                 }
             }
