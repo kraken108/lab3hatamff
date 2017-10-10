@@ -14,9 +14,9 @@ import lab2b.Controller.CallController;
 import lab2b.Controller.CallController.Signal;
 import lab2b.Network.UDPListener;
 
-/**
+/*
  *
- * @author Anders
+ * skapar 2 trådar, en för keyboardlistener och en för udp
  */
 public class NewSkype {
 
@@ -49,7 +49,8 @@ public class NewSkype {
     public Boolean isInSession() {
         return inSession;
     }
-
+    
+    //lägger in ip, port och "invite" i ett paket och returnerar det
     private DatagramPacket constructInvite(String message) throws Exception {
         String[] strings = message.split(" ");
         if (strings.length < 3) {
@@ -121,7 +122,6 @@ public class NewSkype {
             callController.processNextEvent(Signal.PORT, p, s);
         } else {
             System.out.println("Okänt paket :P");
-            //do nothing?
         }
     }
 }
