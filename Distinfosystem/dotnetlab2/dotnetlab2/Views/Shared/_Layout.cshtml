@@ -1,10 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using dotnetlab2.Models
-
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -32,17 +26,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                 <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">.NET Lab</a> 
+                <!-- <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">.NET Lab</a> -->
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    @if (SignInManager.IsSignedIn(User))
-                    {               
-                   <!-- <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li> -->
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Readpage">Read page</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Writepage">Write page</a></li>
-                    }
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><a asp-area="" asp-controller="Lässidan" asp-action="Read">Lässidan</a></li>
+                    <li><a asp-area="" asp-controller="Skrivsidan" asp-action="Write">Skrivsidan</a></li>
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
