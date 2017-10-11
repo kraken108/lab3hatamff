@@ -18,7 +18,7 @@ namespace dotnetlab2.Models
         //navigation property
         public virtual ApplicationUser User { get; set; }
 
-        public Message(string Message)
+        public Message()//(string Message)
         {
             Read = false;
             Removed = false;
@@ -26,5 +26,4 @@ namespace dotnetlab2.Models
 
 
     }
-
 }
