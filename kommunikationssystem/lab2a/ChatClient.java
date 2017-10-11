@@ -30,7 +30,7 @@ public class ChatClient extends UnicastRemoteObject implements Notifiable {
         try{
             if(args.length < 2){
                 System.out.println("Please specify a ip and rmi server name (in the bash script)");
-                exit(1);
+              //  exit(1);
             }
             String url = "rmi://" + args[0] + "/"+args[1];
             //String url = "rmi://localhost/chatserver";

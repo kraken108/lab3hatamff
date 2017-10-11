@@ -15,21 +15,21 @@ import java.util.logging.Logger;
  *
  * @author Michael
  */
-public class HangingUp extends StateUncallable{
-    
-    
-    public HangingUp(DatagramPacket p){
+public class HangingUp extends StateUncallable {
+
+    public HangingUp(DatagramPacket p) {
         super(p);
     }
-    
+
     @Override
     public String getStatename() {
         return "HangingUp";
     }
-    
+
     @Override
-    public State receivedOK(){
-        return new Idle();        
+    public State receivedOK() {
+        return new Idle();
     }
-    
+
+
 }
