@@ -1,9 +1,4 @@
-﻿@using dotnetlab2.Models
-
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
-
-
+﻿@model dotnetlab2.Models.HomeViewModels.IndexViewModel
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -13,11 +8,17 @@
 </div>
 <div class="row">
     <div class="col-md-4">
-        <h2>Hello Jakob</h2>
-        <p>
+        <dt>Hello @Html.DisplayFor(model => model.Username)</dt>
+        <p><br />
+            TODO:
+        <br />
             Last login:
-            Total posts:
-            Etc etc.
+        <br />
+            Total logins this month:
+        <br />
+            Total unread messages:
+        <br />
+        (Link to read page)
         </p>
     </div>
 </div>

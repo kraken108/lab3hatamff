@@ -1,7 +1,38 @@
 ﻿
 @{
-    ViewData["Title"] = "Writepage";
+    ViewData["Title"] = "Write page";
 }
 
-<h2>Writepage</h2>
+<h2>Write page</h2>
+@{ 
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    listItems.Add(new SelectListItem
+    {
+        Text = "Jakob",
+        Value = "Jakob",
+        Selected = false
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Michael",
+        Value = "Michael",
+        Selected = false
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Anders",
+        Value = "Anders",
+        Selected = false
+    });
+}
+@Html.DropDownList("Test", listItems, new { @class = "form-control" })
+<br />
+Topic <input "Topic" class="form-control" />
+<br />
+Message
+<br />
+<textarea></textarea>
+<br />
+<br />
+<button>Send message</button>
 

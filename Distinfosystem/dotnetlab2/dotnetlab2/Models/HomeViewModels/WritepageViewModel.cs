@@ -5,9 +5,7 @@ using System.Threading.Tasks;
 
 namespace dotnetlab2.Models.HomeViewModels
 {
-    public class IndexViewModel
+    public class WritepageViewModel
     {
-        public string Username { get; set; }
-        public string LastLogin { get; set; }
     }
 }
