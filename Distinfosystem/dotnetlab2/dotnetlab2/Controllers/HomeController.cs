@@ -8,6 +8,7 @@ using dotnetlab2.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using dotnetlab2.Models.HomeViewModels;
+using dotnetlab2.Data;
 
 namespace dotnetlab2.Controllers
 {
@@ -17,10 +18,12 @@ namespace dotnetlab2.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ApplicationDbContext _context;
 
         public HomeController(UserManager<ApplicationUser> userManager,
-          SignInManager<ApplicationUser> signInManager)
+          SignInManager<ApplicationUser> signInManager,ApplicationDbContext context)
         {
+            _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
         }
@@ -46,6 +49,7 @@ namespace dotnetlab2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Writepage(WritepageViewModel model)
         {
+
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
