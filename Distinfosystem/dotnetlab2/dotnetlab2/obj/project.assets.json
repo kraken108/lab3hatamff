@@ -13125,11 +13125,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "D:\\Git\\Distinfosystem\\dotnetlab2\\dotnetlab2\\dotnetlab2.csproj",
+      "projectUniqueName": "D:\\Git2\\Distinfosystem\\dotnetlab2\\dotnetlab2\\dotnetlab2.csproj",
       "projectName": "dotnetlab2",
-      "projectPath": "D:\\Git\\Distinfosystem\\dotnetlab2\\dotnetlab2\\dotnetlab2.csproj",
+      "projectPath": "D:\\Git2\\Distinfosystem\\dotnetlab2\\dotnetlab2\\dotnetlab2.csproj",
       "packagesPath": "C:\\Users\\Jakob\\.nuget\\packages\\",
-      "outputPath": "D:\\Git\\Distinfosystem\\dotnetlab2\\dotnetlab2\\obj\\",
+      "outputPath": "D:\\Git2\\Distinfosystem\\dotnetlab2\\dotnetlab2\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

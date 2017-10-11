@@ -34,3 +34,15 @@ D:\Git\Distinfosystem\dotnetlab2\dotnetlab2\obj\Debug\netcoreapp2.0\dotnetlab2.A
 D:\Git\Distinfosystem\dotnetlab2\dotnetlab2\obj\Debug\netcoreapp2.0\dotnetlab2.AssemblyInfo.cs
 D:\Git\Distinfosystem\dotnetlab2\dotnetlab2\obj\Debug\netcoreapp2.0\dotnetlab2.dll
 D:\Git\Distinfosystem\dotnetlab2\dotnetlab2\obj\Debug\netcoreapp2.0\dotnetlab2.pdb
+D:\Git2\Distinfosystem\dotnetlab2\dotnetlab2\bin\Debug\netcoreapp2.0\dotnetlab2.deps.json
+D:\Git2\Distinfosystem\dotnetlab2\dotnetlab2\bin\Debug\netcoreapp2.0\dotnetlab2.runtimeconfig.json
+D:\Git2\Distinfosystem\dotnetlab2\dotnetlab2\bin\Debug\netcoreapp2.0\dotnetlab2.runtimeconfig.dev.json
+D:\Git2\Distinfosystem\dotnetlab2\dotnetlab2\bin\Debug\netcoreapp2.0\dotnetlab2.dll
+D:\Git2\Distinfosystem\dotnetlab2\dotnetlab2\bin\Debug\netcoreapp2.0\dotnetlab2.pdb
+D:\Git2\Distinfosystem\dotnetlab2\dotnetlab2\obj\Debug\netcoreapp2.0\dotnetlab2.csprojResolveAssemblyReference.cache
+D:\Git2\Distinfosystem\dotnetlab2\dotnetlab2\obj\Debug\netcoreapp2.0\dotnetlab2.csproj.CoreCompileInputs.cache
+D:\Git2\Distinfosystem\dotnetlab2\dotnetlab2\obj\Debug\netcoreapp2.0\UserSecretsAssemblyInfo.cs
+D:\Git2\Distinfosystem\dotnetlab2\dotnetlab2\obj\Debug\netcoreapp2.0\dotnetlab2.AssemblyInfoInputs.cache
+D:\Git2\Distinfosystem\dotnetlab2\dotnetlab2\obj\Debug\netcoreapp2.0\dotnetlab2.AssemblyInfo.cs
+D:\Git2\Distinfosystem\dotnetlab2\dotnetlab2\obj\Debug\netcoreapp2.0\dotnetlab2.dll
+D:\Git2\Distinfosystem\dotnetlab2\dotnetlab2\obj\Debug\netcoreapp2.0\dotnetlab2.pdb
