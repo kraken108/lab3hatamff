@@ -4,15 +4,12 @@
 /test/build/
 /lab3b2/nbproject/private/
 /lab3b2/build/
-<<<<<<< HEAD
 /FL5A/nbproject/private/
 /FL5A/build/
 /FL5C/nbproject/private/
-=======
 /Labb5GTA/nbproject/private/
 /Labb5GTA/dist/
 /Labb5GTA/build/
->>>>>>> 60bea9315bf058f60a449efe2118c3e8f8274896
 /Testttt/nbproject/private/
 /Testttt/build/
 /Testttt/dist/
@@ -44,7 +41,8 @@
 /Distinfosystem/TestWeb/build/
 /Distinfosystem/TestWeb/dist/
 /Distinfosystem/dotnetlab2/.vs/dotnetlab2/v15
-/Distinfosystem/dotnetlab2/v15/sqlite3/storage.ide
-/Distinfosystem/dotnetlab2/.vs/dotnetlab2/v15/.suo
-
+/Distinfosystem/dotnetlab2/.vs/dotnetlab2/v15/
+/Distinfosystem/dotnetlab2/dotnetlab2/bin/Debug/netcoreapp2.0/
+/Distinfosystem/dotnetlab2/dotnetlab2/obj/
+/Distinfosystem/dotnetlab2/dotnetlab2/dotnetlab2.csproj.user
 
