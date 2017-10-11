@@ -11,6 +11,7 @@ namespace dotnetlab2.Controllers
 {
 
     [Authorize]
+    [Route("[controller]/[action]")]
     public class HomeController : Controller
     {
         public IActionResult Index()
