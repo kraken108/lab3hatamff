@@ -11,8 +11,8 @@ namespace dotnetlab2.Models
         public int ID { get; set; }
         public ApplicationUser Sender { get; set; }
         public ApplicationUser Receiver { get; set; }
-        public Boolean Read { get; set; }
-        public Boolean Removed { get; set; }
+        public Boolean IsRead { get; set; }
+        public Boolean IsRemoved { get; set; }
         public string Msg { get; set; }
 
         //navigation property
@@ -20,8 +20,8 @@ namespace dotnetlab2.Models
 
         public Message()//(string Message)
         {
-            Read = false;
-            Removed = false;
+            IsRead = false;
+            IsRemoved = false;
         }   
 
 
