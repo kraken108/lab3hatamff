@@ -110,6 +110,7 @@ public class NewSkype {
                 callController.processNextEvent(Signal.BYE, p, s);
             }
         } else if (message.startsWith("ERROR")) {
+            System.out.println("Received ERROR");
             callController.processNextEvent(Signal.ERROR, p, s);
         } else if (message.startsWith("HANGUP")) {
             if (!noHangup) {

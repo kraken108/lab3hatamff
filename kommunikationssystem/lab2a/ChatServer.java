@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class ChatServer extends UnicastRemoteObject implements Chat {
 
-    private ArrayList<Notifiable> clientList = null;
+    private  ArrayList<Notifiable> clientList = null;
     private ArrayList<String> clientNames;
     private int clientNr;
 
