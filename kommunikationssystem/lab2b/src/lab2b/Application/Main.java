@@ -7,6 +7,8 @@ package lab2b.Application;
 
 import java.io.IOException;
 import static java.lang.System.exit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,10 +20,16 @@ public class Main {
      */
     public static void main(String[] args) {
         try{
-            NewSkype newSkype = new NewSkype(Integer.parseInt(args[0]));
+            NewSkype newSkype = null;
+            if(args.length > 1){
+                newSkype = new NewSkype(Integer.parseInt(args[0]),args[1]);
+            }else{
+                newSkype = new NewSkype(Integer.parseInt(args[0]),"");
+            }
             newSkype.start();
-        }catch(IOException e){
-            System.out.println("Something went wrong :PPPP");
+            
+        }catch(Exception e){
+            System.out.println("Something went wrong :" + e);
             exit(1);
         }
     }

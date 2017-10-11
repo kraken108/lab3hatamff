@@ -31,7 +31,7 @@ public class KeyboardListener implements Runnable {
             try {
                 newSkype.handleInput(input);
             } catch (UnknownHostException ex) {
-                System.out.println("Couldnd find host: " + ex);
+                System.out.println("Couldn't find host: " + ex);
             } catch (Exception ex) {
                 System.out.println(ex);
             }

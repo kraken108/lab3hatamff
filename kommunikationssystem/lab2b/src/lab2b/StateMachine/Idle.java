@@ -17,33 +17,49 @@ import java.util.logging.Logger;
  */
 public class Idle extends State {
 
-    public State initiateCall(DatagramPacket p, DatagramSocket s) {
-        sendInvite(p,s);
-        return new CallingOut();
+    @Override
+    public State initiateCALL(DatagramPacket p, DatagramSocket s) {
+        try {
+            sendInvite(p,s);
+            return new CallingOut(p);
+        } catch (IOException ex) {
+            System.out.println("Failed to send invite: " + ex);
+            return this;
+        }
+        
     }
 
-    private void sendInvite(DatagramPacket p, DatagramSocket s){
+    private void sendInvite(DatagramPacket p, DatagramSocket s) throws IOException{
         try {
-            System.out.println("Skickar invite");
+            System.out.println("Sending INVITE");
             s.send(p);
         } catch (IOException ex) {
-            System.out.println("Gick inte att skicka invite: " + ex);
+            throw(ex);
         }
     }
     
-    public State receivedInvite(DatagramPacket p, DatagramSocket s) {
-        sendTRO(p,s);
-        return new CallingIn();
+    @Override
+    public State receivedINVITE(DatagramPacket p, DatagramSocket s) {
+        try {
+            sendTRO(p,s);
+            return new CallingIn(p,s);
+        } catch (IOException ex) {
+            Logger.getLogger(Idle.class.getName()).log(Level.SEVERE, null, ex);
+            return this;
+        }
+        
     }
 
-    private void sendTRO(DatagramPacket p, DatagramSocket s) {
+    private void sendTRO(DatagramPacket p, DatagramSocket s) throws IOException {
         String tro = "TRO";
-        System.out.println("Skickar TRO");
+        System.out.println("Sending TRO");
+        System.out.println("Sending to: " + p.getAddress().toString() + " " + p.getPort());
         DatagramPacket returnPacket = new DatagramPacket(tro.getBytes(),tro.getBytes().length,p.getAddress(),p.getPort());
         try {
             s.send(returnPacket);
         } catch (IOException ex) {
-            System.out.println("Gick inte att svara TRO: " + ex);
+            System.out.println("Gick inte att svara TRO: ");
+            throw(ex);
         }
     }
 
