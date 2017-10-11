@@ -8,6 +8,7 @@ namespace dotnetlab2.Models
 {
     public class Message
     {   
+        public int ID { get; set; }
         public ApplicationUser Sender { get; set; }
         public ApplicationUser Receiver { get; set; }
         public Boolean Read { get; set; }

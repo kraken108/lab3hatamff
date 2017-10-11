@@ -46,6 +46,8 @@ namespace dotnetlab2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Writepage(WritepageViewModel model)
         {
+
+
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
