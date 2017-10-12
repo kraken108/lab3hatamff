@@ -11,5 +11,6 @@ namespace dotnetlab2.Models.HomeViewModels
         public string Message { get; set; }
         public string SenderName { get; set; }
         public string ReceiverName { get; set; }
+        public DateTime DateTime { get; set; }
     }
 }
