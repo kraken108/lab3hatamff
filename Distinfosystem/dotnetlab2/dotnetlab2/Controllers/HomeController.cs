@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using dotnetlab2.Models.HomeViewModels;
 using dotnetlab2.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace dotnetlab2.Controllers
 {
@@ -44,28 +45,6 @@ namespace dotnetlab2.Controllers
             };
 
             return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Writepage(WritepageViewModel model)
-        {
-
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
-
-            var message = new Message();
-            message.Sender = user;
-            message.Msg = model.Message;
-            message.Topic = model.Topic;
-            message.Receiver = await _userManager.FindByIdAsync(model.UserId.ToString());
-            var result = await _context.Messages.AddAsync(message);
-
-            ViewData["Title"] = "blabla";
-            return RedirectToAction(nameof(Index));
         }
 
 
@@ -121,6 +100,8 @@ namespace dotnetlab2.Controllers
                 mi.Message = m.Msg;
                 mi.Topic = m.Topic;
                 mi.SenderName = m.Sender.UserName;
+                mi.DateTime = m.DateTime;
+                await _userManager.Users.LoadAsync();
                 mi.ReceiverName = m.Receiver.UserName;
                 messageList.Add(mi);
             }
@@ -129,6 +110,45 @@ namespace dotnetlab2.Controllers
             model.Messages = messageList;
 
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Writepage(WritepageViewModel model)
+        {
+
+            try
+            {
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                }
+
+                if (ModelState.IsValid)
+                {
+                    var message = new Message();
+                    message.Sender = user;
+                    message.Msg = model.Message;
+                    message.Topic = model.Topic;
+                    message.DateTime = DateTime.Now;
+                    var receiver = await _userManager.FindByIdAsync(model.UserId);
+                    message.Receiver = receiver;
+                    await _context.Messages.AddAsync(message);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Writepage));
+                }
+                else
+                {
+                    throw new Exception("Inte valid");
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                throw new ApplicationException($"Error: '{ex.ToString()}'.");
+            }
         }
 
         [HttpGet]
@@ -153,7 +173,6 @@ namespace dotnetlab2.Controllers
                 usernameList.Add(u);
             }
             var model = new WritepageViewModel();
-            model.UserId = 1;
             model.Users = usernameList;
 
             ViewData["Title"] = "Your write page.";
