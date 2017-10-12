@@ -15,6 +15,7 @@ namespace dotnetlab2.Models
         public Boolean IsRemoved { get; set; }
         public string Msg { get; set; }
         public string Topic { get; set; }
+        public DateTime DateTime { get; set; }
         //navigation property
 
         public Message()//(string Message)

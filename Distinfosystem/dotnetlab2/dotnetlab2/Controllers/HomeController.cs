@@ -81,6 +81,7 @@ namespace dotnetlab2.Controllers
                 mi.Message = m.Msg;
                 mi.Topic = m.Topic;
                 mi.SenderName = m.Sender.UserName;
+                mi.DateTime = m.DateTime;
                 await _userManager.Users.LoadAsync();
                 mi.ReceiverName = m.Receiver.UserName;
                 messageList.Add(mi);
@@ -111,6 +112,7 @@ namespace dotnetlab2.Controllers
                     message.Sender = user;
                     message.Msg = model.Message;
                     message.Topic = model.Topic;
+                    message.DateTime = DateTime.Now;
                     var receiver = await _userManager.FindByIdAsync(model.UserId);
                     message.Receiver = receiver;
                     await _context.Messages.AddAsync(message);
