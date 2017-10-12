@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using dotnetlab2.Models;
 using dotnetlab2.Models.AccountViewModels;
 using dotnetlab2.Services;
+using dotnetlab2.Data;
 
 namespace dotnetlab2.Controllers
 {
@@ -22,6 +23,7 @@ namespace dotnetlab2.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ApplicationDbContext _context;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
 
@@ -29,8 +31,9 @@ namespace dotnetlab2.Controllers
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger, ApplicationDbContext context)
         {
+            _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
@@ -64,6 +67,10 @@ namespace dotnetlab2.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    var user = await _userManager.FindByEmailAsync(model.Email);
+                    var Login = new Login { ApplicationUser = user, DateTime = DateTime.Now };
+                    await _context.Logins.AddAsync(Login);
+                    await _context.SaveChangesAsync();
                     _logger.LogInformation("User logged in.");
                     return RedirectToLocal(returnUrl);
                 }

@@ -26,5 +26,6 @@ namespace dotnetlab2.Data
        // [NotMapped]
         public DbSet<Message> Messages { get; set; }
         public DbSet<ApplicationUser> Users { get; set; }
+        public DbSet<Login> Logins { get; set; }
     }
 }
