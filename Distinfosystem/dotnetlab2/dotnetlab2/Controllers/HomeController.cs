@@ -41,13 +41,16 @@ namespace dotnetlab2.Controllers
 
             var logins = from s in _context.Logins select s;
             logins = logins.Where(s => s.ApplicationUser.Id == user.Id);
-            //logins = logins.Where(s => s.DateTime.)
+            var oneMonthAgo = DateTime.Now.AddMonths(-1);
+            logins = logins.Where(s => s.DateTime > oneMonthAgo);
+            var loginsThisMonth = logins.Count();
             if (logins.Any())
             {
                 var model = new IndexViewModel
                 {
                     Username = user.UserName,
-                    LastLogin = logins.Last().DateTime
+                    LastLogin = logins.Last().DateTime,
+                    LoginsThisMonth = loginsThisMonth
                 };
                 return View(model);
             }

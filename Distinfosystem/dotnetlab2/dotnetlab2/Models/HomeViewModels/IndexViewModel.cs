@@ -9,5 +9,6 @@ namespace dotnetlab2.Models.HomeViewModels
     {
         public string Username { get; set; }
         public DateTime LastLogin { get; set; }
+        public int LoginsThisMonth { get; set; }
     }
 }
