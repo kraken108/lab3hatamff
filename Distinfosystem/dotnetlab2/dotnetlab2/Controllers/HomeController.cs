@@ -41,6 +41,7 @@ namespace dotnetlab2.Controllers
 
             var logins = from s in _context.Logins select s;
             logins = logins.Where(s => s.ApplicationUser.Id == user.Id);
+            //logins = logins.Where(s => s.DateTime.)
             if (logins.Any())
             {
                 var model = new IndexViewModel
@@ -70,25 +71,6 @@ namespace dotnetlab2.Controllers
             ViewData["Message"] = "Your contact page.";
 
             return View();
-        }
-
-
-
-        [HttpGet]
-        public ActionResult UnreadMessages()
-        {
-            var messages = _context.Messages.ToList();
-            List<MessageInfo> messageList = new List<MessageInfo>();
-
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Readpage(ReadpageViewModel model)
-        {
-            ///var user = await _userManager.GetUserAsync(User);
-
-            return RedirectToAction(nameof(UnreadMessages));
         }
 
         [HttpGet]

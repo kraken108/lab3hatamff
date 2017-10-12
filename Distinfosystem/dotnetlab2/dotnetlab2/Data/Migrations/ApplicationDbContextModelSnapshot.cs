@@ -92,6 +92,8 @@ namespace dotnetlab2.Data.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("DateTime");
+
                     b.Property<bool>("IsRead");
 
                     b.Property<bool>("IsRemoved");
@@ -104,15 +106,11 @@ namespace dotnetlab2.Data.Migrations
 
                     b.Property<string>("Topic");
 
-                    b.Property<string>("UserId");
-
                     b.HasKey("ID");
 
                     b.HasIndex("ReceiverId");
 
                     b.HasIndex("SenderId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Messages");
                 });
@@ -241,10 +239,6 @@ namespace dotnetlab2.Data.Migrations
                     b.HasOne("dotnetlab2.Models.ApplicationUser", "Sender")
                         .WithMany()
                         .HasForeignKey("SenderId");
-
-                    b.HasOne("dotnetlab2.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
