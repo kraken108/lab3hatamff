@@ -10,7 +10,7 @@ namespace dotnetlab2.Models.HomeViewModels
     {
         public string Message { get; set; }
         public string Topic { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public List<UserInfo> Users { get; set; }
     }
 }
