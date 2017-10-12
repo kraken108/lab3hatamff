@@ -3,6 +3,17 @@
     ViewData["Title"] = "Readpage";
     
 }
+@model dotnetlab2.Models.HomeViewModels.ReadpageViewModel
+@using static dotnetlab2.Models.HomeViewModels.MessageInfo
 
+    @{ 
+        foreach(var mi in Model.Messages)
+        {
+            <br />
+            @Html.DisplayFor(Topic => mi.Topic)
+            <br />
+
+        }
+    }
 <h2>Readpage</h2>
 Meddelanden

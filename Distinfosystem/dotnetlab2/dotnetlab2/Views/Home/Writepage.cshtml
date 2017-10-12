@@ -2,37 +2,23 @@
 @{
     ViewData["Title"] = "Write page";
 }
-
+@model dotnetlab2.Models.HomeViewModels.WritepageViewModel
 <h2>Write page</h2>
-@{ 
-    List<SelectListItem> listItems = new List<SelectListItem>();
-    listItems.Add(new SelectListItem
-    {
-        Text = "Jakob",
-        Value = "Jakob",
-        Selected = false
-    });
-    listItems.Add(new SelectListItem
-    {
-        Text = "Michael",
-        Value = "Michael",
-        Selected = false
-    });
-    listItems.Add(new SelectListItem
-    {
-        Text = "Anders",
-        Value = "Anders",
-        Selected = false
-    });
-}
-@Html.DropDownList("Test", listItems, new { @class = "form-control" })
-<br />
-Topic <input "Topic" class="form-control" />
-<br />
-Message
-<br />
-<textarea></textarea>
-<br />
-<br />
-<button>Send message</button>
+<form method="post">
 
+
+    @Html.DropDownListFor(m => m.UserId, new SelectList(Model.Users, "UserId", "Username", Model.UserId), "-- Send to --"
+    )
+    <br />
+    <br />
+    Topic <input asp-for="Topic" class="form-control" />
+    <span asp-validation-for="Topic" class="text-danger"></span>
+    <br />
+    Message
+    <br />
+<textarea asp-for="Message"></textarea>
+    <span asp-validation-for="Message" class="text-danger"></span>
+    <br />
+    <br />
+    <button type="submit">Send message</button>
+</form>
