@@ -81,10 +81,7 @@ namespace dotnetlab2.Controllers
                 mi.Message = m.Msg;
                 mi.Topic = m.Topic;
                 mi.SenderName = m.Sender.UserName;
-                if(m.Receiver == null)
-                {
-                    throw new Exception("Sender: " + mi.SenderName + " " + mi.ReceiverName + " Varför är den null?");
-                }
+                await _userManager.Users.LoadAsync();
                 mi.ReceiverName = m.Receiver.UserName;
                 messageList.Add(mi);
             }

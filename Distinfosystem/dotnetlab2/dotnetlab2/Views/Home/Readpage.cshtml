@@ -6,14 +6,25 @@
 @model dotnetlab2.Models.HomeViewModels.ReadpageViewModel
 @using static dotnetlab2.Models.HomeViewModels.MessageInfo
 
-    @{ 
-        foreach(var mi in Model.Messages)
-        {
-            <br />
-            @Html.DisplayFor(Topic => mi.Topic)
+
+<h2>Readpage</h2>
+Meddelanden:
+<br />
+
+@{
+    foreach (var mi in Model.Messages)
+    {
+        <br />
+            <p>
+                Sender: @Html.DisplayFor(Sender => mi.SenderName)
+                <br />
+                Receiver: @Html.DisplayFor(Receiver => mi.ReceiverName)
+                <br />
+                Topic: @Html.DisplayFor(Topic => mi.Topic)
+                <br />
+                Message: @Html.DisplayFor(Message => mi.Message)
+            </p>
             <br />
 
-        }
     }
-<h2>Readpage</h2>
-Meddelanden
+}
