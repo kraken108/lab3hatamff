@@ -5,26 +5,86 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using dotnetlab2.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using dotnetlab2.Models.HomeViewModels;
+using dotnetlab2.Data;
 
 namespace dotnetlab2.Controllers
 {
+
+    [Authorize]
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ApplicationDbContext _context;
+
+        public HomeController(UserManager<ApplicationUser> userManager,
+          SignInManager<ApplicationUser> signInManager,ApplicationDbContext context)
         {
-            return View();
+            _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            var model = new IndexViewModel
+            {
+                Username = user.UserName
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Writepage(WritepageViewModel model)
+        {
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            return View(model);
+        }
+
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
-
+            ViewData["Message"] = ".NET Laboration i kursen Distribuerade Informationssystem";
+            ViewData["Text"] = "Av Jakob Danielsson & Michael Hjälmö";
             return View();
         }
 
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
+
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Readpage()
+        {
+            ViewData["Message"] = "Your read page.";
+
+            return View();
+        }
+
+        public IActionResult Writepage()
+        {
+            ViewData["Message"] = "Your write page.";
 
             return View();
         }

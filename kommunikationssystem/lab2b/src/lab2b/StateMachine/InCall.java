@@ -84,6 +84,8 @@ public class InCall extends StateUncallable{
         try {
             sendBye(dp,ds);
             terminateAudioSocket();
+            System.out.println("Hanging up ip: " + packet.getAddress().getHostAddress());
+            System.out.println("Hanging up port: " + packet.getPort());
             return new HangingUp(packet);  
         } catch (Exception ex) {
             Logger.getLogger(InCall.class.getName()).log(Level.SEVERE, null, ex);

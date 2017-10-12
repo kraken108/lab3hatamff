@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using dotnetlab2.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dotnetlab2.Data
 {
@@ -22,5 +23,7 @@ namespace dotnetlab2.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
+       // [NotMapped]
+        public DbSet<Message> Messages { get; set; }
     }
 }
