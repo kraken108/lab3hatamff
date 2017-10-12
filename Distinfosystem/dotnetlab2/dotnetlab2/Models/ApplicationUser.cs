@@ -9,5 +9,8 @@ namespace dotnetlab2.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
+        public string Name { get; set; }
+        public string pwd  { get; set; }
+
     }
 }
