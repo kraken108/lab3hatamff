@@ -77,14 +77,17 @@ namespace dotnetlab2.Controllers
         [HttpGet]
         public IActionResult Readpage()
         {
-            ViewData["Message"] = "Your read page.";
-
+            /*Query get where sender
+            Arraylist = svaret
+            Printa ut arraylisten som dropdown
+            */
+            ViewData["Text"] = "Meddelanden";
             return View();
         }
 
         public IActionResult Writepage()
         {
-            ViewData["Message"] = "Your write page.";
+            ViewData["Message"] = "Meddelanden";
 
             return View();
         }
