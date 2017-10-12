@@ -39,12 +39,22 @@ namespace dotnetlab2.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var model = new IndexViewModel
+            var logins = from s in _context.Logins select s;
+            logins = logins.Where(s => s.ApplicationUser.Id == user.Id);
+            if (logins.Any())
             {
-                Username = user.UserName
-            };
+                var model = new IndexViewModel
+                {
+                    Username = user.UserName,
+                    LastLogin = logins.Last().DateTime
+                };
+                return View(model);
+            }
 
-            return View(model);
+            throw new Exception("Inga logins? :PPP");
+            
+
+            
         }
 
 

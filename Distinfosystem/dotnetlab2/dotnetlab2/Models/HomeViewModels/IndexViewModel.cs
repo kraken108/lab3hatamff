@@ -8,6 +8,6 @@ namespace dotnetlab2.Models.HomeViewModels
     public class IndexViewModel
     {
         public string Username { get; set; }
-        public string LastLogin { get; set; }
+        public DateTime LastLogin { get; set; }
     }
 }

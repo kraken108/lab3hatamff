@@ -11,9 +11,10 @@ using System;
 namespace dotnetlab2.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171012183519_la till login2")]
+    partial class latilllogin2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,6 +93,8 @@ namespace dotnetlab2.Data.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("DateTime");
+
                     b.Property<bool>("IsRead");
 
                     b.Property<bool>("IsRemoved");
@@ -104,15 +107,11 @@ namespace dotnetlab2.Data.Migrations
 
                     b.Property<string>("Topic");
 
-                    b.Property<string>("UserId");
-
                     b.HasKey("ID");
 
                     b.HasIndex("ReceiverId");
 
                     b.HasIndex("SenderId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Messages");
                 });
@@ -241,10 +240,6 @@ namespace dotnetlab2.Data.Migrations
                     b.HasOne("dotnetlab2.Models.ApplicationUser", "Sender")
                         .WithMany()
                         .HasForeignKey("SenderId");
-
-                    b.HasOne("dotnetlab2.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
