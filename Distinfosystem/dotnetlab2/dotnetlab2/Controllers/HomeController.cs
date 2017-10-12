@@ -48,8 +48,6 @@ namespace dotnetlab2.Controllers
         }
 
 
-
-
         public IActionResult About()
         {
             ViewData["Message"] = ".NET Laboration i kursen Distribuerade Informationssystem";
