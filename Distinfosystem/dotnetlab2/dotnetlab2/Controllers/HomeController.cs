@@ -72,6 +72,25 @@ namespace dotnetlab2.Controllers
             return View();
         }
 
+
+
+        [HttpGet]
+        public ActionResult UnreadMessages()
+        {
+            var messages = _context.Messages.ToList();
+            List<MessageInfo> messageList = new List<MessageInfo>();
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Readpage(ReadpageViewModel model)
+        {
+            ///var user = await _userManager.GetUserAsync(User);
+
+            return RedirectToAction(nameof(UnreadMessages));
+        }
+
         [HttpGet]
         public async Task<IActionResult> Readpage()
         {
