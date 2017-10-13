@@ -6,22 +6,27 @@
 @model dotnetlab2.Models.HomeViewModels.ReadpageViewModel
 @using static dotnetlab2.Models.HomeViewModels.MessageInfo
 
-    @{ 
-        foreach(var mi in Model.Messages)
-        {
-            <br />
-            @Html.DisplayFor(Topic => mi.Topic)
-            <br />
-
-        }
-    }
-
-    <form name="toUnreadMessages" action="UnreadMessages.cshtml" method="POST">
-        
-           
-
-    <input type="submit" value="See Unread Messages" name="Unread Messages" />
-</form>
 
 <h2>Readpage</h2>
-Meddelanden
+Meddelanden:
+<br />
+
+@{
+    foreach (var mi in Model.Messages)
+    {
+        <br />
+            <p>
+                Sender: @Html.DisplayFor(Sender => mi.SenderName)
+                <br />
+                Receiver: @Html.DisplayFor(Receiver => mi.ReceiverName)
+                <br />
+                Topic: @Html.DisplayFor(Topic => mi.Topic)
+                <br />
+                Message: @Html.DisplayFor(Message => mi.Message)
+                <br />
+                Timestamp: @Html.DisplayFor(DateTime => mi.DateTime)
+            </p>
+            <br />
+
+    }
+}

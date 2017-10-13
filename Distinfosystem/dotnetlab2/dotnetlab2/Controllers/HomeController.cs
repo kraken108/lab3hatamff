@@ -39,14 +39,27 @@ namespace dotnetlab2.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
+            //get login information
             var logins = from s in _context.Logins select s;
             logins = logins.Where(s => s.ApplicationUser.Id == user.Id);
+            var oneMonthAgo = DateTime.Now.AddMonths(-1);
+            logins = logins.Where(s => s.DateTime > oneMonthAgo);
+            var loginsThisMonth = logins.Count();
+
+            //Get number of unread messages
+            var messages = from s in _context.Messages select s;
+            messages = messages.Where(s => s.Receiver.Id == user.Id);
+            messages = messages.Where(s => s.IsRead == false);
+            int numberUnreadMessages = messages.Count();
+
             if (logins.Any())
             {
                 var model = new IndexViewModel
                 {
                     Username = user.UserName,
-                    LastLogin = logins.Last().DateTime
+                    LastLogin = logins.Last().DateTime,
+                    LoginsThisMonth = loginsThisMonth,
+                    NumberUnreadMessages = numberUnreadMessages
                 };
                 return View(model);
             }
@@ -72,25 +85,6 @@ namespace dotnetlab2.Controllers
             return View();
         }
 
-
-
-        [HttpGet]
-        public ActionResult UnreadMessages()
-        {
-            var messages = _context.Messages.ToList();
-            List<MessageInfo> messageList = new List<MessageInfo>();
-
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Readpage(ReadpageViewModel model)
-        {
-            ///var user = await _userManager.GetUserAsync(User);
-
-            return RedirectToAction(nameof(UnreadMessages));
-        }
-
         [HttpGet]
         public async Task<IActionResult> Readpage()
         {
@@ -107,11 +101,11 @@ namespace dotnetlab2.Controllers
             foreach(Message m in messages)
             {
                 var mi = new MessageInfo();
+                await _userManager.Users.LoadAsync();
                 mi.Message = m.Msg;
                 mi.Topic = m.Topic;
                 mi.SenderName = m.Sender.UserName;
                 mi.DateTime = m.DateTime;
-                await _userManager.Users.LoadAsync();
                 mi.ReceiverName = m.Receiver.UserName;
                 messageList.Add(mi);
             }
