@@ -6433,7 +6433,7 @@
       ]
     },
     "Microsoft.EntityFrameworkCore.SqlServer/2.0.0": {
-      "sha512": "3Q9oO1EzasY2uke1vHHFcS0RHI2ES8Z+JKOwSAbrtf+6ahlz/j0CH6lh1f9oK5cZJEjWCXcSbJjQj8AKKMlVmw==",
+      "sha512": "mr+S07kAKXsdu9207w1ek4O1/0+y5925kMYy7gCqu15QpvfVXOLdAR0b9RQfBxmtAJPrYx6/KtfvAg70jm5zUA==",
       "type": "package",
       "path": "microsoft.entityframeworkcore.sqlserver/2.0.0",
       "files": [
@@ -7661,7 +7661,7 @@
       ]
     },
     "Microsoft.VisualStudio.Web.CodeGeneration.Design/2.0.0": {
-      "sha512": "Nwm0HM/M9arKDmyI7uf4pI/WgdqxU8PnG+n1Iyi68vBeGMUqH4FaDmH6BtG0wI16CRagy0vAZFnMS/m0hDiy7Q==",
+      "sha512": "14dGqnnOnNxKGrGZKFQGGzMDtQ23WVuIOZkcH5KE0LeHEhjc+9u8raAiFhXnRu8P/PHpXjbcgW/Zdq71sSqnlg==",
       "type": "package",
       "path": "microsoft.visualstudio.web.codegeneration.design/2.0.0",
       "files": [
@@ -13116,7 +13116,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Jakob\\.nuget\\packages\\": {},
+    "C:\\Users\\Michael\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
@@ -13125,17 +13125,17 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "D:\\Git2\\Distinfosystem\\dotnetlab2\\dotnetlab2\\dotnetlab2.csproj",
+      "projectUniqueName": "C:\\Users\\Michael\\Desktop\\reprep\\Distinfosystem\\dotnetlab2\\dotnetlab2\\dotnetlab2.csproj",
       "projectName": "dotnetlab2",
-      "projectPath": "D:\\Git2\\Distinfosystem\\dotnetlab2\\dotnetlab2\\dotnetlab2.csproj",
-      "packagesPath": "C:\\Users\\Jakob\\.nuget\\packages\\",
-      "outputPath": "D:\\Git2\\Distinfosystem\\dotnetlab2\\dotnetlab2\\obj\\",
+      "projectPath": "C:\\Users\\Michael\\Desktop\\reprep\\Distinfosystem\\dotnetlab2\\dotnetlab2\\dotnetlab2.csproj",
+      "packagesPath": "C:\\Users\\Michael\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Michael\\Desktop\\reprep\\Distinfosystem\\dotnetlab2\\dotnetlab2\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Jakob\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Michael\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
