@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 
 namespace dotnetlab2.Models.HomeViewModels
 {
-    public class UserInfo
+    public class UsermessagesViewModel
     {
         public string Username { get; set; }
-        public string UserId { get; set; }
-        public int NumberUnreadMessages { get; set; }
+        public List<MessageInfo> Messages { get; set; }
     }
 }

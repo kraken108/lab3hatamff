@@ -7,7 +7,10 @@ namespace dotnetlab2.Models.HomeViewModels
 {
     public class ReadpageViewModel
     {
-        public int MessageId { get; set; }
-        public List<MessageInfo> Messages { get; set; }
+        public string UserID { get; set; }
+        public List<UserInfo> Users { get; set; }
+        public int totalNumberMessages { get; set; }
+        public int totalNumberRead { get; set; }
+        public int totalNumberRemoved { get; set; }
     }
 }
