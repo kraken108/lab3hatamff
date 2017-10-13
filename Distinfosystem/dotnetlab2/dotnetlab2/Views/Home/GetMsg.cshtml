@@ -1,0 +1,29 @@
+﻿@model dotnetlab2.Models.HomeViewModels.IndexViewModel
+@{
+    ViewData["Title"] = "GetMsg";
+}
+
+<h2>GetMsg</h2>
+<div class="row">
+    <div class="col-md-4">
+        <dt>Hello @Html.DisplayFor(model => model.Topic)</dt>
+        <p>
+            <br />
+            Last login: @Html.DisplayFor(LastLogin => Model.LastLogin)
+            <br />
+            Total logins this month: @Html.DisplayFor(LoginsThisMonth => Model.LoginsThisMonth)
+            <br />
+            Total unread messages: @Html.DisplayFor(NumberUnreadMessages => Model.NumberUnreadMessages)
+            <br />
+            @if (Model.NumberUnreadMessages > 0)
+            {
+                <a href="/home/Readpage">Read unread messages</a>
+            }
+        </p>
+        <h3>@ViewData["Message"]</h3>
+    </div>
+</div>
+
+ String Topic = m.Topic;
+                        String Msg = m.Msg;
+                        DateTime dateTime = m.DateTime;
