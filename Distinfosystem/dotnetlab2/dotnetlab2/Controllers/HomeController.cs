@@ -158,6 +158,33 @@ namespace dotnetlab2.Controllers
             return View(model);
         }
 
+
+        //en metod i kontrollern som tar emot ett meddelandeID, och returnerar info om det meddelandet 
+
+        [HttpGet]
+        public async Task<IActionResult> GetMsg(int messageID)
+        {
+            var messages = from s in _context.Messages select s;
+
+            var model = new IndexViewModel();
+            {
+                foreach (Message m in messages)
+                {
+                    if (m.ID.Equals(messageID))
+                    {
+                        String Topic = m.Topic;
+                        String Msg = m.Msg;
+                        DateTime dateTime = m.DateTime;
+                    }
+                }
+            };                
+            return View(model);
+        }           
+        
+
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Writepage(WritepageViewModel model)
