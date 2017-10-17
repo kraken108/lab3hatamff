@@ -10,5 +10,8 @@ namespace dotnetlab2.Models.HomeViewModels
         public string Topic { get; set; }
         public string Msg { get; set; }
         public DateTime dateTime { get; set; }
+        public int MessageId { get; set; }
+        public UsermessagesViewModel UserMessagesViewModel { get; set; }
+        public string senderId { get; set; }
     }
 }

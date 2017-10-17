@@ -2,22 +2,32 @@
 @{
     ViewData["Title"] = "GetMsg";
 }
-
-<h2>GetMsg</h2>
+<h3>Message viewer</h3>
+@Model.senderId
+@Model.MessageId
 <div class="row">
     <div class="col-md-4">
-       <dt>Hello @Html.DisplayFor(model => model.Topic)</dt>
         <p>
-            <br />
-            Topic: @Html.DisplayFor(model => model.Topic)
-            <br />
-            Message: @Html.DisplayFor(model => model.Msg)
-            <br />
-            DateTime: @Html.DisplayFor(model => model.dateTime)
-            <br /> 
-            
+            <h4>@Html.DisplayFor(model => model.Topic) - @Html.DisplayFor(model => model.dateTime)</h4>
+            @Html.DisplayFor(model => model.Msg)
             <br />
         </p>
+        <br />
+        <form method="post">
+            <button type="submit">Remove message</button>
+        </form>
+        <br />
+        <br />
+        <h4>Other messages:</h4>
+        @{
+            foreach (var m in Model.UserMessagesViewModel.Messages)
+            {
+                <p>
+                    <a asp-controller="Home" asp-action="GetMsg" asp-route-messageID="@m.MessageId">@m.DateTime - @m.Topic @m.isRead ID: @m.MessageId</a>
+                </p>
+            }
+        }
     </div>
+    <br />
 </div>
 
