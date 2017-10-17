@@ -5,13 +5,14 @@
 }
 
 <h3>Inbox</h3>
+@ViewData["StatusMessage"]
 <h4>Messages from: @Model.Username</h4>
 
 @{ 
     foreach(var m in Model.Messages)
     {
         <p>
-            <a asp-controller="Home" asp-action="Usermessages" asp-route-userID="@m.SenderID">@m.DateTime - @m.Topic @m.isRead</a>
+            <a asp-controller="Home" asp-action="GetMsg" asp-route-messageID="@m.MessageId">@m.DateTime - @m.Topic @m.isRead ID: @m.MessageId</a>
         </p>
     }
 }
