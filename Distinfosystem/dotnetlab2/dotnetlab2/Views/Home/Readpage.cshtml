@@ -7,26 +7,20 @@
 @using static dotnetlab2.Models.HomeViewModels.MessageInfo
 
 
-<h2>Readpage</h2>
-Meddelanden:
+<h3>Inbox</h3>
+
 <br />
 
 @{
-    foreach (var mi in Model.Messages)
+    foreach (var ui in Model.Users)
     {
-        <br />
             <p>
-                Sender: @Html.DisplayFor(Sender => mi.SenderName)
-                <br />
-                Receiver: @Html.DisplayFor(Receiver => mi.ReceiverName)
-                <br />
-                Topic: @Html.DisplayFor(Topic => mi.Topic)
-                <br />
-                Message: @Html.DisplayFor(Message => mi.Message)
-                <br />
-                Timestamp: @Html.DisplayFor(DateTime => mi.DateTime)
+                <a asp-controller="Home" asp-action="Usermessages" asp-route-userID="@ui.UserId">Sender: @Html.DisplayFor(Sender => ui.Username) Unread messages: @Html.DisplayFor(Receiver => ui.NumberUnreadMessages)</a>
             </p>
-            <br />
 
     }
+
+    <br />
+    <br />
+    <p>Total messages: @Model.totalNumberMessages , Total read messages: @Model.totalNumberRead , Total removed messages: @Model.totalNumberRemoved</p>
 }
