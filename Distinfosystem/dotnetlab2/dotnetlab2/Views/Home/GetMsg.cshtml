@@ -3,12 +3,12 @@
     ViewData["Title"] = "GetMsg";
 }
 <h3>Message viewer</h3>
-@Model.senderId
+@Model.SenderId
 @Model.MessageId
 <div class="row">
     <div class="col-md-4">
         <p>
-            <h4>@Html.DisplayFor(model => model.Topic) - @Html.DisplayFor(model => model.dateTime)</h4>
+            <h4>@Html.DisplayFor(model => model.Topic) - @Html.DisplayFor(model => model.DateTime)</h4>
             @Html.DisplayFor(model => model.Msg)
             <br />
         </p>

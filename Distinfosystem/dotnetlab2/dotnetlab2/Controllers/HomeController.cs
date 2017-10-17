@@ -173,7 +173,7 @@ namespace dotnetlab2.Controllers
         {
             _context.Messages.Load();
             _userManager.Users.Load();
-            throw new Exception("id is: " + model.senderId);
+//           throw new Exception("id is: " + model.SenderId);
             
             try
             {
@@ -189,8 +189,8 @@ namespace dotnetlab2.Controllers
 
             ViewData["StatusMessage"] = "Successfully removed message!";
 
-            string s = model.senderId;
-            throw new Exception("id is: " + s);
+           string s = model.SenderId;
+           // throw new Exception("id is: " + s);
            return RedirectToAction(nameof(Usermessages),new { userID = s});
         }
 
@@ -232,9 +232,9 @@ namespace dotnetlab2.Controllers
                         UserMessagesViewModel = await otherMessages,
                         Topic = m.Topic,
                         Msg = m.Msg,
-                        dateTime = m.DateTime,
+                        DateTime = m.DateTime,
                         MessageId = m.ID,
-                        senderId = m.Sender.Id
+                        SenderId = m.Sender.Id
                     };
                     return View(model);
                 }
