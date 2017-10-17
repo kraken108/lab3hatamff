@@ -166,15 +166,15 @@ namespace dotnetlab2.Controllers
         {
             var messages = from s in _context.Messages select s;
 
-            var model = new IndexViewModel();
+            var model = new GetMsgViewModel();
             {
                 foreach (Message m in messages)
                 {
                     if (m.ID.Equals(messageID))
                     {
-                        String Topic = m.Topic;
-                        String Msg = m.Msg;
-                        DateTime dateTime = m.DateTime;
+                        model.Topic = m.Topic;
+                        model.Msg = m.Msg;
+                        model.dateTime = m.DateTime;
                     }
                 }
             };                
