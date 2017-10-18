@@ -14,6 +14,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace dotnetlab2.Controllers
 {
+    /// <summary>
+    /// UsermessagesController controls the requests and responses from the Usermessages view.
+    /// </summary>
     [Authorize]
     public class UsermessagesController : Controller
     {
@@ -21,6 +24,12 @@ namespace dotnetlab2.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ApplicationDbContext _context;
 
+        /// <summary>
+        /// Constructor that creates database contexts for communication with the database.
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="signInManager"></param>
+        /// <param name="context"></param>
         public UsermessagesController(UserManager<ApplicationUser> userManager,
          SignInManager<ApplicationUser> signInManager, ApplicationDbContext context)
         {
@@ -29,7 +38,12 @@ namespace dotnetlab2.Controllers
             _signInManager = signInManager;
         }
 
-
+        /// <summary>
+        /// Takes a userID and a StatusMessage as parameters and returns a view model with a list of messages from the user with the userID.
+        /// </summary>
+        /// <param name="userID">The userID of the sender of the messages</param>
+        /// <param name="StatusMessage">Statusmessage to display on top of page</param>
+        /// <returns></returns>
         public async Task<IActionResult> Usermessages(string userID, string StatusMessage)
         {
             if (StatusMessage == null)

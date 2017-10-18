@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace dotnetlab2.Models.HomeViewModels
 {
+    /// <summary>
+    /// Used to display information about a user using strings etc.
+    /// </summary>
     public class UserInfo
     {
         public string Username { get; set; }
