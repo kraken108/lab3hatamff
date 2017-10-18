@@ -44,7 +44,6 @@ namespace dotnetlab2.Controllers
             await _userManager.Users.LoadAsync();
             await _context.Messages.LoadAsync();
             var messages = from s in _context.Messages select s;
-            //messages = messages.Where(m => m.IsRead == false); 
             messages = messages.Where(M => M.Receiver.Id == user.Id);
             messages = messages.Where(m => !m.IsRemoved);
             messages = messages.OrderBy(s => s.Sender);
@@ -54,7 +53,7 @@ namespace dotnetlab2.Controllers
             List<UserInfo> usersList = new List<UserInfo>();
 
 
-            string previousMessageUser = "blablabla";
+            string previousMessageUser = "";
 
             foreach (var m in messages)
             {
@@ -97,7 +96,5 @@ namespace dotnetlab2.Controllers
 
             return View(model);
         }
-
-
     }
 }

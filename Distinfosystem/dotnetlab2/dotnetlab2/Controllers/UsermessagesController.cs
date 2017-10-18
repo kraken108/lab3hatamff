@@ -40,11 +40,7 @@ namespace dotnetlab2.Controllers
             {
                 ViewData["StatusMessage"] = StatusMessage;
             }
-            /*if(userID == null)
-            {
-                throw new Exception("bajsjsjsjs");
-                return NotFound();
-            }*/
+
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
@@ -79,7 +75,6 @@ namespace dotnetlab2.Controllers
                 {
                     mi.isRead = "(Oläst)";
                 }
-                //model.Username = m.Sender.UserName;
                 messageList.Add(mi);
             }
 
