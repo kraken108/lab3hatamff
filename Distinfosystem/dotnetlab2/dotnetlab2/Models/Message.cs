@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace dotnetlab2.Models
 {
+    /// <summary>
+    /// Contains all the information about a message
+    /// </summary>
     public class Message
     {   
         public int ID { get; set; }
@@ -16,9 +19,8 @@ namespace dotnetlab2.Models
         public string Msg { get; set; }
         public string Topic { get; set; }
         public DateTime DateTime { get; set; }
-        //navigation property
 
-        public Message()//(string Message)
+        public Message()
         {
             IsRead = false;
             IsRemoved = false;

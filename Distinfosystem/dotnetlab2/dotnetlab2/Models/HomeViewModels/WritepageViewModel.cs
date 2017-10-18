@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace dotnetlab2.Models.HomeViewModels
 {
+
+    /// <summary>
+    /// used to display users that can receive messages, constructs a message with a topic.  
+    /// </summary>
     public class WritepageViewModel
     {
         public string Message { get; set; }

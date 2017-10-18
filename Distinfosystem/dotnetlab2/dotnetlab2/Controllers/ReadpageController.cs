@@ -17,10 +17,19 @@ namespace dotnetlab2.Controllers
     [Authorize]
     public class ReadpageController : Controller
     {
+        /// <summary>
+        /// This class handles the contents of the read page, and the status of the messages (read, removed, unread).
+        /// </summary>
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ApplicationDbContext _context;
 
+        /// <summary>
+        /// Constructor that creates database contexts for communication with the database.
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="signInManager"></param>
+        /// <param name="context"></param>
         public ReadpageController(UserManager<ApplicationUser> userManager,
          SignInManager<ApplicationUser> signInManager, ApplicationDbContext context)
         {
@@ -29,7 +38,11 @@ namespace dotnetlab2.Controllers
             _signInManager = signInManager;
         }
 
-
+        /// <summary>
+        /// Displays the users messages sorted by the senders. Does not display removed messages. Counts and handles the logic 
+        /// of how many messages there are in total, how many are unread and how many that are removed and displays this.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> Readpage()
         {
