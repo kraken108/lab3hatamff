@@ -86,7 +86,7 @@ namespace dotnetlab2.Controllers
                         UserMessagesViewModel = await otherMessages,
                         Topic = m.Topic,
                         Msg = m.Msg,
-                        dateTime = m.DateTime,
+                        DateTime = m.DateTime,
                         MessageId = m.ID,
                         SenderId = m.Sender.Id
                     };

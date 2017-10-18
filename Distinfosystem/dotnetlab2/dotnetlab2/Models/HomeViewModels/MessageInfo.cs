@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace dotnetlab2.Models.HomeViewModels
 {
+    /// <summary>
+    /// Used to save messages in lists etc using strings etc.
+    /// </summary>
     public class MessageInfo
     {
         public int MessageId { get; set; }

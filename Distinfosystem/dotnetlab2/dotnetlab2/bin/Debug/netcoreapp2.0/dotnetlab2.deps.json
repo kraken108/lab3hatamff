@@ -4991,7 +4991,7 @@
     "Microsoft.EntityFrameworkCore.SqlServer/2.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-mr+S07kAKXsdu9207w1ek4O1/0+y5925kMYy7gCqu15QpvfVXOLdAR0b9RQfBxmtAJPrYx6/KtfvAg70jm5zUA==",
+      "sha512": "sha512-3Q9oO1EzasY2uke1vHHFcS0RHI2ES8Z+JKOwSAbrtf+6ahlz/j0CH6lh1f9oK5cZJEjWCXcSbJjQj8AKKMlVmw==",
       "path": "microsoft.entityframeworkcore.sqlserver/2.0.0",
       "hashPath": "microsoft.entityframeworkcore.sqlserver.2.0.0.nupkg.sha512"
     },
@@ -5397,7 +5397,7 @@
     "Microsoft.VisualStudio.Web.CodeGeneration.Design/2.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-14dGqnnOnNxKGrGZKFQGGzMDtQ23WVuIOZkcH5KE0LeHEhjc+9u8raAiFhXnRu8P/PHpXjbcgW/Zdq71sSqnlg==",
+      "sha512": "sha512-Nwm0HM/M9arKDmyI7uf4pI/WgdqxU8PnG+n1Iyi68vBeGMUqH4FaDmH6BtG0wI16CRagy0vAZFnMS/m0hDiy7Q==",
       "path": "microsoft.visualstudio.web.codegeneration.design/2.0.0",
       "hashPath": "microsoft.visualstudio.web.codegeneration.design.2.0.0.nupkg.sha512"
     },

@@ -14,6 +14,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace dotnetlab2.Controllers
 {
+    /// <summary>
+    /// WritepageController controls the requests and responses from the Writepage view.
+    /// Used to create and send messages to users.
+    /// </summary>
     [Authorize]
     public class WritepageController : Controller
     {
@@ -21,6 +25,12 @@ namespace dotnetlab2.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ApplicationDbContext _context;
 
+        /// <summary>
+        /// Constructor that creates database contexts for communication with the database.
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="signInManager"></param>
+        /// <param name="context"></param>
         public WritepageController(UserManager<ApplicationUser> userManager,
          SignInManager<ApplicationUser> signInManager, ApplicationDbContext context)
         {
@@ -29,6 +39,12 @@ namespace dotnetlab2.Controllers
             _signInManager = signInManager;
         }
 
+        /// <summary>
+        /// Writepage post method, is called when a message is sent. Takes a view model with data such as topic, message and receiver of message.
+        /// Creates a message and saves it to the database.
+        /// </summary>
+        /// <param name="model">The model containing data to create a message</param>
+        /// <returns>Status message if it succeeded or not.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Writepage(WritepageViewModel model)
@@ -70,6 +86,10 @@ namespace dotnetlab2.Controllers
             }
         }
 
+        /// <summary>
+        /// Constructs a view model containing a list of available users that the message can be sent to.
+        /// </summary>
+        /// <returns>A list of available users.</returns>
         private WritepageViewModel constructWritepageViewModel()
         {
             var users = _userManager.Users.ToList();
@@ -88,6 +108,10 @@ namespace dotnetlab2.Controllers
             return model;
         }
 
+        /// <summary>
+        /// Returns the writepage view model containing available users to send a message to.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> Writepage()
         {
