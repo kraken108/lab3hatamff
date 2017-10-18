@@ -75,7 +75,7 @@ namespace dotnetlab2.Controllers
                 }
                 else
                 {
-                    throw new Exception("Inte valid");
+                    throw new Exception("Not valid");
                 }
 
             }

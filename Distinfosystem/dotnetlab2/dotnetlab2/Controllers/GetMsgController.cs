@@ -52,7 +52,7 @@ namespace dotnetlab2.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetMsg(string modelUsername, int? messageID)
+        public async Task<IActionResult> GetMsg(string modelUsername, int messageID)
         {
             _userManager.Users.Load();
 
@@ -61,7 +61,7 @@ namespace dotnetlab2.Controllers
                 throw new Exception("No message ID passed");
             }
             var messages = from s in _context.Messages select s;
-            // throw new Exception(messageID.ToString());
+            
 
 
             try
@@ -93,9 +93,7 @@ namespace dotnetlab2.Controllers
                     return View(model);
                 }
             }
-
-            throw new Exception("Finns inget meddelande med det ID:t ?????");
-
+            throw new Exception("No message with this ID");
         }
 
         private async Task<UsermessagesViewModel> getOtherMessages(int excludingMessageId, string userID)
@@ -132,14 +130,13 @@ namespace dotnetlab2.Controllers
                 }
                 else
                 {
-                    mi.isRead = "(Oläst)";
+                    mi.isRead = "(Unread)";
                 }
                 model.Username = m.Sender.UserName;
                 messageList.Add(mi);
             }
 
             model.Messages = messageList;
-
             return model;
         }
 
