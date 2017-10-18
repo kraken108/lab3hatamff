@@ -18,10 +18,19 @@ namespace dotnetlab2.Controllers
     [Authorize]
     public class HomeController : Controller
     {
+        /// <summary>
+        /// 
+        /// </summary>
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ApplicationDbContext _context;
 
+        /// <summary>
+        /// Constructor that creates database contexts for communication with the database.
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="signInManager"></param>
+        /// <param name="context"></param>
         public HomeController(UserManager<ApplicationUser> userManager,
           SignInManager<ApplicationUser> signInManager,ApplicationDbContext context)
         {
@@ -30,6 +39,10 @@ namespace dotnetlab2.Controllers
             _signInManager = signInManager;
         }
 
+        /// <summary>
+        /// Loads users from the database, handles the login and displays unread messages and logins this month.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -78,13 +91,21 @@ namespace dotnetlab2.Controllers
             }             
         }
 
+        /// <summary>
+        /// The about page. Information about the website.
+        /// </summary>
+        /// <returns></returns>
         public IActionResult About()
         {
             ViewData["Message"] = ".NET Laboration i kursen Distribuerade Informationssystem";
             ViewData["Text"] = "Av Jakob Danielsson & Michael Hjälmö";
             return View();
         }
-
+        
+        /// <summary>
+        /// The contact page
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
@@ -92,6 +113,10 @@ namespace dotnetlab2.Controllers
             return View();
         }
 
+        /// <summary>
+        /// The errorpage that is displayed when errors occur.
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

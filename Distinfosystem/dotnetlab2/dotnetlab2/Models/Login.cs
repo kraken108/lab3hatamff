@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace dotnetlab2.Models
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Login
     {
         public int ID { get; set; }

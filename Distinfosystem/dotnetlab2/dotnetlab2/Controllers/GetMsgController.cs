@@ -17,10 +17,19 @@ namespace dotnetlab2.Controllers
     [Authorize]
     public class GetMsgController : Controller
     {
+        /// <summary>
+        /// This class loads messages from the database and handles them on the website
+        /// </summary>
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ApplicationDbContext _context;
 
+        /// <summary>
+        /// Constructor that creates database contexts for communication with the database.
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="signInManager"></param>
+        /// <param name="context"></param>
         public GetMsgController(UserManager<ApplicationUser> userManager,
          SignInManager<ApplicationUser> signInManager, ApplicationDbContext context)
         {
@@ -29,6 +38,12 @@ namespace dotnetlab2.Controllers
             _signInManager = signInManager;
         }
 
+        /// <summary>
+        /// Gets a specific message and removes it from the website
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="SenderId"></param> 
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> GetMsg(GetMsgViewModel model, string SenderId)
         {
@@ -49,8 +64,12 @@ namespace dotnetlab2.Controllers
             return RedirectToAction(nameof(UsermessagesController.Usermessages), "Usermessages", new { userID = SenderId, StatusMessage = "Successfully removed message!" });
         }
 
-
-
+        /// <summary>
+        /// Gets a message and returns information about it based on the message ID
+        /// </summary>
+        /// <param name="modelUsername"></param>
+        /// <param name="messageID"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetMsg(string modelUsername, int messageID)
         {
@@ -96,6 +115,12 @@ namespace dotnetlab2.Controllers
             throw new Exception("No message with this ID");
         }
 
+        /// <summary>
+        /// Loads the other messages under the message that the user is reading
+        /// </summary>
+        /// <param name="excludingMessageId"></param>
+        /// <param name="userID"></param>
+        /// <returns></returns>
         private async Task<UsermessagesViewModel> getOtherMessages(int excludingMessageId, string userID)
         {
 
