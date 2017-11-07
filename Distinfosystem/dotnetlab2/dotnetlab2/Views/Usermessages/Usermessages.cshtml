@@ -1,0 +1,19 @@
+﻿@model dotnetlab2.Models.HomeViewModels.UsermessagesViewModel
+
+@{
+    ViewData["Title"] = "Usermessages";
+}
+
+<h3>Inbox</h3>
+@ViewData["StatusMessage"]
+<h4>Messages from: @Model.Username</h4>
+
+@{ 
+    foreach(var m in Model.Messages)
+    {
+        <p>
+            <a asp-controller="GetMsg" asp-action="GetMsg" asp-route-messageID="@m.MessageId">@m.DateTime - @m.Topic @m.isRead</a>
+        </p>
+    }
+}
+

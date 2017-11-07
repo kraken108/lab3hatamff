@@ -51,7 +51,7 @@ public class Idle extends State {
     }
 
     private void sendTRO(DatagramPacket p, DatagramSocket s) throws IOException {
-        String tro = "TRO";
+        String tro = "TRQ";
         System.out.println("Sending TRO");
         System.out.println("Sending to: " + p.getAddress().toString() + " " + p.getPort());
         DatagramPacket returnPacket = new DatagramPacket(tro.getBytes(),tro.getBytes().length,p.getAddress(),p.getPort());
