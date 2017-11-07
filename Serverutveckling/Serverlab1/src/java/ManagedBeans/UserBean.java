@@ -1,0 +1,100 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package ManagedBeans;
+
+import BO.UserHandler;
+import java.io.IOException;
+import java.io.Serializable;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+
+/**
+ *
+ * @author Jakob
+ */
+@ManagedBean
+@SessionScoped
+public class UserBean implements Serializable {
+
+    UserHandler userHelper;
+    private String username;
+    private String password;
+    private Boolean authorized;
+    private String statusMessage;
+    private String password2;
+
+    public String getPassword2() {
+        return password2;
+    }
+
+    public void setPassword2(String password2) {
+        this.password2 = password2;
+    }
+    
+    
+    public void setUsername(String name) throws Exception {
+        this.username = name;
+    }
+    
+    public void setPassword(String password){
+        this.password = password;
+    }
+    
+    public String getUsername(){
+        return username;
+    }
+    
+    public String getPassword(){
+        return password;
+    }
+
+    public String redirectLoginPage() {
+        return "login.xhtml";
+    }
+    
+    
+    public Boolean getIsLoggedIn(){
+        return authorized;
+    }
+    
+    
+    public String getStatusMessage(){
+        return statusMessage;
+    }
+    
+    public String logout(){
+        username = "";
+        password = "";
+        authorized = false;
+        return "login.xhtml";
+    }
+    
+    public String doLogin(){
+        statusMessage = "";
+        userHelper = new UserHandler();
+        if(userHelper.login(username, password)){
+            authorized = true;
+            return "index.xhtml";
+        }else{
+            statusMessage = "Wrong password or username";
+            return "login.xhtml";
+        }
+    }
+    
+    public void createAccount(){
+        statusMessage = "";
+        userHelper = new UserHandler();
+        try{
+            if(userHelper.createUser(username, password)){
+                statusMessage = "Successfully created account!";
+            }
+        }catch(Exception e){
+            statusMessage = e.toString();
+        }
+    }
+}
