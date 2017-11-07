@@ -20,12 +20,6 @@ public class CallingIn extends StateUncallable {
         super(p);
     }
 
-    public CallingIn(DatagramPacket p){
-        
-        
-    }
-    
-    
     @Override
     public String getStatename() {
         return ("CallingIn");
@@ -48,7 +42,8 @@ public class CallingIn extends StateUncallable {
         }
 
     }
-
+    
+    //kollar så att det är rätt klient i ACK
     private void sendError(DatagramPacket p, DatagramSocket s) {
         String message = "ERROR";
         byte[] data = message.getBytes();

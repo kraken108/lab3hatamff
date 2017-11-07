@@ -1,0 +1,12 @@
+E:\VSGit\Distinfosystem\dotnetlab2\dotnetlab2\bin\Debug\netcoreapp2.0\dotnetlab2.deps.json
+E:\VSGit\Distinfosystem\dotnetlab2\dotnetlab2\bin\Debug\netcoreapp2.0\dotnetlab2.runtimeconfig.json
+E:\VSGit\Distinfosystem\dotnetlab2\dotnetlab2\bin\Debug\netcoreapp2.0\dotnetlab2.runtimeconfig.dev.json
+E:\VSGit\Distinfosystem\dotnetlab2\dotnetlab2\bin\Debug\netcoreapp2.0\dotnetlab2.dll
+E:\VSGit\Distinfosystem\dotnetlab2\dotnetlab2\bin\Debug\netcoreapp2.0\dotnetlab2.pdb
+E:\VSGit\Distinfosystem\dotnetlab2\dotnetlab2\obj\Debug\netcoreapp2.0\dotnetlab2.csprojResolveAssemblyReference.cache
+E:\VSGit\Distinfosystem\dotnetlab2\dotnetlab2\obj\Debug\netcoreapp2.0\dotnetlab2.csproj.CoreCompileInputs.cache
+E:\VSGit\Distinfosystem\dotnetlab2\dotnetlab2\obj\Debug\netcoreapp2.0\UserSecretsAssemblyInfo.cs
+E:\VSGit\Distinfosystem\dotnetlab2\dotnetlab2\obj\Debug\netcoreapp2.0\dotnetlab2.AssemblyInfoInputs.cache
+E:\VSGit\Distinfosystem\dotnetlab2\dotnetlab2\obj\Debug\netcoreapp2.0\dotnetlab2.AssemblyInfo.cs
+E:\VSGit\Distinfosystem\dotnetlab2\dotnetlab2\obj\Debug\netcoreapp2.0\dotnetlab2.dll
+E:\VSGit\Distinfosystem\dotnetlab2\dotnetlab2\obj\Debug\netcoreapp2.0\dotnetlab2.pdb

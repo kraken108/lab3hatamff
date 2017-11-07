@@ -23,7 +23,8 @@ public class NewSkype {
     private CallController callController;
     private Boolean inSession;
     private DatagramSocket ds;
-
+    
+    //till för felläget
     private Boolean acceptTRO = true;
     private Boolean noHangup = false;
     private Boolean noAck = false;
@@ -63,7 +64,8 @@ public class NewSkype {
         p.setPort(Integer.parseInt(strings[2]));
         return p;
     }
-
+        
+    //hanterar meddelande beroende på input
     public void handleInput(String message) throws UnknownHostException, Exception {
         if (message.startsWith("CALLE")) {
             acceptTRO = false;
@@ -76,12 +78,12 @@ public class NewSkype {
             callController.processNextEvent(Signal.REQUEST_HANGUP, p, ds);
         } else if (message.startsWith("CALL")) {
             handleMessage(constructInvite(message), ds);
-
         } else {
             System.out.println("Unknown command");
         }
     }
-
+    
+    //för felläget
     private void sendSecondInvite(DatagramPacket p) throws IOException {
         String s = "INVITE";
         byte[] data = s.getBytes();
@@ -89,7 +91,8 @@ public class NewSkype {
         p.setLength(data.length);
         ds.send(p);
     }
-
+    
+    //skickar vidare meddelandet till callcontroller beroende på signal
     public void handleMessage(DatagramPacket p, DatagramSocket s) {
         String message = new String(p.getData());
         if (message.startsWith("INVITE")) {
@@ -111,6 +114,7 @@ public class NewSkype {
                 callController.processNextEvent(Signal.BYE, p, s);
             }
         } else if (message.startsWith("ERROR")) {
+            System.out.println("Received ERROR");
             callController.processNextEvent(Signal.ERROR, p, s);
         } else if (message.startsWith("HANGUP")) {
             if (!noHangup) {

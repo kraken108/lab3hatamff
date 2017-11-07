@@ -38,10 +38,34 @@ public abstract class StateUncallable extends State {
         return this;
     }
 
-    public DatagramPacket getPacket(){
+    public DatagramPacket getPacket() {
         return packet;
     }
-    
+
+    @Override
+    public State initiateCALL(DatagramPacket p, DatagramSocket s) {
+        if (initiationTime != -1 && timeoutExpired()) {
+            try {
+                sendInvite(p, s);
+                return new CallingOut(p);
+            } catch (IOException ex) {
+                System.out.println("Failed to send invite: " + ex);
+                return this;
+            }
+        }else{
+            return this;
+        }
+    }
+
+    private void sendInvite(DatagramPacket p, DatagramSocket s) throws IOException {
+        try {
+            System.out.println("Sending INVITE");
+            s.send(p);
+        } catch (IOException ex) {
+            throw (ex);
+        }
+    }
+
     @Override
     public State receivedINVITE(DatagramPacket dp, DatagramSocket ds) {
         if (initiationTime != -1) {
@@ -49,28 +73,28 @@ public abstract class StateUncallable extends State {
                 if (timeoutExpired()) {
                     //Starta nytt samtal
                     System.out.println("Timeout expired,starting new call");
-                    CallingIn newState = new CallingIn(dp,ds);
+                    CallingIn newState = new CallingIn(dp, ds);
                     try {
-                        sendTRO(dp,ds);
+                        sendTRO(dp, ds);
                         return newState;
                     } catch (Exception ex) {
                         System.out.println(ex);
                         return new Idle();
                     }
-                    
-                }else{
+
+                } else {
                     System.out.println("Busy!");
-                    sendBusy(dp,ds);
+                    sendBusy(dp, ds);
                 }
-            }else{
-                sendError(dp,ds);
+            } else {
+                sendError(dp, ds);
                 return new Idle();
             }
-        }else{
+        } else {
             System.out.println("Busy!");
             sendBusy(dp, ds);
         }
-        
+
         return this;
 
     }
@@ -86,19 +110,19 @@ public abstract class StateUncallable extends State {
             System.out.println(e);
         }
     }
-    
-    private void sendTRO(DatagramPacket p, DatagramSocket s) throws Exception{
+
+    private void sendTRO(DatagramPacket p, DatagramSocket s) throws Exception {
         String message = "TRO";
         byte[] data = message.getBytes();
         p.setData(data);
         p.setLength(data.length);
-        try{
+        try {
             s.send(p);
-        }catch(Exception e){
-            throw(e);
+        } catch (Exception e) {
+            throw (e);
         }
     }
-    
+
     @Override
     public State receivedERROR() {
         return new Idle();
@@ -125,7 +149,7 @@ public abstract class StateUncallable extends State {
     }
 
     public Boolean isCorrectClient(DatagramPacket p) {
-        if(packet == null){
+        if (packet == null) {
             return false;
         }
         if (p.getAddress().getHostAddress().equals(packet.getAddress().getHostAddress())) {

@@ -29,7 +29,7 @@ public class KeyboardListener implements Runnable {
         while (true) {
             String input = scanner.nextLine();
             try {
-                newSkype.handleInput(input);
+                newSkype.handleInput(input);  //hanterar meddelandet beroende på användarens input
             } catch (UnknownHostException ex) {
                 System.out.println("Couldn't find host: " + ex);
             } catch (Exception ex) {
