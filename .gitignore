@@ -115,4 +115,10 @@ _[Ss]cripts
 *.nupkg
 *.ncrunchsolution
 *.dot[Cc]over
+<<<<<<< HEAD
 /Serverutveckling/ATest/build/
+=======
+/Serverutveckling/Serverlab1/nbproject/private/
+/Serverutveckling/Serverlab1/build/
+>>>>>>> cf536b5a5896eee884b229446262249953dc3ca0
+/Serverutveckling/ATest/nbproject/private/
