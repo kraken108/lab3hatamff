@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewData["Title"] = "Readpage";
+    
+}
+@model dotnetlab2.Models.HomeViewModels.ReadpageViewModel
+@using static dotnetlab2.Models.HomeViewModels.MessageInfo
+
+
+<h3>Inbox</h3>
+
+<br />
+
+@{
+    foreach (var ui in Model.Users)
+    {
+            <p>
+                <a asp-controller="Usermessages" asp-action="Usermessages" asp-route-userID="@ui.UserId">Sender: @Html.DisplayFor(Sender => ui.Username) Unread messages: @Html.DisplayFor(Receiver => ui.NumberUnreadMessages)</a>
+            </p>
+
+    }
+
+    <br />
+    <br />
+    <p>Total messages: @Model.totalNumberMessages , Total read messages: @Model.totalNumberRead , Total removed messages: @Model.totalNumberRemoved</p>
+}
