@@ -6,19 +6,12 @@
     <h:head>
         <title>Facelet Title</title>
     </h:head>
-    
     <h:body>
+
         <ui:include src='navbar.xhtml'/>
         <div style="float:left">
-            <h2>Friends</h2>
-            
-            <!-- TODO: LIST ALL USERS -->
-            <ui:repeat value="#{userBean.users}" var="user">
-                <h:link value="#{user.username}"/>
-                <br/>            
-            </ui:repeat>
+            <h2>Send message</h2>
         </div>
-        
     </h:body>
 </html>
 

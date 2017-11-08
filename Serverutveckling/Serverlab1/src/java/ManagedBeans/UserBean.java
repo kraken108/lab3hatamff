@@ -6,8 +6,11 @@
 package ManagedBeans;
 
 import BO.UserHandler;
+import Model.User;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -27,7 +30,24 @@ public class UserBean implements Serializable {
     private Boolean authorized;
     private String statusMessage;
     private String password2;
+    private List<User> users;
 
+    public List<User> getUsers(){
+        return users;
+    }
+
+    public void setUsers(List<User> users){
+        this.users = users;
+    }
+    
+    public UserBean(){
+        users = new ArrayList<>();
+        users.add(new User("Jubbe"));
+        users.add(new User("Michael"));
+        users.add(new User("Alex"));
+        users.add(new User("Ponny"));
+    }
+    
     public String getPassword2() {
         return password2;
     }
