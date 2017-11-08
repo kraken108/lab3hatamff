@@ -12,12 +12,13 @@
             <br/>
             <h:commandLink value="Inbox" action="inbox.xhtml"></h:commandLink>
             <br/>
-            <h:commandLink value="Profile" action="profile.xhtml"></h:commandLink>
+            <h:link value="Profile" outcome="profile">
+                <f:param name="user" value="#{userBean.username}"/>
+            </h:link>
             <br/>
             <h:commandLink value="Friends" action="friends.xhtml"></h:commandLink>
             <br/><br/>
             <h:commandLink value="Logout" action="#{userBean.logout()}"></h:commandLink>
-
         </h:form>
     </div>
 </ui:composition>

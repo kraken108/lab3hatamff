@@ -11,6 +11,21 @@
         <ui:include src='navbar.xhtml'/>
         <div style="float:left">
             <h2>Send message</h2>
+            #{messageBean.statusMessage}
+            <h:form>
+                Topic:<br/>
+                <h:inputText id="topic" value="#{messageBean.sendTopic}">
+                </h:inputText>
+                <br/>
+                <br/>
+                Message:<br/>
+                <h:inputTextarea id="text" value="#{messageBean.sendMessage}">
+                </h:inputTextarea>
+                <br/>
+                <h:commandButton id="knapp" value="Send" action="#{messageBean.sendMessage}"/>
+                <br/>
+            </h:form>
+
         </div>
     </h:body>
 </html>

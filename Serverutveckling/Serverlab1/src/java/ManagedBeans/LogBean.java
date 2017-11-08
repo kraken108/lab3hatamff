@@ -29,7 +29,7 @@ public class LogBean {
         posts.add(new Post("Meddelande 3", new Date(), "Jubbe"));
     }
 
-    public List<Post> getPosts() {
+    public List<Post> getPostsByName(String username){
         return posts;
     }
 
