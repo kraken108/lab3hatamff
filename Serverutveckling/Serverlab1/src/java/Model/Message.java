@@ -17,8 +17,11 @@ public class Message {
     private String topic;
     private String message;
     private Date date;
+    private int id;
+
     
-    public Message(String sender, String receiver, String topic,String message,Date date){
+    public Message(String sender, String receiver, String topic,String message,Date date,int id){
+        this.id = id;
         this.topic = topic;
         this.sender = sender;
         this.receiver = receiver;
@@ -26,6 +29,14 @@ public class Message {
         this.date = date;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public String getSender() {
         return sender;
     }
