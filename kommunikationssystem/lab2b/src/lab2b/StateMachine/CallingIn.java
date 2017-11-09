@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package lab2b.StateMachine;
-
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -43,7 +42,8 @@ public class CallingIn extends StateUncallable {
         }
 
     }
-
+    
+    //kollar så att det är rätt klient i ACK
     private void sendError(DatagramPacket p, DatagramSocket s) {
         String message = "ERROR";
         byte[] data = message.getBytes();
@@ -54,6 +54,8 @@ public class CallingIn extends StateUncallable {
         } catch (Exception e) {
             System.out.println(e);
         }
-    }
+    }     
+
+    
 
 }

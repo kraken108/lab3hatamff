@@ -31,6 +31,8 @@ public class CallingOut extends StateUncallable {
         return new Idle();
     }
 
+    
+    //tar emot TRO, skickar ACK
     @Override
     public State receivedTRO(DatagramPacket dp, DatagramSocket ds) {
 

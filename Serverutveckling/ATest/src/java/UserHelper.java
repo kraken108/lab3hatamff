@@ -22,7 +22,7 @@ public class UserHelper {
         System.out.println("meep");
         this.session = HibernateUtil.getSessionFactory().openSession();
     }
-
+    
     public void addNewUser(String name) throws Exception {
         System.out.println("meep meep");
         EntityManagerFactory emf
@@ -35,16 +35,5 @@ public class UserHelper {
         em.getTransaction().commit();
         em.close();
         emf.close();
-        /*
-        try {
-            session.beginTransaction();
-            User user = new User(name);
-            session.save(user);
-            session.getTransaction().commit();
-        } catch (Exception e) {
-
-            throw (new Exception("gogogaga " + e.toString()));
-        }*/
     }
-
 }

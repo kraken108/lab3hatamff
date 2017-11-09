@@ -111,7 +111,8 @@ public class InCall extends StateUncallable{
         }     
     }
     
-    public void sendOk(DatagramPacket dp, DatagramSocket ds){
+    ///svarar ok på bye och övergår i idle
+    private void sendOk(DatagramPacket dp, DatagramSocket ds){
         System.out.println("Sending OK");
         String ok = "OK";
         dp.setData(ok.getBytes());

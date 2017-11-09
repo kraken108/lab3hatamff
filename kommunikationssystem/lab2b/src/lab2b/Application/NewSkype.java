@@ -14,16 +14,17 @@ import lab2b.Controller.CallController;
 import lab2b.Controller.CallController.Signal;
 import lab2b.Network.UDPListener;
 
-/**
+/*
  *
- * @author Anders
+ * skapar 2 trådar, en för keyboardlistener och en för udp
  */
 public class NewSkype {
 
     private CallController callController;
     private Boolean inSession;
     private DatagramSocket ds;
-
+    
+    //till för felläget
     private Boolean acceptTRO = true;
     private Boolean noHangup = false;
     private Boolean noAck = false;
@@ -49,7 +50,8 @@ public class NewSkype {
     public Boolean isInSession() {
         return inSession;
     }
-
+    
+    //lägger in ip, port och "invite" i ett paket och returnerar det
     private DatagramPacket constructInvite(String message) throws Exception {
         String[] strings = message.split(" ");
         if (strings.length < 3) {
@@ -62,7 +64,8 @@ public class NewSkype {
         p.setPort(Integer.parseInt(strings[2]));
         return p;
     }
-
+        
+    //hanterar meddelande beroende på input
     public void handleInput(String message) throws UnknownHostException, Exception {
         if (message.startsWith("CALLE")) {
             acceptTRO = false;
@@ -75,12 +78,12 @@ public class NewSkype {
             callController.processNextEvent(Signal.REQUEST_HANGUP, p, ds);
         } else if (message.startsWith("CALL")) {
             handleMessage(constructInvite(message), ds);
-
         } else {
             System.out.println("Unknown command");
         }
     }
-
+    
+    //för felläget
     private void sendSecondInvite(DatagramPacket p) throws IOException {
         String s = "INVITE";
         byte[] data = s.getBytes();
@@ -88,7 +91,8 @@ public class NewSkype {
         p.setLength(data.length);
         ds.send(p);
     }
-
+    
+    //skickar vidare meddelandet till callcontroller beroende på signal
     public void handleMessage(DatagramPacket p, DatagramSocket s) {
         String message = new String(p.getData());
         if (message.startsWith("INVITE")) {
@@ -122,7 +126,6 @@ public class NewSkype {
             callController.processNextEvent(Signal.PORT, p, s);
         } else {
             System.out.println("Okänt paket :P");
-            //do nothing?
         }
     }
 }

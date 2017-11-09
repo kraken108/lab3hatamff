@@ -68,13 +68,11 @@
         <form name="backToMainPage" action="index.jsp" method="POST">
             
              <input type="submit" value="Back to main page" name="backToMainPage"/>
-<<<<<<< HEAD
         </form>
 
                 
-=======
+
         </form>                
->>>>>>> 328ead9d00637673994f566ed0da52432fd78290
     </body>
 </html>
 
