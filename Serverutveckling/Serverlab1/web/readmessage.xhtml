@@ -10,7 +10,7 @@
         <ui:include src='navbar.xhtml'/>
         <div style="float:left">
             <h2>Read message</h2>
-            From: #{messageBean.currentMessage.sender}<br/>
+            From: #{messageBean.getSenderById(param['message'])}<br/>
             Date: #{messageBean.currentMessage.date}<br/>
             Topic: #{messageBean.currentMessage.topic}<br/>
             Message: #{messageBean.currentMessage.message}<br/>

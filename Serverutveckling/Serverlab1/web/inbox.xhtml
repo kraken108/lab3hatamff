@@ -13,8 +13,8 @@
         <div style="float:left">
             <h2>Inbox</h2>
             <ui:repeat value="#{messageBean.messages}" var="message" >
-                <h:link value="#{message.topic} | #{message.sender} | #{message.date}" >
-                    <f:param name="message" value="#{message}"/>
+                <h:link value="#{message.topic} | #{message.sender} | #{message.date}" outcome="readmessage">
+                    <f:param name="message" value="#{message.id}"/>
                 </h:link>
                 <br/>            
             </ui:repeat>

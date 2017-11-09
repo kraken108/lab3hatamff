@@ -40,6 +40,13 @@ public class UserBean implements Serializable {
         this.users = users;
     }
     
+    public Boolean isLoggedInUser(String username){
+        if(this.username.equals(username)){
+            return true;
+        }else{
+            return false;
+        }
+    }
     public UserBean(){
         users = new ArrayList<>();
         users.add(new User("Jubbe"));
