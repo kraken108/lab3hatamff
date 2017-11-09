@@ -23,27 +23,38 @@ public class PostBean {
     public PostBean(){
         postHandler = new PostHandler();
     }
+    
+    
     public String getStatusMessage() {
         return statusMessage;
     }
 
+    
     public void setStatusMessage(String statusMessage) {
         this.statusMessage = statusMessage;
     }
+    
     
     public String getNewPost() {
         return newPost;
     }
 
+    
     public void setNewPost(String newPost) {
         this.newPost = newPost;
     }
     
+    
     public String createPost(){
-        statusMessage = "Post successful!";
-        String toReturn = postHandler.createNewPost(newPost);
-        newPost = "";
-        return toReturn;
+        statusMessage = "";
+        
+        if(postHandler.createNewPost(newPost)){
+            statusMessage = "Post successful!";
+            return "profile.xhtml";
+        }else{
+            statusMessage = "Couldnt create post :/";
+            return "profile.xhtml";
+        }
     }
     
 }

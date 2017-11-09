@@ -33,7 +33,7 @@ public class UserHandler {
         
         
         
-        return false;
+        return true;
     }
     
     public void insertUser(String username){
