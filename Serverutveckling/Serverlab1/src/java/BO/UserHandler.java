@@ -54,8 +54,9 @@ public class UserHandler {
     
     public boolean createUser(String username, String password) throws Exception{
             
-            User userToInsert= new User(username, password);
+            
             em.getTransaction().begin();
+            User userToInsert= new User(username, password);
             em.persist(userToInsert);
             em.flush();
             em.getTransaction().commit();
