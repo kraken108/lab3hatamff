@@ -6,7 +6,9 @@
 package ManagedBeans;
 
 import BO.PostHandler;
+import Model.Post;
 import java.io.Serializable;
+import java.util.Date;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -30,6 +32,12 @@ public class PostBean implements Serializable{
         this.userBean = userBean;
     }
     
+    @ManagedProperty(value="#{logBean}")
+    private LogBean logBean;
+    
+    public void setLogBean(LogBean logBean){
+        this.logBean = logBean;
+    }
     
     public PostBean(){
         postHandler = new PostHandler();
@@ -61,7 +69,8 @@ public class PostBean implements Serializable{
     
     public String createPost(){
         statusMessage = "";
-        
+        Post p = new Post(newPost,new Date(),userBean.getUsername());
+        logBean.addPost(p);
         if(postHandler.createNewPost(newPost,userBean.getUsername())){
             newPost = "";
             statusMessage = "Post was successful! user: " + userBean.getUsername();

@@ -38,4 +38,8 @@ public class LogBean {
     public void setPosts(List<Post> posts) {
         this.posts = posts;
     }
+    
+    public void addPost(Post p){
+        posts.add(0, p);
+    }
 }

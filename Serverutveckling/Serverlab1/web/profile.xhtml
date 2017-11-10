@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
@@ -23,6 +24,10 @@
             #{postBean.statusMessage}<br/>
             #{postBean.resetStatusMessage()}
             <!-- TODO: SHOW FORM ONLY IF PROFILE IS LOGGED IN USER -->
+
+            <h3>Posts:</h3>
+
+
             <h:form rendered="#{userBean.isLoggedInUser(param['user'])}">
 
                 New post                
@@ -34,15 +39,25 @@
 
 
             <!-- TODO: LIST ALL POSTS -->
-            <h4>Posts:</h4>
-            <ui:repeat value="#{logBean.getPostsByName(param['user'])}" var="post">
-                <div style="border-top: 1px solid #ccc;padding-top: 10px;width:300px;">
-                    <b>#{post.user}</b><br/>
-                    <i>#{post.date}</i><br/>
-                    #{post.message}<br/>
-                    <br/>
-                </div>
-            </ui:repeat>
+
+
+
+            <h:form>
+                <h:panelGroup id="logposts">
+                    <ui:repeat value="#{logBean.getPostsByName(param['user'])}" var="post">
+                        <div style="border-top: 1px solid #ccc;padding-top: 10px;width:300px;">
+                            <b>#{post.user}</b><br/>
+                            <i>#{post.date}</i><br/>
+                            #{post.message}<br/>
+                            <br/>
+                        </div>
+                    </ui:repeat>
+                </h:panelGroup>
+                <p:poll interval="5" update="logposts"/>
+                <!--<h:commandButton id="uppdatera" value="Update">
+                    <f:ajax event="click" render="logposts"/>
+                </h:commandButton>-->
+            </h:form>
         </div>
 
     </h:body>

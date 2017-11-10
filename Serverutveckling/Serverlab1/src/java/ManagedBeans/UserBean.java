@@ -126,4 +126,12 @@ public class UserBean implements Serializable {
             statusMessage = e.toString();
         }
     }
+    
+    public String nameAlreadyExists(){
+        if(username.equals("")){
+            return "";
+        }else{
+            return "Username is available";
+        }
+    }
 }
