@@ -33,6 +33,8 @@ public class UserBean implements Serializable {
     private List<User> users;
 
     public List<User> getUsers(){
+        //TODO:
+        //Get users from userhandler instead of the hardcoded list from here
         return users;
     }
 

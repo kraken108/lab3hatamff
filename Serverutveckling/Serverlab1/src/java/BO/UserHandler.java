@@ -6,6 +6,7 @@
 package BO;
 
 import Model.User;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -29,9 +30,6 @@ public class UserHandler {
     public Boolean login(String username, String password){
         //TODO:
         //Check database and return true if user and pw is correct
-        
-        
-        
         
         return true;
     }
@@ -64,5 +62,13 @@ public class UserHandler {
             emf.close();       
             
             return false;
+    }
+    
+    
+    public List<User> getAllUsers(){
+        //TODO:
+        //Return a list of all users
+        
+        return null;
     }
 }

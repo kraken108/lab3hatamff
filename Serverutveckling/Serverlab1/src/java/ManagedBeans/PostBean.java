@@ -6,7 +6,9 @@
 package ManagedBeans;
 
 import BO.PostHandler;
+import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 /**
@@ -15,10 +17,19 @@ import javax.faces.bean.SessionScoped;
  */
 @ManagedBean
 @SessionScoped
-public class PostBean {
+public class PostBean implements Serializable{
     private String newPost;
     private String statusMessage;
     private PostHandler postHandler;
+    
+    @ManagedProperty(value="#{userBean}")
+    private UserBean userBean;
+    
+    
+    public void setUserBean(UserBean userBean){
+        this.userBean = userBean;
+    }
+    
     
     public PostBean(){
         postHandler = new PostHandler();
@@ -44,16 +55,21 @@ public class PostBean {
         this.newPost = newPost;
     }
     
+    public void resetStatusMessage(){
+        statusMessage = "";
+    }
     
     public String createPost(){
         statusMessage = "";
         
-        if(postHandler.createNewPost(newPost)){
-            statusMessage = "Post successful!";
-            return "profile.xhtml";
+        if(postHandler.createNewPost(newPost,userBean.getUsername())){
+            newPost = "";
+            statusMessage = "Post was successful! user: " + userBean.getUsername();
+            return "profile?faces-redirect=true&user="+userBean.getUsername();
         }else{
+            newPost = "";
             statusMessage = "Couldnt create post :/";
-            return "profile.xhtml";
+            return "profile?faces-redirect=true&user="+userBean.getUsername();
         }
     }
     
