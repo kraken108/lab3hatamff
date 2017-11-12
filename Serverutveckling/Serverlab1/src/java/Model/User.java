@@ -21,6 +21,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "User")
 public class User implements Serializable {
+
     private String username;
     private Long id;
     private String password;
@@ -53,7 +54,7 @@ public class User implements Serializable {
     public Long getId() {
         return id;
     }
-
+    
     /**
      * @param id the id to set
      */

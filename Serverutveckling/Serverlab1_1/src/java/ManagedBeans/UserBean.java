@@ -120,9 +120,6 @@ public class UserBean implements Serializable {
             if(userHelper.createUser(username, password)){
                 statusMessage = "Successfully created account!";
             }
-            else{
-                statusMessage = "Didn't create account, i tink kanske redan finns jåå";
-            }
         }catch(Exception e){
             statusMessage = e.toString();
         }
