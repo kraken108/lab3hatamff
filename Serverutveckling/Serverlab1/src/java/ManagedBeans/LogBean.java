@@ -30,10 +30,16 @@ public class LogBean {
     }
 
     public List<Post> getPostsByName(String username){
+        //TODO:
+        //Get the posts from loghandler instead of these hardcoded posts
         return posts;
     }
 
     public void setPosts(List<Post> posts) {
         this.posts = posts;
+    }
+    
+    public void addPost(Post p){
+        posts.add(0, p);
     }
 }

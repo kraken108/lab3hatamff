@@ -13,10 +13,10 @@ public class PostHandler {
     
     public PostHandler(){}
     
-    public String createNewPost(String newPost){
+    public Boolean createNewPost(String newPost,String user){
         //TODO:
         //Create new post add to database, return some response if successful or not
         
-        return "profile.xhtml";
+        return true;
     }
 }

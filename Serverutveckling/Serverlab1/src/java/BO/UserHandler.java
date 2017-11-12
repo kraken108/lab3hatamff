@@ -62,7 +62,9 @@ public class UserHandler {
             return false;
     }   
  
-    public boolean createUser(String username, String password) /*throws Exception*/{
+   
+    public boolean createUser(String username, String password) throws Exception{
+            
             
         String testname = username;
         User tempUser = new User();
@@ -91,6 +93,9 @@ public class UserHandler {
         
        } 
         return false;        
-    }    
+    }   
 }
+    
+
+
 

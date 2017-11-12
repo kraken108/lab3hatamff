@@ -5,6 +5,10 @@
  */
 package BO;
 
+import Model.Message;
+import java.util.Date;
+import java.util.List;
+
 /**
  *
  * @author Michael
@@ -19,4 +23,23 @@ public class MessageHandler {
         
      return false;   
     }   
+    
+    public List<Message> getMessagesByReceiver(String receiver){
+        //TODO:
+        //Return a list of all messages where the receiver is named receiver
+        
+        return null;
+    }
+    
+    public Message getMessageById(int id){
+        //TODO get message from database with the stated id and return it
+        
+        return null;
+    }
+    
+    public Boolean sendMessage(String receiver, String sender, String topic, String text,Date date){
+        //TODO
+        //Create new message in database and return true if successful
+        return true;
+    }
 }
