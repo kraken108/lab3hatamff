@@ -135,6 +135,7 @@ public class UserBean implements Serializable {
             return "";
         }else{
             return "Username is available";
+            
         }
     }
 }

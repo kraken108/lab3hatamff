@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -21,7 +22,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "User")
 public class User implements Serializable {
-
     private String username;
     private Long id;
     private String password;
