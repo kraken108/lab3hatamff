@@ -59,9 +59,18 @@ public class UserHandler {
     
     public ArrayList<User> getAllUsers(){
     
-        Query q = em.createQuery("SELECT * FROM User");
-        return (ArrayList<User>) q.getResultList();
-        //return null;
+        ArrayList<User> users = new ArrayList();
+        
+        try{
+            Query q = em.createQuery(
+            "SELECT * FROM User :usersList");
+            q.setParameter("usersList", users);
+//            users = (ArrayList<User>) q.getResultList();
+            
+        }catch(NoResultException e){
+            return null;
+        }
+        return (ArrayList<User>) users.clone();        
     } 
     
     public User checkIfAlreadyExists(String username){
