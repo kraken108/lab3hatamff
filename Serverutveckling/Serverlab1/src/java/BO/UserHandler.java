@@ -6,9 +6,16 @@
 package BO;
 
 import Model.User;
-import java.util.List;
+import antlr.collections.List;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Formatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
@@ -25,50 +32,75 @@ public class UserHandler {
     
         emf = Persistence.createEntityManagerFactory("Serverlab1PU");
         em = emf.createEntityManager();
+
     }
         
     public Boolean login(String username, String password){
-        //TODO:
-        //Check database and return true if user and pw is correct
+
+        String testname = username;
+        String testpass = password;
         
-        return true;
-    }
+        try{
+            Query q = em.createQuery(
+            "SELECT u FROM User u WHERE u.username LIKE :username AND u.password LIKE :password");
+            q.setParameter("username", testname);
+            q.setParameter("password", testpass);
+            q.setMaxResults(1);
+            q.getSingleResult();
+        }catch(NoResultException e){
+                testname = "";
+                testpass = "";
+        }        
+        
+        if((testname.equals(username)) && (testpass.equals(password)))
+            return true;        
+        else
+            return false;
+    }   
     
-    public void insertUser(String username){
-        Query q = em.createQuery("");
-    }
+    public ArrayList<User> getAllUsers(){
     
-    /*
-    public List findWithName(String name) {
-        return em.createQuery(
-        "SELECT DISTINCT user FROM User user WHERE user.username LIKE '" + name + "'");
-        .setParameter("custName", name)
-        .setMaxResults(10)
-        .getSingleResult()).longValue();
-        return null
-    }
-    */
+        Query q = em.createQuery("SELECT * FROM User");
+        return (ArrayList<User>) q.getResultList();
+    } 
     
+    public User checkIfAlreadyExists(String username){
+        
+        String testname = username;
+        User tempUser = new User();
+        try{
+            tempUser = (User) em.createQuery(
+            "SELECT u FROM User u WHERE u.username LIKE :username")
+            .setParameter("username", testname)
+            .setMaxResults(1)
+            .getSingleResult(); 
+        }catch(NoResultException e){
+            testname ="";
+        }
+        tempUser.setUsername(testname);
+        
+        return tempUser;
+    }
     
     public boolean createUser(String username, String password) throws Exception{
             
-            
+       User tempUser = checkIfAlreadyExists(username);       
+      
+       if(!(tempUser.getUsername().equals(username))){     
             em.getTransaction().begin();
-            User userToInsert= new User(username, password);
+            User userToInsert = new User(username, password);
             em.persist(userToInsert);
             em.flush();
             em.getTransaction().commit();
             em.close();
-            emf.close();       
-            
-            return false;
-    }
-    
-    
-    public List<User> getAllUsers(){
-        //TODO:
-        //Return a list of all users
+            emf.close();   
+            return true;
         
-        return null;
-    }
+       } 
+        return false;        
+    }   
 }
+    
+
+
+
