@@ -5,7 +5,6 @@
  */
 package ManagedBeans;
 
-import BO.*;
 import Model.Message;
 import java.util.ArrayList;
 import java.util.Date;
@@ -95,7 +94,6 @@ public class MessageBean {
     public List<Message> getMessages() {
         //TODO: get messages from messagehandler where receiver is logged in user
         // Instead of the hardcoded message list.
-        MessageHandler ms = new MessageHandler();
         //ms.getMessagesByReceiver(userBean.getUsername());        
         return messages;
     }
@@ -113,14 +111,15 @@ public class MessageBean {
     }
 
     public String sendMessage() {
-        MessageHandler mh = new MessageHandler();
+       /* MessageHandler mh = new MessageHandler();
         if(mh.sendMessage(receiver,userBean.getUsername(), sendTopic, sendMessage, new Date())){
             statusMessage = "Success!";
             return "sendmessage.xhtml";
         }else{
             statusMessage = "Something went wrong :(";
             return "sendmessage.xhtml";
-        }
+        }*/
+       return "";
     }
 
     public String getReceiver() {
