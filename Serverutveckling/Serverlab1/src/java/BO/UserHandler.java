@@ -32,9 +32,8 @@ public class UserHandler {
     
         emf = Persistence.createEntityManagerFactory("Serverlab1PU");
         em = emf.createEntityManager();
-
     }
-        
+
     public Boolean login(String username, String password){
 
         String testname = username;
@@ -50,7 +49,7 @@ public class UserHandler {
         }catch(NoResultException e){
                 testname = "";
                 testpass = "";
-        }        
+        }      
         
         if((testname.equals(username)) && (testpass.equals(password)))
             return true;        
@@ -62,6 +61,7 @@ public class UserHandler {
     
         Query q = em.createQuery("SELECT * FROM User");
         return (ArrayList<User>) q.getResultList();
+        //return null;
     } 
     
     public User checkIfAlreadyExists(String username){
@@ -94,8 +94,7 @@ public class UserHandler {
             em.getTransaction().commit();
             em.close();
             emf.close();   
-            return true;
-        
+            return true;        
        } 
         return false;        
     }   

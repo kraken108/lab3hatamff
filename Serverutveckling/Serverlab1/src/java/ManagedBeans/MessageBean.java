@@ -41,10 +41,10 @@ public class MessageBean {
         //statusMessage = "";
 
         messages = new ArrayList<>();
-        messages.add(new Message("Jubbe", "Michael", "topic 1", "Hej hej här är ett privat meddelande", new Date(), 0));
-        messages.add(new Message("Jubbe", "Michael", "topic 2", "Hej hej här är ett privat meddelande2", new Date(), 1));
-        messages.add(new Message("Jubbe", "Michael", "topic 3", "Hej hej här är ett privat meddelande3", new Date(), 2));
-        messages.add(new Message("Jubbe", "Michael", "topic 4", "Hej hej här är ett privat meddelande4", new Date(), 3));
+        messages.add(new Message("Jubbe", "Michael", "topic 1", "Hej hej här är ett privat meddelande", new Date().toString()));
+        messages.add(new Message("Jubbe", "Michael", "topic 2", "Hej hej här är ett privat meddelande2", new Date().toString()));
+        messages.add(new Message("Jubbe", "Michael", "topic 3", "Hej hej här är ett privat meddelande3", new Date().toString()));
+        messages.add(new Message("Jubbe", "Michael", "topic 4", "Hej hej här är ett privat meddelande4", new Date().toString()));
     }
 
     public String getStatusMessage() {
