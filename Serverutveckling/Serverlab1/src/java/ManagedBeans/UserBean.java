@@ -50,7 +50,12 @@ public class UserBean implements Serializable {
         }
     }
 
-    public UserBean() {
+    public void setStatusMessage(String statusMessage) {
+        this.statusMessage = statusMessage;
+    }
+
+    
+    public UserBean(){
         users = new ArrayList<>();
         users.add(new User("Jubbe"));
         users.add(new User("Michael"));
@@ -58,6 +63,8 @@ public class UserBean implements Serializable {
         users.add(new User("Ponny"));
     }
 
+    
+    
     public String getPassword2() {
         return password2;
     }
@@ -66,7 +73,7 @@ public class UserBean implements Serializable {
         this.password2 = password2;
     }
 
-    public void setUsername(String name) throws Exception {
+    public void setUsername(String name){
         this.username = name;
     }
 
@@ -117,21 +124,24 @@ public class UserBean implements Serializable {
         statusMessage = "";
         userHelper = new UserHandler();
         
+        if(username.length() < 3 || username.length() > 15){
+            statusMessage = "Username length must be between 3 and 15 characters";
+            return;
+        }
+        
         if(!password.equals(password2)){
             statusMessage = "Passwords doesn't match!";
             return;
         }
-        if(password.length() < 5 && password.length() > 20){
+
+        if((password.length() < 5)  || (password.length() > 20)){
             statusMessage = "Password length must be between 5 and 20 characters";
             return;
         }
         
         try {
-            if (userHelper.createUser(username, password)) {
-                statusMessage = "Successfully created account!";
-            } else {
-                statusMessage = "Didn't create account, i tink kanske redan finns jåå";
-            }
+            statusMessage = userHelper.createUser(username,password);
+            username = "";
         } catch (Exception e) {
             statusMessage = e.toString();
         }

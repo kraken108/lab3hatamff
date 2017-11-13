@@ -17,7 +17,7 @@
             <h:inputSecret value="#{userBean.password}"/><br/>
             <h:commandButton id="knapp" value="Login" action="#{userBean.doLogin}"/>
             <br/>
-            <h:commandLink value='Create new account' action='createaccount.xhtml'/>
+            <h:commandLink value='Create new account' action="#{navigationBean.goToCreateAccount()}"/>
         </h:form>
     </h:body>
 </html>
