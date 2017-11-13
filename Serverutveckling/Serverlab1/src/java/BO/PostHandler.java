@@ -5,17 +5,30 @@
  */
 package BO;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 /**
  *
  * @author Jakob
  */
 public class PostHandler {
     
-    public PostHandler(){}
+    private final EntityManager em;
+    private final EntityManagerFactory emf;
+    
+    public PostHandler(){
+    
+        emf = Persistence.createEntityManagerFactory("Serverlab1PU");
+        em = emf.createEntityManager();
+    }
     
     public Boolean createNewPost(String newPost,String user){
         //TODO:
         //Create new post add to database, return some response if successful or not
+        
+        
         
         return true;
     }
