@@ -32,31 +32,32 @@ public class UserBean implements Serializable {
     private String password2;
     private List<User> users;
 
-    public List<User> getUsers(){
+    public List<User> getUsers() {
         //TODO:
         //Get users from userhandler instead of the hardcoded list from here
-        return users;
+        return userHelper.getAllUsers();
     }
 
-    public void setUsers(List<User> users){
+    public void setUsers(List<User> users) {
         this.users = users;
     }
-    
-    public Boolean isLoggedInUser(String username){
-        if(this.username.equals(username)){
+
+    public Boolean isLoggedInUser(String username) {
+        if (this.username.equals(username)) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
-    public UserBean(){
+
+    public UserBean() {
         users = new ArrayList<>();
         users.add(new User("Jubbe"));
         users.add(new User("Michael"));
         users.add(new User("Alex"));
         users.add(new User("Ponny"));
     }
-    
+
     public String getPassword2() {
         return password2;
     }
@@ -64,78 +65,89 @@ public class UserBean implements Serializable {
     public void setPassword2(String password2) {
         this.password2 = password2;
     }
-    
-    
+
     public void setUsername(String name) throws Exception {
         this.username = name;
     }
-    
-    public void setPassword(String password){
+
+    public void setPassword(String password) {
         this.password = password;
     }
-    
-    public String getUsername(){
+
+    public String getUsername() {
         return username;
     }
-    
-    public String getPassword(){
+
+    public String getPassword() {
         return password;
     }
 
     public String redirectLoginPage() {
         return "login.xhtml";
     }
-    
-    
-    public Boolean getIsLoggedIn(){
+
+    public Boolean getIsLoggedIn() {
         return authorized;
     }
-    
-    
-    public String getStatusMessage(){
+
+    public String getStatusMessage() {
         return statusMessage;
     }
-    
-    public String logout(){
+
+    public String logout() {
         username = "";
         password = "";
         authorized = false;
         return "login.xhtml";
     }
-    
-    public String doLogin(){
+
+    public String doLogin() {
         statusMessage = "";
         userHelper = new UserHandler();
-        if(userHelper.login(username, password)){
+        if (userHelper.login(username, password)) {
             authorized = true;
             return "index.xhtml";
-        }else{
+        } else {
             statusMessage = "Wrong password or username";
             return "login.xhtml";
         }
     }
-    
-    public void createAccount(){
+
+    public void createAccount() {
         statusMessage = "";
         userHelper = new UserHandler();
-        try{
-            if(userHelper.createUser(username, password)){
+        
+        if(!password.equals(password2)){
+            statusMessage = "Passwords doesn't match!";
+            return;
+        }
+        if(password.length() < 5 && password.length() > 20){
+            statusMessage = "Password length must be between 5 and 20 characters";
+            return;
+        }
+        
+        try {
+            if (userHelper.createUser(username, password)) {
                 statusMessage = "Successfully created account!";
-            }
-            else{
+            } else {
                 statusMessage = "Didn't create account, i tink kanske redan finns jåå";
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             statusMessage = e.toString();
         }
     }
-    
-    public String nameAlreadyExists(){
-        if(username.equals("")){
-            return "";
+
+    public String nameAlreadyExists() {
+        userHelper = new UserHandler();
+        if (username != null && !username.equals("")) {
+            if (userHelper.checkIfAlreadyExists(username) != null) {
+                return "Username already exists!";
+            } else {
+                return "Username is available";
+            }
         }else{
-            return "Username is available";
-            
+            return "";
         }
+
     }
 }

@@ -12,11 +12,12 @@
         <h:form>
             <h2>Create new account</h2>
             #{userBean.statusMessage}<br/>
-            <h:outputText id="alreadyExists" value="#{userBean.nameAlreadyExists()}"/><br/>
+            
             Username:
             <h:inputText id="username" value="#{userBean.username}">
                 <f:ajax event="keyup" render="alreadyExists"/>
             </h:inputText>
+            <h:outputText id="alreadyExists" value=" #{userBean.nameAlreadyExists()}"/>
             <br/>
             Password:
             <h:inputSecret value="#{userBean.password}"/><br/>

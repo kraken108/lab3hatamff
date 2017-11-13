@@ -59,7 +59,6 @@ public class UserHandler {
     }   
     
     public ArrayList<User> getAllUsers(){
-    
         Query q = em.createQuery("SELECT * FROM User");
         return (ArrayList<User>) q.getResultList();
     } 
@@ -76,6 +75,7 @@ public class UserHandler {
             .getSingleResult(); 
         }catch(NoResultException e){
             testname ="";
+            return null;
         }
         tempUser.setUsername(testname);
         
