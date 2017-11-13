@@ -57,22 +57,15 @@ public class UserHandler {
             return false;
     }   
     
-    public ArrayList<User> getAllUsers(){
-
-    
-        ArrayList<User> users = new ArrayList();
+    public java.util.List getAllUsers(){
         
         try{
-            Query q = em.createQuery(
-            "SELECT * FROM User :usersList");
-            q.setParameter("usersList", users);
-//            users = (ArrayList<User>) q.getResultList();
+            Query q = em.createQuery("SELECT u FROM User u");
+            return q.getResultList();
             
         }catch(NoResultException e){
             return null;
         }
-        return (ArrayList<User>) users.clone();        
-
     } 
     
     public User checkIfAlreadyExists(String username){
