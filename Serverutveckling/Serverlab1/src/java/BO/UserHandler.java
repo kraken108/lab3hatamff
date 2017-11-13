@@ -55,9 +55,11 @@ public class UserHandler {
             return true;
         } else {
             return false;
+
         }
     }
 
+    /*
     public ArrayList<User> getAllUsers() {
 
         ArrayList<User> users = new ArrayList();
@@ -73,9 +75,23 @@ public class UserHandler {
         }
         return (ArrayList<User>) users.clone();
 
-    }
+    }*/
 
-    public User checkIfAlreadyExists(String username) {
+ 
+    
+    public java.util.List getAllUsers(){
+        
+        try{
+            Query q = em.createQuery("SELECT u FROM User u");
+            return q.getResultList();
+            
+        }catch(NoResultException e){
+            return null;
+        }
+    } 
+    
+    public User checkIfAlreadyExists(String username){
+        
 
         String testname = username;
         User tempUser = new User();

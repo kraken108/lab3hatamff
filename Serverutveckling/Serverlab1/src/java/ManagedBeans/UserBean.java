@@ -35,7 +35,7 @@ public class UserBean implements Serializable {
     public List<User> getUsers() {
         //TODO:
         //Get users from userhandler instead of the hardcoded list from here
-        return userHelper.getAllUsers();
+        return (List<User>) userHelper.getAllUsers();
     }
 
     public void setUsers(List<User> users) {
