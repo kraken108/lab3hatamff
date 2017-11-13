@@ -27,7 +27,6 @@ public class UserHandler {
     
     private final EntityManager em;
     private final EntityManagerFactory emf;
-    private Formatter formatter;
     
     public UserHandler(){
     
@@ -37,20 +36,17 @@ public class UserHandler {
     }
         
     public Boolean login(String username, String password){
-        //TODO:
-        //Check database and return true if user and pw is correct
-        //int counter=0;
+
         String testname = username;
         String testpass = password;
-        User tempUser = new User();
         
         try{
-            tempUser = (User) em.createQuery(
-            "SELECT u FROM User u WHERE u.username LIKE :username AND u.password LIKE :password")
-            .setParameter("username", testname)
-            .setParameter("password", testpass)
-            .setMaxResults(1)
-            .getSingleResult();
+            Query q = em.createQuery(
+            "SELECT u FROM User u WHERE u.username LIKE :username AND u.password LIKE :password");
+            q.setParameter("username", testname);
+            q.setParameter("password", testpass);
+            q.setMaxResults(1);
+            q.getSingleResult();
         }catch(NoResultException e){
                 testname = "";
                 testpass = "";
@@ -61,15 +57,19 @@ public class UserHandler {
         else
             return false;
     }   
- 
-   
-    public boolean createUser(String username, String password) throws Exception{
-            
-            
+    
+    public ArrayList<User> getAllUsers(){
+    
+        Query q = em.createQuery("SELECT * FROM User");
+        return (ArrayList<User>) q.getResultList();
+    } 
+    
+    public User checkIfAlreadyExists(String username){
+        
         String testname = username;
         User tempUser = new User();
         try{
-             tempUser = (User) em.createQuery(
+            tempUser = (User) em.createQuery(
             "SELECT u FROM User u WHERE u.username LIKE :username")
             .setParameter("username", testname)
             .setMaxResults(1)
@@ -79,9 +79,14 @@ public class UserHandler {
         }
         tempUser.setUsername(testname);
         
+        return tempUser;
+    }
+    
+    public boolean createUser(String username, String password) throws Exception{
+            
+       User tempUser = checkIfAlreadyExists(username);       
       
-       if(!(tempUser.getUsername().equals(username))){
-     
+       if(!(tempUser.getUsername().equals(username))){     
             em.getTransaction().begin();
             User userToInsert = new User(username, password);
             em.persist(userToInsert);
