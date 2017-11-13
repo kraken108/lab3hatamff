@@ -24,94 +24,97 @@ import javax.persistence.Query;
  * @author Jakob
  */
 public class UserHandler {
-    
+
     private final EntityManager em;
     private final EntityManagerFactory emf;
-    
-    public UserHandler(){
-    
+
+    public UserHandler() {
+
         emf = Persistence.createEntityManagerFactory("Serverlab1PU");
         em = emf.createEntityManager();
     }
 
-    public Boolean login(String username, String password){
+    public Boolean login(String username, String password) {
 
         String testname = username;
         String testpass = password;
-        
-        try{
+
+        try {
             Query q = em.createQuery(
-            "SELECT u FROM User u WHERE u.username LIKE :username AND u.password LIKE :password");
+                    "SELECT u FROM User u WHERE u.username LIKE :username AND u.password LIKE :password");
             q.setParameter("username", testname);
             q.setParameter("password", testpass);
             q.setMaxResults(1);
             q.getSingleResult();
-        }catch(NoResultException e){
-                testname = "";
-                testpass = "";
-        }      
-        
-        if((testname.equals(username)) && (testpass.equals(password)))
-            return true;        
-        else
-            return false;
-    }   
-    
-    public ArrayList<User> getAllUsers(){
+        } catch (NoResultException e) {
+            testname = "";
+            testpass = "";
+        }
 
-    
+        if ((testname.equals(username)) && (testpass.equals(password))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public ArrayList<User> getAllUsers() {
+
         ArrayList<User> users = new ArrayList();
-        
-        try{
+
+        try {
             Query q = em.createQuery(
-            "SELECT * FROM User :usersList");
+                    "SELECT * FROM User :usersList");
             q.setParameter("usersList", users);
 //            users = (ArrayList<User>) q.getResultList();
-            
-        }catch(NoResultException e){
+
+        } catch (NoResultException e) {
             return null;
         }
-        return (ArrayList<User>) users.clone();        
+        return (ArrayList<User>) users.clone();
 
-    } 
-    
-    public User checkIfAlreadyExists(String username){
-        
+    }
+
+    public User checkIfAlreadyExists(String username) {
+
         String testname = username;
         User tempUser = new User();
-        try{
+        try {
             tempUser = (User) em.createQuery(
-            "SELECT u FROM User u WHERE u.username LIKE :username")
-            .setParameter("username", testname)
-            .setMaxResults(1)
-            .getSingleResult(); 
-        }catch(NoResultException e){
-            testname ="";
+                    "SELECT u FROM User u WHERE u.username LIKE :username")
+                    .setParameter("username", testname)
+                    .setMaxResults(1)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            testname = "";
             return null;
         }
         tempUser.setUsername(testname);
-        
+
         return tempUser;
     }
-    
-    public boolean createUser(String username, String password) throws Exception{
-            
-       User tempUser = checkIfAlreadyExists(username);       
-      
-       if(!(tempUser.getUsername().equals(username))){     
-            em.getTransaction().begin();
-            User userToInsert = new User(username, password);
-            em.persist(userToInsert);
-            em.flush();
-            em.getTransaction().commit();
-            em.close();
-            emf.close();   
-            return true;        
-       } 
-        return false;        
-    }   
+
+    public String createUser(String username, String password) {
+
+        User tempUser = checkIfAlreadyExists(username);
+
+        if (tempUser == null) {
+            try {
+                em.getTransaction().begin();
+                User userToInsert = new User(username, password);
+                em.persist(userToInsert);
+                em.flush();
+                em.getTransaction().commit();
+                em.close();
+                emf.close();
+                return "Successfully created account!";
+            }catch(Exception e){
+                return e.toString();
+            }
+
+        }else{
+            return "Username already exists!";
+        }
+              
+    }
 }
-    
-
-
-

@@ -6,9 +6,7 @@
     <h:head>
         <title>Facelet Title</title>
     </h:head>
-    <h:body>
-        
-        
+    <h:body>   
         <h:form>
             <h2>Create new account</h2>
             #{userBean.statusMessage}<br/>
@@ -25,7 +23,7 @@
             <h:inputSecret value="#{userBean.password2}"/><br/>
             <h:commandButton id="knapp" value="Submit" action="#{userBean.createAccount}"/>
             <br/>
-            <h:commandLink value='Go back' action="login.xhtml" />
+            <h:commandLink value='Go back' action="#{navigationBean.goToLogin()}" />
         </h:form>
     </h:body>
 </html>
