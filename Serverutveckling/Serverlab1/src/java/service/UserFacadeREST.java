@@ -5,8 +5,14 @@
  */
 package service;
 
+import BO.UserHandler;
 import Model.User;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
@@ -18,6 +24,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import org.primefaces.component.log.Log;
 
 /**
  *
@@ -40,12 +47,13 @@ public class UserFacadeREST extends AbstractFacade<User> {
         return "yo!";
     }
     
-    
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(User entity) {
-        super.create(entity);
+        UserHandler uh = new UserHandler();
+        uh.createUser(entity.getUsername(), entity.getPassword());
+        //super.create(entity);
     }
 
     @PUT
@@ -74,7 +82,8 @@ public class UserFacadeREST extends AbstractFacade<User> {
     public List<User> findAll() {
         return super.findAll();
     }
-
+    
+    
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -82,6 +91,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
         return super.findRange(new int[]{from, to});
     }
 
+    
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
