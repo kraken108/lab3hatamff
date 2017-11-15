@@ -5,12 +5,16 @@
  */
 package Model;
 
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -18,29 +22,40 @@ import javax.persistence.Table;
  * @author Jakob
  */
 @Entity
-@Table(name = "Message")
-public class Message {
+@Table(name = "message")
+public class Message implements Serializable {
+    @Column(name="sender")
     private String sender;
+    @Column(name="receiver")
     private String receiver;
+    @Column(name="topic")
     private String topic;
+    @Column(name="message")
     private String message;
+    @Column(name="date")
     private String date;
-    private long id;
+    @ManyToOne(targetEntity=User.class)
+    private Collection user;
     
-    public Message(String sender, String receiver, String topic,String message,String date){
+    
+    
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    private Long id;
+   
+    
+    public Message(String sender, String receiver, String topic,String message, Date date){
         this.topic = topic;
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
-        this.date = date;
+        this.date = date.toString();
     }
     
     public Message(){
         
-    }
-
+    }     
    
-    @Column(name="sender")
     public String getSender() {
         return sender;
     }
@@ -49,7 +64,6 @@ public class Message {
         this.sender = sender;
     }
     
-    @Column(name="receiver")
     public String getReceiver() {
         return receiver;
     }
@@ -58,7 +72,6 @@ public class Message {
         this.receiver = receiver;
     }
     
-    @Column(name="message")
     public String getMessage() {
         return message;
     }
@@ -67,7 +80,6 @@ public class Message {
         this.message = message;
     }
     
-    @Column(name="date")
     public String getDate() {
         return date;
     }
@@ -76,7 +88,6 @@ public class Message {
         this.date = date;
     }
     
-    @Column(name="topic")
     public String getTopic() {
         return topic;
     }
@@ -85,13 +96,27 @@ public class Message {
         this.topic = topic;
     }  
 
-    @Id
+
+    /**
+     * @return the user
+     */
+    
+    public Collection getUser() {
+        return user;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(Collection user) {
+        this.user = user;
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-    
+    }    
 }

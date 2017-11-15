@@ -5,6 +5,7 @@
  */
 package BO;
 
+import Model.Post;
 import Model.User;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -25,12 +26,12 @@ public class PostHandler {
         em = emf.createEntityManager();
     }
     
-    public Boolean createNewPost(String newPost,String user){
+    public Boolean createNewPost(String newPost, User user){
         //TODO:
         //Create new post add to database, return some response if successful or not
         try{
             em.getTransaction().begin();
-            User postToInsert = new User(newPost, user);
+            Post postToInsert = new Post(newPost, user);
             em.persist(postToInsert);
             em.flush();
             em.getTransaction().commit();

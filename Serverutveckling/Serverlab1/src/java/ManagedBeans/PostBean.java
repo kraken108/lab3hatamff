@@ -69,9 +69,9 @@ public class PostBean implements Serializable{
     
     public String createPost(){
         statusMessage = "";
-        Post p = new Post(newPost,new Date(),userBean.getUsername());
+        Post p = new Post(newPost,new Date(),userBean.getUser());
         logBean.addPost(p);
-        if(postHandler.createNewPost(newPost,userBean.getUsername())){
+        if(postHandler.createNewPost(newPost,userBean.getUser())){
             newPost = "";
             statusMessage = "Post was successful! user: " + userBean.getUsername();
             return "profile?faces-redirect=true&user="+userBean.getUsername();
