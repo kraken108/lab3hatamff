@@ -19,40 +19,32 @@ import javax.persistence.Query;
  *
  * @author Michael
  */
-
 public class MessageHandler {
-    
+
     private final EntityManager em;
     private final EntityManagerFactory emf;
-    
-    public MessageHandler(){
-      
+
+    public MessageHandler() {
+
         emf = Persistence.createEntityManagerFactory("Serverlab1PU");
         em = emf.createEntityManager();
     }
-    
-    public Boolean createMessage(){
-        
-        return false;   
-    }   
-    
-    public ArrayList<Message> getMessagesByReceiver(String receiver){
-        /*
-        //TODO:
-        //Return a list of all messages where the receiver is named receiver
-        //ArrayList<Message> messages;
-        //messages = new ArrayList();
-        
-    Query q = em.createQuery(
-        "SELECT m FROM Message m WHERE m.receiver LIKE :receiver");
-    return (ArrayList<Message>)  q.getResultList();               
-        
-        */
-        return null;
-        
+
+    public Boolean createMessage() {
+
+        return false;
     }
-    
-    public Message getMessageById(long id){
+
+    public List<Message> getMessagesByReceiver(String receiver) {
+
+        Query q = em.createQuery(
+                "SELECT m FROM Message m WHERE m.receiver LIKE :receiver")
+                .setParameter("receiver", receiver);
+        
+        return (List<Message>) q.getResultList();
+    }
+
+    public Message getMessageById(long id) {
         /*
         //TODO get message from database with the stated id and return it
         //Message message = null;
@@ -69,16 +61,16 @@ public class MessageHandler {
             return null;
         }    
         return tempMessage;
-        */
+         */
         return null;
 
     }
-    
-    public Boolean sendMessage(String receiver, String sender, String topic, String text,Date date){
+
+    public Boolean sendMessage(String receiver, String sender, String topic, String text, Date date) {
         //TODO
         //Create new message in database and return true if successful
-        
-        try{
+
+        try {
             em.getTransaction().begin();
             Message messageToInsert = new Message(receiver, sender, topic, text, date);
             em.persist(messageToInsert);
@@ -87,9 +79,9 @@ public class MessageHandler {
             em.close();
             emf.close();
             return true;
-        }catch(Exception e){
+        } catch (Exception e) {
             return false;
-        }       
+        }
         //return null;
     }
 }

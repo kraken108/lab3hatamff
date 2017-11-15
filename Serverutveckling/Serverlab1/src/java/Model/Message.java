@@ -35,7 +35,7 @@ public class Message implements Serializable {
     @Column(name="date")
     private String date;
     @ManyToOne(targetEntity=User.class)
-    private Collection user;
+    private User user;
     
     
     
@@ -101,14 +101,14 @@ public class Message implements Serializable {
      * @return the user
      */
     
-    public Collection getUser() {
+    public User getUser() {
         return user;
     }
 
     /**
      * @param user the user to set
      */
-    public void setUser(Collection user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

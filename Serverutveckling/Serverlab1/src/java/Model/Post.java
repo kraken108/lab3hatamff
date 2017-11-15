@@ -32,7 +32,7 @@ public class Post implements Serializable {
     private String date;
     
     @ManyToOne(targetEntity=User.class)
-    private Collection user;
+    private User user;
 
     
     @Id
@@ -49,10 +49,12 @@ public class Post implements Serializable {
     public Post(String message,Date date, User user){
         this.message = message;
         this.date = date.toString();
-        this.user = (Collection) user;
+        this.user = user;
     }
     
     public Post(String message, User user){
+        this.date = new Date().toString();
+        this.user = user;
         this.message = message;
     }
     
@@ -68,11 +70,11 @@ public class Post implements Serializable {
         this.date = date.toString();
     }
     
-    public Collection getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(Collection user) {
+    public void setUser(User user) {
         this.user = user;
     }
     

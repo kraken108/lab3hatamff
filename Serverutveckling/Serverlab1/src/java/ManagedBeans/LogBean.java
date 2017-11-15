@@ -5,6 +5,8 @@
  */
 package ManagedBeans;
 
+import BO.LogHandler;
+import BO.PostHandler;
 import Model.Post;
 import Model.User;
 import java.util.ArrayList;
@@ -29,12 +31,14 @@ public class LogBean {
         posts.add(new Post("Meddelande 1", new Date(), tempUser));
         posts.add(new Post("Meddelande 2", new Date(), tempUser));
         posts.add(new Post("Meddelande 3", new Date(), tempUser));
+
     }
 
     public List<Post> getPostsByName(String username){
         //TODO:
         //Get the posts from loghandler instead of these hardcoded posts
-        return posts;
+        LogHandler ph = new LogHandler();
+        return ph.getPostsByUser(username);
     }
 
     public void setPosts(List<Post> posts) {

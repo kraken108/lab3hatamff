@@ -89,10 +89,10 @@ public class UserHandler {
         }catch(NoResultException e){
             return null;
         }
+
     } 
     
     public User checkIfAlreadyExists(String username){
-        
         
         String testname = username;
         User tempUser = new User();

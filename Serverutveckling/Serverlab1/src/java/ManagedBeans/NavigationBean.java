@@ -34,6 +34,9 @@ public class NavigationBean {
         userBean.setStatusMessage("");
         userBean.setUsername("");
         return "createaccount.xhtml";
-        
+    }
+    
+    public String goToInbox(){
+        return "inbox?faces-redirect=true";
     }
 }

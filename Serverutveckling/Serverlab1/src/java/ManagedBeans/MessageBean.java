@@ -95,9 +95,11 @@ public class MessageBean {
     public List<Message> getMessages() {
         //TODO: get messages from messagehandler where receiver is logged in user
         // Instead of the hardcoded message list.
-        MessageHandler ms = new MessageHandler();
+        //MessageHandler ms = new MessageHandler();
         //ms.getMessagesByReceiver(userBean.getUsername());        
-        return messages;
+        //return messages;
+        MessageHandler ms = new MessageHandler();
+        return ms.getMessagesByReceiver(receiver);
     }
 
     public void setMessages(List<Message> messages) {
