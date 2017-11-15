@@ -5,6 +5,7 @@
  */
 package ManagedBeans;
 
+import Model.Login;
 import Model.User;
 import java.io.IOException;
 import java.io.Serializable;
@@ -14,6 +15,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.ws.rs.ClientErrorException;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.Response;
+import org.glassfish.jersey.client.ClientResponse;
 
 /**
  *
@@ -34,7 +41,10 @@ public class UserBean implements Serializable {
         //TODO:
         //Get users from userhandler instead of the hardcoded list from here
         // return (List<User>) userHelper.getAllUsers();
-        return null;
+        RestClient client = new RestClient();
+        GenericType<List<User>> gType = new GenericType<List<User>>(){};
+        return (List<User>) client.findAll_XML(gType);
+       // return client.findAll_XML(new GenericType<List<User>>(){});
     }
 
     public void setUsers(List<User> users) {
@@ -105,6 +115,16 @@ public class UserBean implements Serializable {
     }
 
     public String doLogin() {
+        statusMessage = "";
+        RestClient client = new RestClient();
+        User login = new User(username, password);
+        if (client.login_JSON(login).getStatusInfo().toString().equals("Found")) {
+            authorized = true;
+            return "index.xhtml";
+        } else {
+            statusMessage = "Wrong password or username";
+            return "login.xhtml";
+        }
         /*statusMessage = "";
         userHelper = new UserHandler();
         if (userHelper.login(username, password)) {
@@ -114,7 +134,7 @@ public class UserBean implements Serializable {
             statusMessage = "Wrong password or username";
             return "login.xhtml";
         }*/
-        return "";
+
     }
 
     public void createAccount() {
@@ -135,13 +155,14 @@ public class UserBean implements Serializable {
             return;
         }
         try {
-            NewJerseyClient client = new NewJerseyClient();
+            RestClient client = new RestClient();
             User u = new User(username, password);
-            client.create_JSON(u);
-            statusMessage = client.getMessage();
+
+            statusMessage = client.createUser_JSON(u).getStatusInfo().toString();
+            //statusMessage = client.getMessage();
             username = "";
             //statusMessage = "Sent account create to server";
-        } catch (Exception e) {
+        } catch (ClientErrorException e) {
             statusMessage = e.toString();
         }
 

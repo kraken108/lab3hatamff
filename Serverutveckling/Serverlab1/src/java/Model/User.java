@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "User")
+@XmlRootElement
 public class User implements Serializable {
     private String username;
     private Long id;

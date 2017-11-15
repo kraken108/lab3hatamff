@@ -80,7 +80,8 @@ public class PostBean implements Serializable{
             statusMessage = "Couldnt create post :/";
             return "profile?faces-redirect=true&user="+userBean.getUsername();
         }*/
-        return "";
+        statusMessage = "Functionality not implemented yet :<";
+        return "profile?faces-redirect=true&user="+userBean.getUsername();
     }
     
 }

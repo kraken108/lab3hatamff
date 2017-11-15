@@ -93,7 +93,7 @@ public class UserHandler {
     
     public User checkIfAlreadyExists(String username){
         
-
+        
         String testname = username;
         User tempUser = new User();
         try {
@@ -126,7 +126,7 @@ public class UserHandler {
                 emf.close();
                 return "Successfully created account!";
             }catch(Exception e){
-                return e.toString();
+                return "fack error on createUser server side";
             }
 
         }else{

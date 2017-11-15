@@ -119,7 +119,10 @@ public class MessageBean {
             statusMessage = "Something went wrong :(";
             return "sendmessage.xhtml";
         }*/
-       return "";
+       sendTopic = "";
+       sendMessage = "";
+       statusMessage = "Functionality not implemented yet!";
+       return loadSendMessage();
     }
 
     public String getReceiver() {
