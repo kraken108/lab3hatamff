@@ -6,11 +6,15 @@
 package Model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -23,10 +27,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "User")
 @XmlRootElement
 public class User implements Serializable {
+    @Column(name="name")
     private String username;
-    private Long id;
-    private String password;
     
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    
+    @Column(name="password")
+    private String password;
+    @OneToMany(targetEntity=Message.class)
+    private List<Message> messages;
+    @ManyToOne(targetEntity=Post.class)
+    private List<Post> posts;
+    
+
     public User(String username, String password){
         this.username = username;
         this.password = password;
@@ -40,7 +55,6 @@ public class User implements Serializable {
         
     }
     
-    @Column(name="name")
     public String getUsername() {
         return username;
     }
@@ -49,9 +63,7 @@ public class User implements Serializable {
         this.username = username;
     }    
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id")
+    
     public Long getId() {
         return id;
     }
@@ -66,7 +78,6 @@ public class User implements Serializable {
     /**
     * @return the password
     */
-    @Column(name="password")
     public String getPassword() {
         return password;
     }
@@ -76,5 +87,47 @@ public class User implements Serializable {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    /**
+     * @return the messages
+     */
+    public List getMessages() {
+        return messages;
+    }
+
+    /**
+     * @param messages the messages to set
+     */
+    public void setMessages(ArrayList<Message> messages) {
+        this.setMessages(messages);
+    }
+
+    /**
+     * @return the posts
+     */
+    public List getPosts() {
+        return posts;
+    }
+
+    /**
+     * @param posts the posts to set
+     */
+    public void setPosts(ArrayList<Post> posts) {
+        this.setPosts(posts);
+    }
+
+    /**
+     * @param posts the posts to set
+     */
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
+    /**
+     * @param messages the messages to set
+     */
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 }

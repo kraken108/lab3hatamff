@@ -31,7 +31,8 @@ public class UserBean implements Serializable {
     private String statusMessage;
     private String password2;
     private List<User> users;
-
+    private User user;
+    
     public List<User> getUsers() {
         //TODO:
         //Get users from userhandler instead of the hardcoded list from here
@@ -159,5 +160,19 @@ public class UserBean implements Serializable {
             return "";
         }
 
+    }
+
+    /**
+     * @return the user
+     */
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(User user) {
+        this.user = user;
     }
 }

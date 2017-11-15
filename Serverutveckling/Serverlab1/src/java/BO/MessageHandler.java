@@ -37,6 +37,7 @@ public class MessageHandler {
     }   
     
     public ArrayList<Message> getMessagesByReceiver(String receiver){
+        /*
         //TODO:
         //Return a list of all messages where the receiver is named receiver
         //ArrayList<Message> messages;
@@ -45,11 +46,14 @@ public class MessageHandler {
     Query q = em.createQuery(
         "SELECT m FROM Message m WHERE m.receiver LIKE :receiver");
     return (ArrayList<Message>)  q.getResultList();               
-   
-        //return null;
+        
+        */
+        return null;
+        
     }
     
     public Message getMessageById(long id){
+        /*
         //TODO get message from database with the stated id and return it
         //Message message = null;
         
@@ -65,8 +69,9 @@ public class MessageHandler {
             return null;
         }    
         return tempMessage;
-        
-        //return null;
+        */
+        return null;
+
     }
     
     public Boolean sendMessage(String receiver, String sender, String topic, String text,Date date){
@@ -75,7 +80,7 @@ public class MessageHandler {
         
         try{
             em.getTransaction().begin();
-            Message messageToInsert = new Message(receiver, sender, topic, text, date.toString());
+            Message messageToInsert = new Message(receiver, sender, topic, text, date);
             em.persist(messageToInsert);
             em.flush();
             em.getTransaction().commit();

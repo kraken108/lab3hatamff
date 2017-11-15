@@ -6,6 +6,7 @@
 package ManagedBeans;
 
 import Model.Post;
+import Model.User;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,10 +24,11 @@ public class LogBean {
     private List<Post> posts;
 
     public LogBean() {
+        User tempUser = new User("Jubbe");
         posts = new ArrayList<Post>();
-        posts.add(new Post("Meddelande 1", new Date(), "Jubbe"));
-        posts.add(new Post("Meddelande 2", new Date(), "Jubbe"));
-        posts.add(new Post("Meddelande 3", new Date(), "Jubbe"));
+        posts.add(new Post("Meddelande 1", new Date(), tempUser));
+        posts.add(new Post("Meddelande 2", new Date(), tempUser));
+        posts.add(new Post("Meddelande 3", new Date(), tempUser));
     }
 
     public List<Post> getPostsByName(String username){
