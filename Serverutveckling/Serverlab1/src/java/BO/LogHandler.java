@@ -33,10 +33,13 @@ public class LogHandler {
        /* Query q = em.createQuery(
                 "SELECT p FROM Post p WHERE p.user.username LIKE :user")
                 .setParameter("user", user);*/
-        
-        return (List<Post>) em.createQuery(
+        List<Post> list = (List<Post>)em.createQuery(
                 "SELECT p FROM Post p WHERE p.user.username LIKE :user")
                 .setParameter("user", user).getResultList();
+        em.close();
+        emf.close();
+        return list; 
+        
         //return (List<Message>) q.getResultList();
         //return null;
     }

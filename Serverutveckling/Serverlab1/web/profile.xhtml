@@ -40,13 +40,13 @@
 
             <!-- TODO: LIST ALL POSTS -->
 
-
+            #{logBean.setUser(param['user'])}
 
             <h:form>
                 <h:panelGroup id="logposts">
                     <ui:repeat value="#{logBean.getPostsByName(param['user'])}" var="post">
                         <div style="border-top: 1px solid #ccc;padding-top: 10px;width:300px;">
-                            <b>#{post.user}</b><br/>
+                            <b>#{logBean.user}</b><br/>
                             <i>#{post.date}</i><br/>
                             #{post.message}<br/>
                             <br/>

@@ -60,24 +60,6 @@ public class UserHandler {
         }
     }
 
-    /*
-    public ArrayList<User> getAllUsers() {
-
-        ArrayList<User> users = new ArrayList();
-
-        try {
-            Query q = em.createQuery(
-                    "SELECT * FROM User :usersList");
-            q.setParameter("usersList", users);
-//            users = (ArrayList<User>) q.getResultList();
-
-        } catch (NoResultException e) {
-            return null;
-        }
-        return (ArrayList<User>) users.clone();
-
-    }*/
-
  
     
     public java.util.List getAllUsers(){
@@ -113,8 +95,8 @@ public class UserHandler {
 
     public String createUser(String username, String password) {
 
-        User tempUser = checkIfAlreadyExists(username);
-
+       // User tempUser = checkIfAlreadyExists(username);
+       User tempUser = null;
         if (tempUser == null) {
             try {
                 em.getTransaction().begin();

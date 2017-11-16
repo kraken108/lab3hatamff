@@ -24,6 +24,7 @@ import javax.faces.bean.SessionScoped;
 public class LogBean {
 
     private List<Post> posts;
+    private String user;
 
     public LogBean() {
         User tempUser = new User("Jubbe");
@@ -34,18 +35,28 @@ public class LogBean {
 
     }
 
-    public List<Post> getPostsByName(String username){
+    public List<Post> getPostsByName(String username) {
         //TODO:
         //Get the posts from loghandler instead of these hardcoded posts
         LogHandler ph = new LogHandler();
-        return ph.getPostsByUser(username);
+        return ph.getPostsByUser(user);
+        //return posts;
     }
 
+    public void setUser(String user) {
+        if (user != null && !user.equals("")) {
+            this.user = user;
+        }
+    }
+
+    public String getUser(){
+        return this.user;
+    }
     public void setPosts(List<Post> posts) {
         this.posts = posts;
     }
-    
-    public void addPost(Post p){
+
+    public void addPost(Post p) {
         posts.add(0, p);
     }
 }

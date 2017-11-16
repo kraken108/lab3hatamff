@@ -25,7 +25,6 @@ public class MessageHandler {
     private final EntityManagerFactory emf;
 
     public MessageHandler() {
-
         emf = Persistence.createEntityManagerFactory("Serverlab1PU");
         em = emf.createEntityManager();
     }

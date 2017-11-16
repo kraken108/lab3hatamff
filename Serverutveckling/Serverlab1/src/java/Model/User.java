@@ -38,7 +38,8 @@ public class User implements Serializable {
     private String password;
     @OneToMany(targetEntity=Message.class)
     private List<Message> messages;
-    @ManyToOne(targetEntity=Post.class)
+    
+    @OneToMany(targetEntity=Post.class,mappedBy="user")
     private List<Post> posts;
     
 
@@ -100,9 +101,13 @@ public class User implements Serializable {
      * @param messages the messages to set
      */
     public void setMessages(ArrayList<Message> messages) {
-        this.setMessages(messages);
+        this.messages = messages;
     }
 
+    
+    public void addPost(Post p){
+        posts.add(p);
+    }
     /**
      * @return the posts
      */
@@ -114,7 +119,7 @@ public class User implements Serializable {
      * @param posts the posts to set
      */
     public void setPosts(ArrayList<Post> posts) {
-        this.setPosts(posts);
+        this.posts = posts;
     }
 
     /**
