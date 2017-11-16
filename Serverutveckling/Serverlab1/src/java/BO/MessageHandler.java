@@ -6,6 +6,7 @@
 package BO;
 
 import Model.Message;
+import Model.User;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,12 +22,10 @@ import javax.persistence.Query;
  */
 public class MessageHandler {
 
-    private final EntityManager em;
-    private final EntityManagerFactory emf;
+    private final static String PERSISTENCE_NAME = "Serverlab1PU";
 
     public MessageHandler() {
-        emf = Persistence.createEntityManagerFactory("Serverlab1PU");
-        em = emf.createEntityManager();
+
     }
 
     public Boolean createMessage() {
@@ -34,53 +33,138 @@ public class MessageHandler {
         return false;
     }
 
-    public List<Message> getMessagesByReceiver(String receiver) {
+    public List<ViewModel.Message> getMessagesByReceiver(String receiver) {
 
-        Query q = em.createQuery(
-                "SELECT m FROM Message m WHERE m.receiver LIKE :receiver")
-                .setParameter("receiver", receiver);
-        
-        return (List<Message>) q.getResultList();
+        EntityManager em;
+        EntityManagerFactory emf;
+
+        emf = Persistence.createEntityManagerFactory(PERSISTENCE_NAME);
+        em = emf.createEntityManager();
+
+        try {
+            Query q = em.createQuery(
+                    "SELECT m FROM Message m WHERE m.receiver.username LIKE :receiver")
+                    .setParameter("receiver", receiver);
+
+            List<Message> list = (List<Message>) q.getResultList();
+            
+            List<ViewModel.Message> viewList = new ArrayList<>();
+            
+            for(Message m : list){
+                viewList.add(new ViewModel.Message(m.getDate(), m.getTopic(), 
+                        m.getMessage(), m.getSender().getUsername(), 
+                        m.getReceiver().getUsername(),m.getId()));
+            }
+            return viewList;
+            
+        } catch (Exception e) {
+            return null;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+            if (emf != null) {
+                emf.close();
+            }
+        }
+
     }
 
-    public Message getMessageById(long id) {
-        /*
-        //TODO get message from database with the stated id and return it
-        //Message message = null;
-        
-        Message tempMessage = new Message();
-        
-        try{
+    public ViewModel.Message getMessageById(long id) {
+
+        EntityManager em;
+        EntityManagerFactory emf;
+
+        emf = Persistence.createEntityManagerFactory(PERSISTENCE_NAME);
+        em = emf.createEntityManager();
+
+        Message tempMessage;
+
+        try {
             tempMessage = (Message) em.createQuery(
-            "SELECT m FROM Message m WHERE m.id LIKE :id")
-            .setParameter("id", tempMessage)
-            .setMaxResults(1)
-            .getSingleResult();
-        }catch(NoResultException e){
+                    "SELECT m FROM Message m WHERE m.id LIKE :id")
+                    .setParameter("id", id)
+                    .setMaxResults(1)
+                    .getSingleResult();
+
+            return new ViewModel.Message(tempMessage.getDate(),
+                    tempMessage.getTopic(), tempMessage.getMessage(),
+                    tempMessage.getSender().getUsername(), 
+                    tempMessage.getReceiver().getUsername(),tempMessage.getId());
+        } catch (NoResultException e) {
             return null;
-        }    
-        return tempMessage;
-         */
-        return null;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+            if (emf != null) {
+                emf.close();
+            }
+        }
 
     }
 
     public Boolean sendMessage(String receiver, String sender, String topic, String text, Date date) {
-        //TODO
-        //Create new message in database and return true if successful
+
+        EntityManager em;
+        EntityManagerFactory emf;
+
+        emf = Persistence.createEntityManagerFactory(PERSISTENCE_NAME);
+        em = emf.createEntityManager();
 
         try {
             em.getTransaction().begin();
-            Message messageToInsert = new Message(receiver, sender, topic, text, date);
+            User senderUser = getUserByName(sender);
+            User receiverUser = getUserByName(receiver);
+
+            if (senderUser == null || receiverUser == null) {
+                return false;
+            }
+
+            Message messageToInsert = new Message(receiverUser, senderUser, topic, text, date);
+
             em.persist(messageToInsert);
             em.flush();
             em.getTransaction().commit();
-            em.close();
-            emf.close();
             return true;
         } catch (Exception e) {
             return false;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+            if (emf != null) {
+                emf.close();
+            }
         }
-        //return null;
+    }
+
+    private User getUserByName(String username) {
+        User tempUser;
+
+        EntityManager em;
+        EntityManagerFactory emf;
+
+        emf = Persistence.createEntityManagerFactory(PERSISTENCE_NAME);
+        em = emf.createEntityManager();
+
+        try {
+            tempUser = (User) em.createQuery(
+                    "SELECT u FROM User u WHERE u.username LIKE :username")
+                    .setParameter("username", username)
+                    .getSingleResult();
+            return tempUser;
+        } catch (NoResultException e) {
+            return null;
+        } catch (Exception e) {
+            return null;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+            if (emf != null) {
+                emf.close();
+            }
+        }
     }
 }

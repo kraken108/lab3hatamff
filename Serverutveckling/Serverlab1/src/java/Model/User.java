@@ -22,53 +22,55 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author Jakob
  */
-
 @Entity
 @Table(name = "User")
 @XmlRootElement
 public class User implements Serializable {
-    @Column(name="name")
+
+    @Column(name = "name")
     private String username;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-    @Column(name="password")
-    private String password;
-    @OneToMany(targetEntity=Message.class)
-    private List<Message> messages;
-    
-    @OneToMany(targetEntity=Post.class,mappedBy="user")
-    private List<Post> posts;
-    
 
-    public User(String username, String password){
+    @Column(name = "password")
+    private String password;
+
+    @OneToMany(targetEntity = Message.class, mappedBy = "receiver")
+    private List<Message> receivedMessages;
+
+    @OneToMany(targetEntity = Message.class, mappedBy = "sender")
+    private List<Message> sentMessages;
+
+    @OneToMany(targetEntity = Post.class, mappedBy = "user")
+    private List<Post> posts;
+
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
-    public User(String username){
-        this.username=username;
+    public User(String username) {
+        this.username = username;
     }
-    
-    public User(){
-        
+
+    public User() {
+
     }
-    
+
     public String getUsername() {
         return username;
     }
-    
+
     public void setUsername(String username) {
         this.username = username;
-    }    
+    }
 
-    
     public Long getId() {
         return id;
     }
-    
+
     /**
      * @param id the id to set
      */
@@ -77,8 +79,8 @@ public class User implements Serializable {
     }
 
     /**
-    * @return the password
-    */
+     * @return the password
+     */
     public String getPassword() {
         return password;
     }
@@ -90,24 +92,10 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    /**
-     * @return the messages
-     */
-    public List getMessages() {
-        return messages;
-    }
-
-    /**
-     * @param messages the messages to set
-     */
-    public void setMessages(ArrayList<Message> messages) {
-        this.messages = messages;
-    }
-
-    
-    public void addPost(Post p){
+    public void addPost(Post p) {
         posts.add(p);
     }
+
     /**
      * @return the posts
      */
@@ -129,10 +117,34 @@ public class User implements Serializable {
         this.posts = posts;
     }
 
-    /**
-     * @param messages the messages to set
-     */
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
+    public List<Message> getReceivedMessages() {
+        return receivedMessages;
     }
+
+    public void setReceivedMessages(List<Message> receivedMessages) {
+        this.receivedMessages = receivedMessages;
+    }
+
+    public List<Message> getSentMessages() {
+        return sentMessages;
+    }
+
+    public void setSentMessages(List<Message> sentMessages) {
+        this.sentMessages = sentMessages;
+    }
+
+    public void addSentMessage(Message m) {
+        if (m != null) {
+            sentMessages.add(m);
+        }
+
+    }
+
+    public void addReceivedMessage(Message m) {
+        if (m != null) {
+            receivedMessages.add(m);
+        }
+
+    }
+
 }

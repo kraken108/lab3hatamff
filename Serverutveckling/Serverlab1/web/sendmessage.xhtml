@@ -5,12 +5,12 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
     </h:head>
-    <h:body>
+    <h:body rendered="#{userBean.isLoggedIn}">
 
         <ui:include src='navbar.xhtml'/>
         <div style="float:left">
             <h2>Send message</h2>
-            #{messageBean.statusMessage}
+            #{messageBean.statusMessage}<br/>
             Send to #{messageBean.receiver}
             <h:form>
                 Topic:<br/>
@@ -28,5 +28,6 @@
 
         </div>
     </h:body>
+    <ui:include src="notloggedin.xhtml" rendered="#{!userBean.isLoggedIn}"/>
 </html>
 

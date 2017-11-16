@@ -6,6 +6,7 @@
 package BO;
 
 import Model.Post;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -17,30 +18,32 @@ import javax.persistence.Query;
  * @author Michael
  */
 public class LogHandler {
-    
-    
-    public LogHandler(){}
-    
-    public List<Post> getPostsByUser(String user){
-        //TODO:
-        //Get all posts made by the user and return it in a list
-        
+
+    private final static String PERSISTENCE_NAME = "Serverlab1PU";
+
+    public LogHandler() {
+    }
+
+    public List<ViewModel.Post> getPostsByUser(String user) {
+
         EntityManager em;
         EntityManagerFactory emf;
-        emf = Persistence.createEntityManagerFactory("Serverlab1PU");
+        emf = Persistence.createEntityManagerFactory(PERSISTENCE_NAME);
         em = emf.createEntityManager();
-        
-       /* Query q = em.createQuery(
-                "SELECT p FROM Post p WHERE p.user.username LIKE :user")
-                .setParameter("user", user);*/
-        List<Post> list = (List<Post>)em.createQuery(
+
+        List<Post> list = (List<Post>) em.createQuery(
                 "SELECT p FROM Post p WHERE p.user.username LIKE :user")
                 .setParameter("user", user).getResultList();
         em.close();
         emf.close();
-        return list; 
         
-        //return (List<Message>) q.getResultList();
-        //return null;
+        
+        List<ViewModel.Post> viewList = new ArrayList<>();
+        for(Post p : list){
+            viewList.add(new ViewModel.Post(p.getMessage(), 
+                    p.getUser().getUsername(), p.getDate(),p.getId()));
+        }
+        return viewList;
+
     }
 }

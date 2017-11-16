@@ -24,19 +24,21 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "message")
 public class Message implements Serializable {
-    @Column(name="sender")
-    private String sender;
-    @Column(name="receiver")
-    private String receiver;
+    
     @Column(name="topic")
     private String topic;
+    
     @Column(name="message")
     private String message;
+    
     @Column(name="date")
     private String date;
-    @ManyToOne(targetEntity=User.class)
-    private User user;
     
+    @ManyToOne
+    private User sender;
+    
+    @ManyToOne
+    private User receiver;
     
     
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -44,7 +46,7 @@ public class Message implements Serializable {
     private Long id;
    
     
-    public Message(String sender, String receiver, String topic,String message, Date date){
+    public Message(User receiver, User sender, String topic,String message, Date date){
         this.topic = topic;
         this.sender = sender;
         this.receiver = receiver;
@@ -56,19 +58,19 @@ public class Message implements Serializable {
         
     }     
    
-    public String getSender() {
+    public User getSender() {
         return sender;
     }
 
-    public void setSender(String sender) {
+    public void setSender(User sender) {
         this.sender = sender;
     }
     
-    public String getReceiver() {
+    public User getReceiver() {
         return receiver;
     }
 
-    public void setReceiver(String receiver) {
+    public void setReceiver(User receiver) {
         this.receiver = receiver;
     }
     
@@ -95,22 +97,6 @@ public class Message implements Serializable {
     public void setTopic(String topic) {
         this.topic = topic;
     }  
-
-
-    /**
-     * @return the user
-     */
-    
-    public User getUser() {
-        return user;
-    }
-
-    /**
-     * @param user the user to set
-     */
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public Long getId() {
         return id;

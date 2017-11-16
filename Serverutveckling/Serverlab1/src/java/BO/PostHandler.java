@@ -18,21 +18,21 @@ import javax.persistence.Persistence;
  */
 public class PostHandler {
 
-    private final EntityManager em;
-    private final EntityManagerFactory emf;
+    private final static String PERSISTENCE_NAME = "Serverlab1PU";
 
     public PostHandler() {
-
-        emf = Persistence.createEntityManagerFactory("Serverlab1PU");
-        em = emf.createEntityManager();
     }
 
     public Boolean createNewPost(String newPost, String user) throws Exception {
-        //TODO:
-        //Create new post add to database, return some response if successful or not
+
+        EntityManager em;
+        EntityManagerFactory emf;
+        emf = Persistence.createEntityManagerFactory(PERSISTENCE_NAME);
+        em = emf.createEntityManager();
+
         try {
             em.getTransaction().begin();
-            
+
             User tempUser = new User();
             try {
                 tempUser = (User) em.createQuery(
@@ -41,17 +41,15 @@ public class PostHandler {
                         .getSingleResult();
             } catch (NoResultException e) {
                 throw new Exception("couldnt find user");
-            }catch(Exception e){
+            } catch (Exception e) {
                 throw new Exception("wtf excccc: " + e.toString());
             }
-            
+
             Post postToInsert = new Post(newPost, tempUser);
             em.persist(postToInsert);
 
             em.flush();
             em.getTransaction().commit();
-            //em.close();
-            //emf.close();
             return true;
         } catch (Exception e) {
             throw new Exception("wtf exceptionerito" + e.toString());

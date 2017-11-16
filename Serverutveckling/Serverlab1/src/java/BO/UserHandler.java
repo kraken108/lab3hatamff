@@ -6,19 +6,13 @@
 package BO;
 
 import Model.User;
-import antlr.collections.List;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Formatter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
-import java.util.*;
 
 /**
  *
@@ -26,79 +20,109 @@ import java.util.*;
  */
 public class UserHandler {
 
-    private final EntityManager em;
-    private final EntityManagerFactory emf;
+    private final static String PERSISTENCE_NAME = "Serverlab1PU";
 
     public UserHandler() {
-
-        emf = Persistence.createEntityManagerFactory("Serverlab1PU");
-        em = emf.createEntityManager();
     }
 
     public Boolean login(String username, String password) {
 
-        String testname = username;
-        String testpass = password;
+        EntityManager em;
+        EntityManagerFactory emf;
+        emf = Persistence.createEntityManagerFactory(PERSISTENCE_NAME);
+        em = emf.createEntityManager();
 
         try {
             Query q = em.createQuery(
                     "SELECT u FROM User u WHERE u.username LIKE :username AND u.password LIKE :password");
-            q.setParameter("username", testname);
-            q.setParameter("password", testpass);
+            q.setParameter("username", username);
+            q.setParameter("password", password);
             q.setMaxResults(1);
             q.getSingleResult();
-        } catch (NoResultException e) {
-            testname = "";
-            testpass = "";
-        }
-
-        if ((testname.equals(username)) && (testpass.equals(password))) {
             return true;
-        } else {
+        } catch (NoResultException e) {
             return false;
-
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+            if (emf != null) {
+                emf.close();
+            }
         }
     }
 
- 
-    
-    public java.util.List getAllUsers(){
-        
-        try{
+    public List<ViewModel.User> getAllUsers() {
+
+        EntityManager em;
+        EntityManagerFactory emf;
+        emf = Persistence.createEntityManagerFactory(PERSISTENCE_NAME);
+        em = emf.createEntityManager();
+
+        try {
             Query q = em.createQuery("SELECT u FROM User u");
-            return q.getResultList();
-            
-        }catch(NoResultException e){
+            List<User> list = (List<User>) q.getResultList();
+            List<ViewModel.User> viewList = new ArrayList<>();
+
+            for (User u : list) {
+                viewList.add(new ViewModel.User(u.getUsername()));
+            }
+
+            return viewList;
+
+        } catch (NoResultException e) {
             return null;
+        } catch (Exception e) {
+            return null;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+            if (emf != null) {
+                emf.close();
+            }
         }
 
-    } 
-    
-    public User checkIfAlreadyExists(String username){
-        
-        String testname = username;
-        User tempUser = new User();
+    }
+
+    public Boolean checkIfAlreadyExists(String username) {
+
+        EntityManager em;
+        EntityManagerFactory emf;
+        emf = Persistence.createEntityManagerFactory(PERSISTENCE_NAME);
+        em = emf.createEntityManager();
+
         try {
-            tempUser = (User) em.createQuery(
+            em.createQuery(
                     "SELECT u FROM User u WHERE u.username LIKE :username")
-                    .setParameter("username", testname)
+                    .setParameter("username", username)
                     .setMaxResults(1)
                     .getSingleResult();
+            return true;
         } catch (NoResultException e) {
-            testname = "";
-            return null;
+            return false;
+        } catch (Exception e) {
+            return false;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+            if (emf != null) {
+                emf.close();
+            }
         }
-        tempUser.setUsername(testname);
-
-        return tempUser;
     }
 
     public String createUser(String username, String password) {
 
-       // User tempUser = checkIfAlreadyExists(username);
-       User tempUser = null;
-        if (tempUser == null) {
-            try {
+        EntityManager em;
+        EntityManagerFactory emf;
+        emf = Persistence.createEntityManagerFactory(PERSISTENCE_NAME);
+        em = emf.createEntityManager();
+
+        try {
+            if (checkIfAlreadyExists(username)) {
+
                 em.getTransaction().begin();
                 User userToInsert = new User(username, password);
                 em.persist(userToInsert);
@@ -107,13 +131,19 @@ public class UserHandler {
                 em.close();
                 emf.close();
                 return "Successfully created account!";
-            }catch(Exception e){
-                return "fack error on createUser server side";
+            } else {
+                return "Username already exists!";
             }
-
-        }else{
-            return "Username already exists!";
+        } catch (Exception e) {
+            return "A server error occurred";
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+            if (emf != null) {
+                emf.close();
+            }
         }
-              
+
     }
 }

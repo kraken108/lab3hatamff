@@ -7,11 +7,12 @@
     <h:head>
         <title>Facelet Title</title>
     </h:head>
-    <h:body>
+    <h:body rendered="#{userBean.isLoggedIn}">
 
         <ui:include src='navbar.xhtml'/>
         <div style="float:left">
             <h2>Inbox</h2>
+            #{messageBean.statusMessage}
             <ui:repeat value="#{messageBean.messages}" var="message" >
                 <h:link value="#{message.topic} | #{message.sender} | #{message.date}" outcome="readmessage">
                     <f:param name="message" value="#{message.id}"/>
@@ -20,5 +21,6 @@
             </ui:repeat>
         </div>
     </h:body>
+    <ui:include src="notloggedin.xhtml" rendered="#{!userBean.isLoggedIn}"/>
 </html>
 

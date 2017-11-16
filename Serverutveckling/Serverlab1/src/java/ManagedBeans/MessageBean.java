@@ -6,8 +6,8 @@
 package ManagedBeans;
 
 import BO.*;
-import Model.Message;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
@@ -22,8 +22,8 @@ import javax.faces.bean.SessionScoped;
 @SessionScoped
 public class MessageBean {
 
-    private List<Message> messages;
-    private Message currentMessage;
+
+    private ViewModel.Message currentMessage;
     private String receiver;
     private String sendTopic;
     private String sendMessage;
@@ -40,11 +40,6 @@ public class MessageBean {
         currentMessage = null;
         //statusMessage = "";
 
-        messages = new ArrayList<>();
-        messages.add(new Message("Jubbe", "Michael", "topic 1", "Hej hej här är ett privat meddelande", new Date()));
-        messages.add(new Message("Jubbe", "Michael", "topic 2", "Hej hej här är ett privat meddelande2", new Date()));
-        messages.add(new Message("Jubbe", "Michael", "topic 3", "Hej hej här är ett privat meddelande3", new Date()));
-        messages.add(new Message("Jubbe", "Michael", "topic 4", "Hej hej här är ett privat meddelande4", new Date()));
     }
 
     public String getStatusMessage() {
@@ -71,7 +66,7 @@ public class MessageBean {
         this.sendMessage = sendMessage;
     }
 
-    public String loadReadMessage(Message message) {
+    public String loadReadMessage(ViewModel.Message message) {
         currentMessage = message;
         return "readmessage.xhtml";
     }
@@ -81,45 +76,48 @@ public class MessageBean {
         return "sendmessage?faces-redirect=true&receiver=" + receiver;
     }
 
-    public String getSenderById(int id) {
-        //TODO: get message by id and set currentMessage to it instead of one of these hardcoded ones.
-        for (Message m : messages) {
-            if (m.getId() == id) {
-                currentMessage = m;
-            }
+
+    public Boolean loadMessageById(int id){
+        MessageHandler mh = new MessageHandler();
+        ViewModel.Message m = mh.getMessageById(id);
+        if(m == null){
+            currentMessage = null;
+            return false;
+        }else{
+            currentMessage = m;
+            return true;
         }
-        return currentMessage.getSender();
     }
-
-
-    public List<Message> getMessages() {
-        //TODO: get messages from messagehandler where receiver is logged in user
-        // Instead of the hardcoded message list.
-        //MessageHandler ms = new MessageHandler();
-        //ms.getMessagesByReceiver(userBean.getUsername());        
-        //return messages;
+    
+    
+    public List<ViewModel.Message> getMessages() {
         MessageHandler ms = new MessageHandler();
-        return ms.getMessagesByReceiver(receiver);
+        List<ViewModel.Message> list = ms.getMessagesByReceiver(userBean.getUsername());
+        Collections.sort(list);
+        Collections.reverse(list);
+        return list;
     }
 
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
-    }
 
-    public Message getCurrentMessage() {
+
+    public ViewModel.Message getCurrentMessage() {
         return currentMessage;
     }
 
-    public void setCurrentMessage(Message currentMessage) {
+    public void setCurrentMessage(ViewModel.Message currentMessage) {
         this.currentMessage = currentMessage;
     }
 
     public String sendMessage() {
         MessageHandler mh = new MessageHandler();
         if(mh.sendMessage(receiver,userBean.getUsername(), sendTopic, sendMessage, new Date())){
+            sendTopic = "";
+            sendMessage = "";
             statusMessage = "Success!";
             return "sendmessage.xhtml";
         }else{
+            sendTopic = "";
+            sendMessage = "";
             statusMessage = "Something went wrong :(";
             return "sendmessage.xhtml";
         }

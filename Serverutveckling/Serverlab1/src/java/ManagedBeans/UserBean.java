@@ -6,15 +6,11 @@
 package ManagedBeans;
 
 import BO.UserHandler;
-import Model.User;
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
+
 
 /**
  *
@@ -30,17 +26,10 @@ public class UserBean implements Serializable {
     private Boolean authorized;
     private String statusMessage;
     private String password2;
-    private List<User> users;
-    private User user;
     
-    public List<User> getUsers() {
-        //TODO:
-        //Get users from userhandler instead of the hardcoded list from here
-        return (List<User>) userHelper.getAllUsers();
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
+    
+    public List<ViewModel.User> getUsers() {
+        return userHelper.getAllUsers();
     }
 
     public Boolean isLoggedInUser(String username) {
@@ -57,11 +46,6 @@ public class UserBean implements Serializable {
 
     
     public UserBean(){
-        users = new ArrayList<>();
-        users.add(new User("Jubbe"));
-        users.add(new User("Michael"));
-        users.add(new User("Alex"));
-        users.add(new User("Ponny"));
     }
 
     
@@ -162,17 +146,4 @@ public class UserBean implements Serializable {
 
     }
 
-    /**
-     * @return the user
-     */
-    public User getUser() {
-        return user;
-    }
-
-    /**
-     * @param user the user to set
-     */
-    public void setUser(User user) {
-        this.user = user;
-    }
 }
