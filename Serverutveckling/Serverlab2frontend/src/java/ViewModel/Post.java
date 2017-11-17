@@ -6,18 +6,28 @@
 package ViewModel;
 
 import java.util.Date;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Jakob
  */
+@XmlRootElement
 public class Post implements Comparable<Post>  {
     private String message;
-    private String user;
+    
+    private User user;
+    
     private String date;
+    
     private Long id;
     
-    public Post(String message, String user, String date,Long id) {
+    public Post(){
+        
+    }
+    
+    public Post(String date,String message, User user, Long id) {
         this.message = message;
         this.user = user;
         this.date = date;
@@ -32,8 +42,6 @@ public class Post implements Comparable<Post>  {
         this.id = id;
     }
 
-    
-    
     public String getMessage() {
         return message;
     }
@@ -42,11 +50,11 @@ public class Post implements Comparable<Post>  {
         this.message = message;
     }
 
-    public String getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(String user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

@@ -20,7 +20,7 @@ import javax.persistence.Query;
  */
 public class UserHandler {
 
-    private final static String PERSISTENCE_NAME = "Serverlab1PU";
+    private final static String PERSISTENCE_NAME = "Serverlab2backendPU";
 
     public UserHandler() {
     }
@@ -52,7 +52,7 @@ public class UserHandler {
         }
     }
 
-    public List<ViewModel.User> getAllUsers() {
+    public List<User> getAllUsers() {
 
         EntityManager em;
         EntityManagerFactory emf;
@@ -62,13 +62,8 @@ public class UserHandler {
         try {
             Query q = em.createQuery("SELECT u FROM User u");
             List<User> list = (List<User>) q.getResultList();
-            List<ViewModel.User> viewList = new ArrayList<>();
-
-            for (User u : list) {
-                viewList.add(new ViewModel.User(u.getUsername()));
-            }
-
-            return viewList;
+            
+            return list;
 
         } catch (NoResultException e) {
             return null;
@@ -107,9 +102,7 @@ public class UserHandler {
             if (em != null) {
                 em.close();
             }
-            if (emf != null) {
-                emf.close();
-            }
+            emf.close();
         }
     }
 
@@ -139,7 +132,6 @@ public class UserHandler {
                 em.close();
             }
             emf.close();
-
         }
 
     }
