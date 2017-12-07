@@ -27,11 +27,11 @@ public class UserRestClient {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://localhost:8080/Serverlab2backend/webresources";
+    private static final String BASE_URI = "http://localhost:1122";
 
     public UserRestClient() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
-        webTarget = client.target(BASE_URI).path("userfacade");
+        webTarget = client.target(BASE_URI).path("api");
     }
 
     public Response checkAlreadyExists_XML(Object requestEntity) throws ClientErrorException {

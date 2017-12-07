@@ -151,11 +151,12 @@ public class UserBean implements Serializable {
                 User u = new User();
                 u.setPassword(password);
                 u.setUsername(username);
-                if (client.checkAlreadyExists_JSON(u).getStatusInfo().toString().equals("Found")) {
+                return client.checkAlreadyExists_JSON(u).getStatusInfo().toString();
+               /* if (client.checkAlreadyExists_JSON(u).getStatusInfo().toString().equals("Found")) {
                     return "Username already exists";
                 } else {
                     return "Username is available";
-                }
+                }*/
             } catch (ClientErrorException e) {
                 statusMessage = "Error";
                 return "";
