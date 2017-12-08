@@ -32,7 +32,8 @@ public class UserBean implements Serializable {
         UserRestClient client = new UserRestClient();
         GenericType<List<User>> gType = new GenericType<List<User>>() {
         };
-        return (List<User>) client.findAll_XML(gType);
+        
+        return (List<User>) client.findAll_JSON(gType);
     }
 
     public Boolean isLoggedInUser(String username) {
@@ -151,6 +152,7 @@ public class UserBean implements Serializable {
                 User u = new User();
                 u.setPassword(password);
                 u.setUsername(username);
+                
                 return client.checkAlreadyExists_JSON(u).getStatusInfo().toString();
                /* if (client.checkAlreadyExists_JSON(u).getStatusInfo().toString().equals("Found")) {
                     return "Username already exists";

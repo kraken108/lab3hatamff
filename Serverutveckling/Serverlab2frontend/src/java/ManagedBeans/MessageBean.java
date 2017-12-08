@@ -99,7 +99,7 @@ public class MessageBean {
 
         GenericType<List<Message>> gType = new GenericType<List<Message>>() {
         };
-        loadedMessages = (List<Message>) client.getMessagesByUser_XML(gType, userBean.getUsername());
+        loadedMessages = (List<Message>) client.getMessagesByUser_JSON(gType, userBean.getUsername());
         Collections.sort(loadedMessages);
         Collections.reverse(loadedMessages);
         return loadedMessages;

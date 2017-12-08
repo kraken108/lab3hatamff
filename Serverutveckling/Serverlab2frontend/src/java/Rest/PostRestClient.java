@@ -28,11 +28,11 @@ public class PostRestClient {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://localhost:8080/Serverlab2backend/webresources";
+    private static final String BASE_URI = "http://localhost:1123";
 
     public PostRestClient() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
-        webTarget = client.target(BASE_URI).path("postfacade");
+        webTarget = client.target(BASE_URI).path("api/posts");
     }
 
     public Response createNewPost_XML(Object requestEntity) throws ClientErrorException {
@@ -40,7 +40,8 @@ public class PostRestClient {
     }
 
     public Response createNewPost_JSON(Object requestEntity) throws ClientErrorException {
-        return webTarget.path("createnewpost").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), Response.class);
+        WebTarget newTarget = client.target(BASE_URI).path("api");
+        return newTarget.path("createnewpost").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), Response.class);
     }
 
     public <T> T getPostsByUser_XML(GenericType<T> responseType, String user) throws ClientErrorException {
@@ -49,10 +50,16 @@ public class PostRestClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
-    public <T> T getPostsByUser_JSON(GenericType<T> responseType, String user) throws ClientErrorException {
-        WebTarget resource = webTarget;
-        resource = resource.path(java.text.MessageFormat.format("{0}", new Object[]{user}));
+    public <T> T getPostsByUser_JSON(GenericType<T> responseType, String user) throws ClientErrorException, Exception {
+        try{
+            WebTarget resource = webTarget;
+            resource = resource.path(java.text.MessageFormat.format("{0}", new Object[]{user}));
+                       
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        }catch(Exception e){
+            throw(new Exception(e.toString() + "getposts" + java.text.MessageFormat.format("{0}", new Object[]{user})));
+        }
+
     }
 
     public void close() {

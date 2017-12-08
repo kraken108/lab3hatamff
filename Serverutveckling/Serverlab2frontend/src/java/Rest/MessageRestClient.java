@@ -28,11 +28,11 @@ public class MessageRestClient {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://localhost:8080/Serverlab2backend/webresources";
+    private static final String BASE_URI = "http://localhost:1124";
 
-    public MessageRestClient() {
+    public MessageRestClient(){
         client = javax.ws.rs.client.ClientBuilder.newClient();
-        webTarget = client.target(BASE_URI).path("messagefacade");
+        webTarget = client.target(BASE_URI).path("api/messages");
     }
 
     public <T> T getMessagesByUser_XML(GenericType<T> responseType, String user) throws ClientErrorException {
@@ -41,18 +41,20 @@ public class MessageRestClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
-    public <T> T getMessagesByUser_JSON(Class<T> responseType, String user) throws ClientErrorException {
+    public <T> T getMessagesByUser_JSON(GenericType<T> responseType, String user) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("{0}", new Object[]{user}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
     public Response createNewMessage_XML(Object requestEntity) throws ClientErrorException {
-        return webTarget.path("createnewmessage").request(javax.ws.rs.core.MediaType.APPLICATION_XML).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML), Response.class);
+        WebTarget newTarget = client.target(BASE_URI).path("api");
+        return newTarget.path("createnewmessage").request(javax.ws.rs.core.MediaType.APPLICATION_XML).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML), Response.class);
     }
 
     public Response createNewMessage_JSON(Object requestEntity) throws ClientErrorException {
-        return webTarget.path("createnewmessage").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), Response.class);
+        WebTarget newTarget = client.target(BASE_URI).path("api");
+        return newTarget.path("createnewmessage").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), Response.class);
     }
 
     public void close() {

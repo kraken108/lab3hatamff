@@ -109,9 +109,9 @@ public class UserRestClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
-    public <T> T findAll_JSON(Class<T> responseType) throws ClientErrorException {
+    public <T> T findAll_JSON(GenericType<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        return resource.path("user").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
     public void remove(String id) throws ClientErrorException {

@@ -31,7 +31,7 @@ public class LogBean {
         
         GenericType<List<Post>> gType = new GenericType<List<Post>>() {
         };
-        List<Post> list = (List<Post>) client.getPostsByUser_XML(gType, username);
+        List<Post> list = (List<Post>) client.getPostsByUser_JSON(gType, username);
         Collections.sort(list);
         Collections.reverse(list);
         return list;
