@@ -7,6 +7,7 @@ package microservices;
 
 import BO.UserHandler;
 import Model.User;
+import ViewModel.UserView;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerResponse;
@@ -97,12 +98,10 @@ public class UserService extends AbstractVerticle {
 
             } else {
                 rc.response().setStatusCode(417).putHeader("content-type", "text/html").end("Successful login!");
-
             }
         } catch (Exception e) {
             System.err.println(e.toString());
             rc.response().setStatusCode(503).putHeader("content-type", "text/html").end("Successful login!");
-
         }
     }
 

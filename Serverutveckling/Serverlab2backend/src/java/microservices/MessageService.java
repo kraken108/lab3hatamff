@@ -7,6 +7,8 @@ package microservices;
 
 import BO.MessageHandler;
 import Model.Message;
+import ViewModel.MessageView;
+import ViewModel.UserView;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerResponse;

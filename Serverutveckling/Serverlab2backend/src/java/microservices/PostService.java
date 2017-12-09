@@ -8,6 +8,8 @@ package microservices;
 import BO.LogHandler;
 import BO.PostHandler;
 import Model.Post;
+import ViewModel.PostView;
+import ViewModel.UserView;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerResponse;
