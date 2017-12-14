@@ -20,5 +20,7 @@ public class VerticleStarter extends AbstractVerticle{
         vertx.deployVerticle(new UserService());
         vertx.deployVerticle(new PostService());
         vertx.deployVerticle(new MessageService());
+        vertx.deployVerticle(new DataSetSender());
+        vertx.deployVerticle(new DataSetService());
     }
 }

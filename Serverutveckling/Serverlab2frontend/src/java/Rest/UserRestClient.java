@@ -104,6 +104,23 @@ public class UserRestClient {
         return webTarget.path("login").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), Response.class);
     }
 
+    public Response saveimg_JSON(Object requestEntity) throws ClientErrorException {
+        return webTarget.path("savediagram").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), Response.class);
+    }
+
+    public <T> T getUserImages_JSON(GenericType<T> responseType, String user) throws ClientErrorException, Exception {
+        try {
+            WebTarget resource = client.target(BASE_URI).path("api/images");
+            resource = resource.path(java.text.MessageFormat.format("{0}", new Object[]{user}));
+
+            return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        } catch (Exception e) {
+            throw (new Exception(e.toString() + "getimages" + java.text.MessageFormat.format("{0}", new Object[]{user})));
+        }
+
+    }
+
+
     public <T> T findAll_XML(GenericType<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
@@ -121,5 +138,5 @@ public class UserRestClient {
     public void close() {
         client.close();
     }
-    
+
 }

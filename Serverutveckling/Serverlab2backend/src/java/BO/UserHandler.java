@@ -5,6 +5,7 @@
  */
 package BO;
 
+import Model.*;
 import Model.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +63,7 @@ public class UserHandler {
         try {
             Query q = em.createQuery("SELECT u FROM User u");
             List<User> list = (List<User>) q.getResultList();
-            
+
             return list;
 
         } catch (NoResultException e) {
@@ -98,6 +99,75 @@ public class UserHandler {
             return false;
         } catch (Exception e) {
             return false;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+            emf.close();
+        }
+    }
+
+    public List<Image> getUserImages(String username) {
+
+        EntityManager em;
+
+        EntityManagerFactory emf;
+        emf = Persistence.createEntityManagerFactory(PERSISTENCE_NAME);
+        em = emf.createEntityManager();
+
+        try {
+            List<Image> list = (List<Image>) em.createQuery(
+                    "SELECT i FROM Image i WHERE i.user.username LIKE :user")
+                    .setParameter("user", username).getResultList();
+
+            return list;
+        } catch (Exception e) {
+            return null;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+            emf.close();
+        }
+
+    }
+
+    public Boolean saveImage(String imageData, String username) throws Exception {
+        if (!checkIfAlreadyExists(username)) {
+            return false;
+        }
+
+        EntityManager em;
+        EntityManagerFactory emf;
+        emf = Persistence.createEntityManagerFactory(PERSISTENCE_NAME);
+        em = emf.createEntityManager();
+
+        try {
+            em.getTransaction().begin();
+
+            User tempUser = new User();
+            try {
+                tempUser = (User) em.createQuery(
+                        "SELECT u FROM User u WHERE u.username LIKE :username")
+                        .setParameter("username", username)
+                        .getSingleResult();
+            } catch (NoResultException e) {
+                throw (e);
+            } catch (Exception e) {
+                throw new Exception("wtf excccc: " + e.toString());
+            }
+
+            
+            Image imageToInsert = new Image(imageData.getBytes(), tempUser);
+            em.persist(imageToInsert);
+            em.flush();
+            em.getTransaction().commit();
+            return true;
+        } catch (NoResultException e) {
+            throw (e);
+        } catch (Exception e) {
+            throw new Exception("wtf exceptionerito" + e.toString());
+            //return false;
         } finally {
             if (em != null) {
                 em.close();

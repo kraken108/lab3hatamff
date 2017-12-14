@@ -25,6 +25,17 @@
             #{postBean.resetStatusMessage()}
             <!-- TODO: SHOW FORM ONLY IF PROFILE IS LOGGED IN USER -->
 
+            <ui:repeat value="#{userBean.getImagesByName(param['user'])}" var="post">
+                <script>
+                    // load image from data url
+                    var imageObj = new Image();
+                    imageObj.src = 'data:image/png;base64,#{post.imageData}';
+                    document.body.appendChild(imageObj);
+                </script>
+            </ui:repeat>
+
+
+
             <h3>Posts:</h3>
 
 

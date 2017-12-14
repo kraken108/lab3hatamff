@@ -6,8 +6,8 @@
 package microservices;
 
 import BO.UserHandler;
-import Model.User;
-import ViewModel.UserView;
+import Model.*;
+import ViewModel.*;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerResponse;
@@ -43,9 +43,10 @@ public class UserService extends AbstractVerticle {
 
         router.post("/api/checkalreadyexists").handler(this::checkalreadyexists);
         router.get("/api/user").handler(this::getAllUsers);
+        router.get("/api/images/:user").handler(this::getUserImages);
         router.post("/api/login").handler(this::login);
         router.post("/api/createuser").handler(this::createuser);
-        
+        router.post("/api/savediagram").handler(this::saveDiagram);
         vertx.createHttpServer().requestHandler(router::accept).listen(1122);
         System.out.println("User service started");
     }
@@ -113,6 +114,40 @@ public class UserService extends AbstractVerticle {
         } else {
             rc.response().setStatusCode(404).putHeader("content-type", "text/html").end("Username is available");
         }
+    }
+    
+    private void saveDiagram(RoutingContext rc){
+        ViewImage im = Json.decodeValue(rc.getBodyAsString(), ViewImage.class);
+        System.out.println("Received imagedata:");
+        System.out.println(im.getImageData());
+        UserHandler uh = new UserHandler();
+        System.out.println("Image length: " + im.getImageData().length());
+        try{
+            if(uh.saveImage(im.getImageData(), im.getUsername())){
+                rc.response().setStatusCode(302).putHeader("content-type", "text/html").end("Successful login!");
+            }else{
+                rc.response().setStatusCode(404).putHeader("content-type", "text/html").end("Unsuccessful login");
+            }
+            
+        }catch(Exception e){
+            rc.response().setStatusCode(409).putHeader("content-type", "text/html").end("Successful login!");
+        }
+    }
+    
+    private void getUserImages(RoutingContext rc){
+                String user = rc.request().getParam("user");
+        System.out.println("Get all posts by: " + user);
+        UserHandler uh = new UserHandler();
+        List<Image> list = (List<Image>) uh.getUserImages(user);
+        List<ViewImage> viewList = new ArrayList<>();
+
+        for (Image i : list) {
+            viewList.add(new ViewImage(new String(i.getImageData()),i.getUser().getUsername()));
+        }
+
+        rc.response()
+                .putHeader("content-type", "application/json; charset=utf-8")
+                .end(Json.encodePrettily(viewList));
     }
 
 }
