@@ -1,0 +1,177 @@
+/Lab3projekt/nbproject/private/
+/Lab3projekt/build/
+/test/nbproject/private/
+/test/build/
+/lab3b2/nbproject/private/
+/lab3b2/build/
+/FL5A/nbproject/private/
+/FL5A/build/
+/FL5C/nbproject/private/
+/Labb5GTA/nbproject/private/
+/Labb5GTA/dist/
+/Labb5GTA/build/
+/Testttt/nbproject/private/
+/Testttt/build/
+/Testttt/dist/
+/Laboration5/nbproject/private/
+/Laboration5/build/
+/Laboration5/dist/
+/databaslab1/nbproject/private/
+/databaslab1/build/
+/databaslab1/dist/
+/kommunikationssystem/lab1a/client/nbproject/private/
+/kommunikationssystem/lab1a/server/nbproject/private/
+/kommunikationssystem/lab1a/server/build/
+/kommunikationssystem/lab1a/server/dist/
+/kommunikationssystem/1bserver/nbproject/private/
+/kommunikationssystem/1bserver/build/
+/kommunikationssystem/1bserver/dist/
+/kommunikationssystem/lab1a/Client2/nbproject/private/
+/kommunikationssystem/lab1a/Client2/build/
+/kommunikationssystem/lab1a/Client2/dist/
+/kommunikationssystem/RmiTestClient/nbproject/private/
+/kommunikationssystem/RmiTestServer/nbproject/private/
+/kommunikationssystem/RmiTestServer/build/
+/kommunikationssystem/RmiTestServer/dist/
+/kommunikationssystem/RmiTestClient/dist/
+/kommunikationssystem/RmiTestClient/build/
+/kommunikationssystem/lab2b/build/
+/kommunikationssystem/lab2b/dist/
+/Distinfosystem/TestWeb/nbproject/private/
+/Distinfosystem/TestWeb/build/
+/Distinfosystem/TestWeb/dist/
+###################
+# compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.pdb
+*.dll.config
+*.cache
+*.suo
+# Include dlls if they�re in the NuGet packages directory
+!/packages/*/lib/*.dll
+!/packages/*/lib/*/*.dll
+# Include dlls if they're in the CommonReferences directory
+!*CommonReferences/*.dll
+####################
+# VS Upgrade stuff #
+####################
+UpgradeLog.XML
+_UpgradeReport_Files/
+###############
+# Directories #
+###############
+bin/
+obj/
+TestResults/
+###################
+# Web publish log #
+###################
+*.Publish.xml
+#############
+# Resharper #
+#############
+/_ReSharper.*
+*.ReSharper.*
+############
+# Packages #
+############
+# it�s better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+######################
+# Logs and databases #
+######################
+*.log
+*.sqlite
+# OS generated files #
+######################
+.DS_Store?
+ehthumbs.db
+Icon?
+Thumbs.db
+[Bb]in
+[Oo]bj
+[Tt]est[Rr]esults
+*.suo
+*.user
+*.[Cc]ache
+*[Rr]esharper*
+packages
+NuGet.exe
+_[Ss]cripts
+*.exe
+*.dll
+*.nupkg
+*.ncrunchsolution
+*.dot[Cc]over
+<<<<<<< HEAD
+/Serverutveckling/ATest/build/
+=======
+/Serverutveckling/Serverlab1/nbproject/private/
+/Serverutveckling/Serverlab1/build/
+<<<<<<< HEAD
+/Serverutveckling/Serverlab1_1/nbproject/private/
+=======
+>>>>>>> cf536b5a5896eee884b229446262249953dc3ca0
+/Serverutveckling/ATest/nbproject/private/
+>>>>>>> 32943882ab3cb70b477cbffe3dce35a8e4e9294e
+/Serverutveckling/serverlab2/nbproject/private/
+/Serverutveckling/WebServicesTest/nbproject/private/
+/Serverutveckling/Serverlab1/dist/
+/Serverutveckling/WebServicesTest/build/
+/Serverutveckling/WebServicesTest/dist/
+/Serverutveckling/Serverlab2client/nbproject/private/
+/Serverutveckling/Serverlab2client/build/
+/Serverutveckling/Serverlab2backend/nbproject/private/
+/Serverutveckling/Serverlab2frontend/nbproject/private/
+/Serverutveckling/Serverlab2frontend/build/
+/Serverutveckling/Serverlab2backend/build/
+/Serverutveckling/Serverlab2backend/dist/
+/Serverutveckling/Serverlab2backend/Serverlab2back/nbproject/private/
+/Serverutveckling/Serverlab2backend/Serverlab2back/build/
+/Serverutveckling/Serverlab2backend/Serverlab2back/dist/
+/Serverutveckling/Serverlab2backend/DatabasLab2Backend/nbproject/private/
+/Serverutveckling/Databas Dataset/Serverlab2Databas/nbproject/private/
+/Serverutveckling/Databas Dataset/DatabasServerLab2/nbproject/private/
+/Serverutveckling/Databas Dataset/DatabasServerLab2/build/
+/Serverutveckling/Databas Dataset/DatabasServerLab2/dist/
+/Laboration_4_Akta_Kurvan/Web Interface/AktaKurvanWeb/nbproject/private/
+/Laboration_4_Akta_Kurvan/Game Server/AktaKurvanGameServer/nbproject/private/
+/Laboration_4_Akta_Kurvan/Backend Server/AktaKurvanBackend/nbproject/private/
+/Gammalt/Distinfosystem/TestWeb/build/
+/Gammalt/Distinfosystem/TestWeb/dist/
+/Gammalt/Distinfosystem/TestWeb/nbproject/private/
+/Gammalt/kommunikationssystem/1bserver/build/
+/Gammalt/kommunikationssystem/1bserver/dist/
+/Gammalt/kommunikationssystem/1bserver/nbproject/private/
+/Gammalt/kommunikationssystem/lab1a/Client2/build/
+/Gammalt/kommunikationssystem/lab1a/Client2/dist/
+/Gammalt/kommunikationssystem/lab1a/Client2/nbproject/private/
+/Gammalt/kommunikationssystem/lab1a/client/build/
+/Gammalt/kommunikationssystem/lab1a/client/dist/
+/Gammalt/kommunikationssystem/lab1a/client/nbproject/private/
+/Gammalt/kommunikationssystem/lab1a/server/build/
+/Gammalt/kommunikationssystem/lab1a/server/dist/
+/Gammalt/kommunikationssystem/lab1a/server/nbproject/private/
+/Gammalt/kommunikationssystem/lab2b/build/
+/Gammalt/kommunikationssystem/RmiTestClient/build/
+/Gammalt/kommunikationssystem/RmiTestClient/dist/
+/Gammalt/kommunikationssystem/RmiTestClient/nbproject/private/
+/Gammalt/kommunikationssystem/lab2b/dist/
+/Gammalt/kommunikationssystem/lab2b/nbproject/private/
+/Gammalt/kommunikationssystem/RmiTestServer/build/
+/Gammalt/kommunikationssystem/RmiTestServer/dist/
+/Gammalt/kommunikationssystem/RmiTestServer/nbproject/private/
+/Gammalt/SnakeGame2/build/
+/Gammalt/SnakeGame2/nbproject/private/

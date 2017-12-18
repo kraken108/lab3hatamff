@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body rendered="#{userBean.isLoggedIn}">
+        <ui:include src='navbar.xhtml'/>
+        <div style="float:left">
+            <h2>Profile</h2>
+            <h4>#{param['user']}</h4>
+            <h:form rendered="#{!userBean.isLoggedInUser(param['user'])}">
+                #{messageBean.setReceiver(param['user'])}
+                <h:commandButton value="Send private message" 
+                                 action="#{messageBean.loadSendMessage}">
+                </h:commandButton>
+            </h:form>
+            <br/>
+            <br/>
+            #{postBean.statusMessage}<br/>
+            #{postBean.resetStatusMessage()}
+            <!-- TODO: SHOW FORM ONLY IF PROFILE IS LOGGED IN USER -->
+
+            <ui:repeat value="#{userBean.getImagesByName(param['user'])}" var="post">
+                <script>
+                    // load image from data url
+                    var imageObj = new Image();
+                    imageObj.src = 'data:image/png;base64,#{post.imageData}';
+                    document.body.appendChild(imageObj);
+                </script>
+            </ui:repeat>
+
+
+
+            <h3>Posts:</h3>
+
+
+            <h:form rendered="#{userBean.isLoggedInUser(param['user'])}">
+
+                New post                
+                <h:inputText id="newpost" value="#{postBean.newPost}">
+                </h:inputText>
+                <br/>
+                <h:commandButton id="knapp" value="Post" action="#{postBean.createPost}"/>
+            </h:form>
+
+
+            <!-- TODO: LIST ALL POSTS -->
+
+            #{logBean.setUser(param['user'])}
+
+            <h:form>
+                <h:panelGroup id="logposts">
+                    <ui:repeat value="#{logBean.getPostsByName(param['user'])}" var="post">
+                        <div style="border-top: 1px solid #ccc;padding-top: 10px;width:300px;">
+                            <b>#{logBean.user}</b><br/>
+                            <i>#{post.date}</i><br/>
+                            #{post.message}<br/>
+                            <br/>
+                        </div>
+                    </ui:repeat>
+                </h:panelGroup>
+                <p:poll interval="5" update="logposts"/>
+                <!--<h:commandButton id="uppdatera" value="Update">
+                    <f:ajax event="click" render="logposts"/>
+                </h:commandButton>-->
+            </h:form>
+        </div>
+
+    </h:body>
+    <ui:include src="notloggedin.xhtml" rendered="#{!userBean.isLoggedIn}"/>
+</html>
+
