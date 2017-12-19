@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "273809381003",
+    "firebase_url": "https://akta-kurvan-mobil.firebaseio.com",
+    "project_id": "akta-kurvan-mobil",
+    "storage_bucket": "akta-kurvan-mobil.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:273809381003:android:3dad083adb7bee7f",
+        "android_client_info": {
+          "package_name": "p_jakdan_hjalmo.aktakurvan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "273809381003-c1a6e0t81nljfatn44a59rcb1hatifob.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBS1fX8NVqwnHCFtYFpMLNHEYbRq92WMl8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
