@@ -106,7 +106,7 @@ public class MessageHandler {
             em.getTransaction().begin();
             User senderUser = getUserByName(sender);
             User receiverUser = getUserByName(receiver);
-
+            
             if (senderUser == null || receiverUser == null) {
                 throw new Exception("couldnt find users: " + sender + " " + receiver);
             }

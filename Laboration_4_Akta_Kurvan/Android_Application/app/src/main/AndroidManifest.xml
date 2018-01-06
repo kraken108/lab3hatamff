@@ -21,8 +21,13 @@
             </intent-filter>
         </receiver>
 
-<!--        <service
-            android:name="com.example.MyGcmListenerService"
+        <service android:name="p_jakdan_hjalmo.aktakurvan.Services.MyInstanceIDListenerService" android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID"/>
+            </intent-filter>
+        </service>
+        <service
+            android:name="p_jakdan_hjalmo.aktakurvan.Services.MyGcmListenerService"
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
@@ -30,16 +35,16 @@
         </service>
 
         <service
-            android:name="com.example.MyInstanceIDListenerService"
+            android:name="p_jakdan_hjalmo.aktakurvan.Services.MyInstanceIDListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.gms.iid.InstanceID" />
             </intent-filter>
         </service>
         <service
-            android:name="gcm.play.android.samples.com.gcmquickstart.RegistrationIntentService"
+            android:name="p_jakdan_hjalmo.aktakurvan.Services.RegistrationIntentService"
             android:exported="false">
-        </service>-->
+        </service>
 
         <activity android:name=".MainActivity">
             <intent-filter>

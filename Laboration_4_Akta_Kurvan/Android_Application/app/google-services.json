@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "273809381003-bmrva183kllsjk4p2qdlemp7b6a85h2r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "p_jakdan_hjalmo.aktakurvan",
+            "certificate_hash": "623364cb3f7d1fc25ad54dac13401f33be595134"
+          }
+        },
+        {
           "client_id": "273809381003-c1a6e0t81nljfatn44a59rcb1hatifob.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "273809381003-c1a6e0t81nljfatn44a59rcb1hatifob.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
