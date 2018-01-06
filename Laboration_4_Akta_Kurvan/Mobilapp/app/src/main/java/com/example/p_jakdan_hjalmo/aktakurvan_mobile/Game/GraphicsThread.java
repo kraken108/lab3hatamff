@@ -6,17 +6,15 @@ class GraphicsThread extends Thread {
 
     private GameView view;
     private boolean running = true;
-    private long start;
-    private long now;
-    private String print;
     private long sleepTime;
+    private long timeStamp;
+
 
     GraphicsThread(GameView view, long sleepTime) {
         this.view = view;
         this.sleepTime = sleepTime;
         this.running = true;
-        start = System.currentTimeMillis();
-        print = String.valueOf(start);
+        timeStamp = System.currentTimeMillis();
     }
 
     protected synchronized void setRunning(boolean b) {
@@ -31,16 +29,22 @@ class GraphicsThread extends Thread {
         Log.i("Var jag här?", "run");
         while (running) {
 
+            long now = System.currentTimeMillis();
+            view.detectCollision();
+
             view.move();
             view.draw();
-            view.detectCollision();
+
+          if(now > timeStamp + 30){
             view.addTail();
 
-            try{
-                Thread.sleep(sleepTime);
+                try{
+                    Thread.sleep(sleepTime);
 
+                }
+                catch (InterruptedException ie) {}
+                timeStamp = now;
             }
-            catch (InterruptedException ie) {}
         }
     }
 

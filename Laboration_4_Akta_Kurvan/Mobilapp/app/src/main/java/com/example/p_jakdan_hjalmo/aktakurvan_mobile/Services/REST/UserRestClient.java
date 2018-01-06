@@ -30,7 +30,7 @@ import java.util.List;
 public class UserRestClient {
 
     private final String TAG = "UserRestClient";
-    private final String BASEURL = "http://192.168.1.68:7932/api/";
+    private final String BASEURL = "http://192.168.43.5:7932/api/";
 
 
     public void sendUpdateDeviceTokenRequest(User user, AppCompatActivity activity, final ProgressDialog dialog){

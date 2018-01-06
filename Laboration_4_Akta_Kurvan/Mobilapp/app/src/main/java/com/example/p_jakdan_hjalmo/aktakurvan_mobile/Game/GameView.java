@@ -24,15 +24,14 @@ public class GameView extends SurfaceView implements
         SurfaceHolder.Callback{
 
 
-    private final float playerSpeed = 3;
+    private final float playerSpeed = 7;
+    private final float playerSpeedTurn = playerSpeed * 3/4;
     //test
     private long start;
     private long now;
     private String print;
 
     private Matrix matrix;
-
-    private ArrayList<Rect> playerRects;
 
     private Sprite playerTail;
     private GameState gameState;
@@ -44,10 +43,11 @@ public class GameView extends SurfaceView implements
     private Handler handler = new Handler();
     private Context context;
     private int state;
+    private long timeStamp;
 
     private ArrayList<Sprite> theSprites;
 
-    private final Drawable playerSprite, rightArrowSprite, leftArrowSprite;
+    private final Drawable playerSprite; // rightArrowSprite, leftArrowSprite;
     private final Drawable upbluesprite, uprightbluesprite, rightbluesprite, rightdownbluesprite,
             downbluesprite, leftdownbluesprite, leftbluesprite, leftupbluesprite;
 
@@ -63,7 +63,9 @@ public class GameView extends SurfaceView implements
         holder.addCallback(this);
         hasSurface = false;
 
-        start = System.currentTimeMillis();
+
+        timeStamp = System.currentTimeMillis();
+
         print = String.valueOf(start);
 
         theSprites = new ArrayList<>();
@@ -71,7 +73,7 @@ public class GameView extends SurfaceView implements
         X_RESOLUTION = xRes;
         Y_RESOLUTION = yRes;
 
-        playerRects = new ArrayList<>();
+        //playerRects = new ArrayList<>();
 
         matrix = new Matrix();
 
@@ -84,10 +86,10 @@ public class GameView extends SurfaceView implements
         leftdownbluesprite = context.getResources().getDrawable(R.drawable.leftdownblue);
         leftbluesprite = context.getResources().getDrawable(R.drawable.leftblue);
         leftupbluesprite = context.getResources().getDrawable(R.drawable.leftupblue);
-        rightArrowSprite = context.getResources().getDrawable(R.drawable.right_arrow);
-        leftArrowSprite = context.getResources().getDrawable(R.drawable.left_arrow);
+       // rightArrowSprite = context.getResources().getDrawable(R.drawable.right_arrow);
+       // leftArrowSprite = context.getResources().getDrawable(R.drawable.left_arrow);
         playerSprite = context.getResources().getDrawable(R.drawable.theblue);
-
+/*
         upblue = new Sprite(upbluesprite);
         uprightblue = new Sprite(uprightbluesprite);
         rightblue = new Sprite(rightbluesprite);
@@ -96,10 +98,12 @@ public class GameView extends SurfaceView implements
         leftdownblue = new Sprite(leftdownbluesprite);
         leftblue = new Sprite(leftbluesprite);
         leftupblue = new Sprite(leftupbluesprite);
-        rightArrow = new Sprite(rightArrowSprite);
-        leftArrow = new Sprite(leftArrowSprite);
+       // rightArrow = new Sprite(rightArrowSprite);
+       // leftArrow = new Sprite(leftArrowSprite);
+*/
         player = new Sprite(playerSprite);
-        playerTail = new Sprite(playerSprite);
+      //  playerTail =
+      //  playerTail.setImage(playerSprite);
         initGame();
     }
 
@@ -108,6 +112,9 @@ public class GameView extends SurfaceView implements
         theSprites.clear();
         int oneFifthX = X_RESOLUTION/5;
         int oneFifthY = Y_RESOLUTION/5;
+
+        String threeThirds = String.valueOf(playerSpeedTurn);
+        Log.i("Three thirds: " + threeThirds, threeThirds);
 
         int halfY = Y_RESOLUTION/2;
         int halfX = X_RESOLUTION/2;
@@ -120,8 +127,8 @@ public class GameView extends SurfaceView implements
 
         player.spawnRandom(X_RESOLUTION, Y_RESOLUTION-oneFifthY-10);
         player.setPosition(halfX,halfY);
-        rightArrow.setPosition(halfX+oneSeventhX, Y_RESOLUTION-oneSeventhY);
-        leftArrow.setPosition(halfX-oneSeventhX, Y_RESOLUTION-oneSeventhY);
+//        rightArrow.setPosition(halfX+oneSeventhX, Y_RESOLUTION-oneSeventhY);
+  //      leftArrow.setPosition(halfX-oneSeventhX, Y_RESOLUTION-oneSeventhY);
 
         gameState = GameState.RUNNING;
         player.setVelocity(10F,10F);
@@ -133,10 +140,10 @@ public class GameView extends SurfaceView implements
     }
 
     public void stateCorrector(){
-        if(state==0)
+        if(state<=0)
             state=8;
 
-        if(state==9)
+        if(state>=9)
             state=1;
     }
 
@@ -244,8 +251,6 @@ public class GameView extends SurfaceView implements
             Log.i("BAAM", "BAAM");
             player.setVelocity(0,0);
         }
-
-
     }
 
     public Boolean collisionDetected(){
@@ -264,11 +269,11 @@ public class GameView extends SurfaceView implements
             return true;
         //		Log.i("outside screen > X", "outside screen > X");
 
-        if(playerHead.getBounds().left<0)
+        if(playerHead.getBounds().left < 0)
             return true;
         //		Log.i("outside screen < 0", "outside screen <X");
 
-        if(playerHead.getBounds().bottom > Y_RESOLUTION - oneFifthY)
+        if(playerHead.getBounds().bottom > Y_RESOLUTION)
             return true;
         //	Log.i("outside screen >Y", "outside screen >Y");
 
@@ -283,7 +288,7 @@ public class GameView extends SurfaceView implements
         int arraySize = theSprites.size();
 
         for(int i=0; i<theSprites.size(); i++){
-            if(player.getIconBounds().right > theSprites.get(i).getIconBounds().left && (i < arraySize-15)
+     /*       if(player.getIconBounds().right > theSprites.get(i).getIconBounds().left && (i < arraySize-15)
                     && player.getIconBounds().left < theSprites.get(i).getIconBounds().right && (i < arraySize-15)
                     || theSprites.get(i).getIconBounds().left < player.getIconBounds().right &&
                     theSprites.get(i).getIconBounds().right > player.getIconBounds().left && (i < arraySize-15)){
@@ -291,8 +296,8 @@ public class GameView extends SurfaceView implements
                 if(player.getIconBounds().bottom > theSprites.get(i).getIconBounds().top && (i < arraySize-15)
                         && player.getIconBounds().top < theSprites.get(i).getIconBounds().bottom && (i < arraySize-15)
                         || theSprites.get(i).getIconBounds().top < player.getIconBounds().bottom &&
-                        theSprites.get(i).getIconBounds().bottom > player.getIconBounds().top && (i < arraySize-15)){
-
+                        theSprites.get(i).getIconBounds().bottom > player.getIconBounds().top && (i < arraySize-15))*/{
+                if(player.getIconBounds().intersect(theSprites.get(i).getIconBounds()) && (i<arraySize-15)){
                     Log.i("Colliding element" + j, "Colliding element" + j);
                     Log.i("Size of array" + arr, "Size of array" + arr);
                     return true;
@@ -304,49 +309,51 @@ public class GameView extends SurfaceView implements
 
 
     public void addTail(){
-        Sprite tailSprite = new Sprite(playerSprite, player.getX(), player.getY());
-        playerRects = player.getPositions();
 
-        Drawable image = tailSprite.getImage();
 
-        for(int i=0; i<playerRects.size(); i++){
-            image.setBounds(playerRects.get(i));
-        }
+        int arraySize = theSprites.size();
+        String sizeString = String.valueOf(arraySize);
+
+        Sprite tailSprite = new Sprite(player.getImage(), player.getX(), player.getY());
         theSprites.add(tailSprite);
+        Log.i(sizeString, sizeString);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        //Log.i("TouchView.onTouchEvent", "event = " + event);
 
-
-        boolean insideRight = false;
-        boolean insideLeft = false;
-
+        int halfX = X_RESOLUTION/2;
         int x = (int) event.getX();
         int y = (int) event.getY();
 
-        Rect rightButton = new Rect(rightArrow.getIconBounds());
-        Rect leftButton = new Rect(leftArrow.getIconBounds());
+//        Rect rightButton = new Rect(rightArrow.getIconBounds());
+//        Rect leftButton = new Rect(leftArrow.getIconBounds());
 
-        if(x>rightButton.left && x<rightButton.right && y<rightButton.bottom && y>leftButton.top){
-            insideRight=true;
-            insideLeft=false;
+
+
+        if(x>=halfX){
+            long now = System.currentTimeMillis();
+            if(now>timeStamp+200){
+                state=state+1;
+                timeStamp=now;
+            if(state >=9 || state <= 0){
+                stateCorrector();
+                Log.i("Turned Right", "Turned Right");
+                }
+            }
         }
 
-        if(x>leftButton.left && x<leftButton.right && y<leftButton.bottom && y>leftButton.top){
-            insideRight=false;
-            insideLeft=true;
+        if(x<halfX){
+            long now = System.currentTimeMillis();
+            if(now>timeStamp+200){
+                state=state-1;
+                timeStamp=now;
+            if(state >=9 || state <= 0){
+                stateCorrector();
+                Log.i("Turned Left", "Turned Left");
+                }
+            }
         }
-
-        if(insideRight){
-            state=state+1;
-        }
-
-        if(insideLeft){
-            state=state-1;
-        }
-
         return true;
     }
 
@@ -370,26 +377,25 @@ public class GameView extends SurfaceView implements
             playScreen.set(0,0,X_RESOLUTION, Y_RESOLUTION-oneFifthY);
             canvas.drawRect(playScreen, paint);
 
-            Rect steerScreen = new Rect();
-            steerScreen.set(0, Y_RESOLUTION-oneFifthY, X_RESOLUTION, Y_RESOLUTION);
-            canvas.drawRect(steerScreen,paintTwo);
+//            Rect steerScreen = new Rect();
+//            steerScreen.set(0, Y_RESOLUTION-oneFifthY, X_RESOLUTION, Y_RESOLUTION);
+//            canvas.drawRect(steerScreen,paintTwo);
             //player.draw(canvas);
 
             for(Sprite s: theSprites){
                 s.draw(canvas);
             }
 
-            rightArrow.draw(canvas);
-            leftArrow.draw(canvas);
+//            rightArrow.draw(canvas);
+//            leftArrow.draw(canvas);
 
         }
         holder.unlockCanvasAndPost(canvas);
     }
 
     public void surfaceCreated(SurfaceHolder holder) {
-        Log.i("JAG VAR HÃ„R", "surfaceCreated");
+
         if(graphicsThread == null){
-            Log.i("JAG VAR HÃ„R", "surfaceCreated");
             graphicsThread = new GraphicsThread(this, 20);
             graphicsThread.start();
             hasSurface=true;

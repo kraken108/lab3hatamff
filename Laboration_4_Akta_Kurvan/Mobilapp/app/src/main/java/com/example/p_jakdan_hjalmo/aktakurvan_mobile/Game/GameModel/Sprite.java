@@ -4,18 +4,16 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 
-
 import com.example.p_jakdan_hjalmo.aktakurvan_mobile.Game.GameController.Direction;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Created by Michael on 2017-12-25.
+ * Created by Michael on 2018-01-06.
  */
 
 public class Sprite {
-
     private float x;
     private float y;
     private float dY;
@@ -151,4 +149,3 @@ public class Sprite {
         setPosition(one,two);
     }
 }
-
